@@ -56,6 +56,67 @@ textarea {
   text-rendering: optimizeLegibility;
 }
 
+/* Critical CSS - Above the fold styles */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift on font load */
+body {
+  /* Font-display is handled in @font-face rules above */
+}
+
+/* Optimize repaints and reflows */
+img, video, iframe {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Reduce paint complexity - only hint will-change where needed */
+.btn, .clickable-card, .filter-btn {
+  will-change: transform;
+}
+
+/* Optimize animations for performance - respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Performance optimizations - GPU acceleration for transforms */
+.btn,
+.clickable-card,
+.filter-btn,
+.social-btn {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize font rendering */
+body, h1, h2, h3, h4, h5, h6, p, span, a, button {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce repaints on scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize image loading */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
 /* Screen reader only class for accessibility */
 .sr-only {
   position: absolute;

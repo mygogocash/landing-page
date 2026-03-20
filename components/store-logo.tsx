@@ -47,7 +47,10 @@ export default function StoreLogo({
   const { width, height } = dimensions[size];
 
   return (
-    <div className={`relative flex items-center justify-center ${sizeClasses[size]} ${className}`} style={{ width, height }}>
+    <div 
+      className={`relative flex items-center justify-center ${sizeClasses[size]} ${className}`} 
+      style={{ width: `${width}px`, height: `${height}px`, minWidth: `${width}px`, minHeight: `${height}px` }}
+    >
       <Image
         src={logoUrl}
         alt={`โลโก้ร้าน ${storeName}`}
@@ -57,6 +60,7 @@ export default function StoreLogo({
         onError={() => setImgError(true)}
         sizes="(max-width: 640px) 48px, 64px"
         loading="lazy"
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
       />
     </div>
   );

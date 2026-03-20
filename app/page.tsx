@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import MobileNav from "@/components/mobile-nav";
@@ -12,6 +13,21 @@ import FAQAccordion from "@/components/faq-accordion";
 import { ErrorBoundary } from "@/components/error-boundary";
 
 export default function HomePage() {
+  // Register Service Worker for PWA (non-blocking)
+  useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        // Delay SW registration to not block page load
+        setTimeout(() => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .catch(() => {
+              // Silent fail for performance
+            });
+        }, 2000);
+      });
+    }
+  }, []);
   return (
     <ErrorBoundary>
       <Header />
@@ -28,7 +44,7 @@ export default function HomePage() {
               <AnimateOnScroll animation="fadeInRight" delay={0}>
                 <div className="w-full text-center lg:text-left">
                   <h1 className="text-[28px] font-bold leading-[36px] tracking-[-0.7px] text-[#006c4f] sm:text-[36px] sm:leading-[45px] sm:tracking-[-0.9px] lg:text-[72px] lg:leading-[72px] lg:tracking-[-1.8px]">
-                    GoGoCash - ช้อปฉลาด รับเงินคืนทันที
+                    <span itemProp="name">GoGoCash</span> - <span itemProp="description">ช้อปฉลาด รับเงินคืนทันที</span>
                     <br />
                     <span className="text-[#006c4f]">อย่าปล่อยให้เงินหายไป</span>
                     <br />
@@ -36,9 +52,9 @@ export default function HomePage() {
                   </h1>
                   <AnimateOnScroll animation="fadeInUp" delay={200}>
                     <p className="mx-auto mt-4 max-w-[340px] text-base leading-6 text-[#3c4a43] sm:mt-6 sm:max-w-[384px] sm:text-lg sm:leading-[29.25px] lg:mx-0 lg:max-w-[512px] lg:text-xl lg:leading-[32.5px]">
-                      รวมร้านค้ากว่า 220+ แห่ง เปลี่ยนทุกการจ่าย
+                      <strong>GoGoCash</strong> รวมร้านค้ากว่า <strong>220+ แห่ง</strong> เปลี่ยนทุกการจ่าย
                       <br />
-                      ให้เป็นรายได้กลับคืนมาแบบง่ายที่สุด
+                      ให้เป็นรายได้กลับคืนมาแบบง่ายที่สุด - <strong>ช้อปฉลาด รับเงินคืนทันที</strong>
                     </p>
                   </AnimateOnScroll>
                   <AnimateOnScroll animation="fadeInUp" delay={400}>
@@ -73,13 +89,24 @@ export default function HomePage() {
               {/* Right Column: Phone Mockup */}
               <AnimateOnScroll animation="fadeInLeft" delay={300}>
                 <div className="relative flex w-full justify-center lg:w-auto lg:justify-end">
-                <div className="relative h-[280px] w-[280px] max-w-full sm:h-[320px] sm:w-[320px] lg:h-[600px] lg:w-[300px] xl:h-[700px] xl:w-[350px]">
-                  <div className="absolute inset-0 rounded-[32px] border-4 border-[#dce5de] bg-white p-3 shadow-[0px_25px_25px_0px_rgba(0,0,0,0.15)] sm:rounded-[48px] sm:border-8 sm:p-4">
+                <div 
+                  className="relative max-w-full"
+                  style={{ 
+                    width: '280px', 
+                    height: '280px',
+                    minWidth: '280px',
+                    minHeight: '280px'
+                  }}
+                >
+                  <div 
+                    className="absolute inset-0 rounded-[32px] border-4 border-[#dce5de] bg-white p-3 shadow-[0px_25px_25px_0px_rgba(0,0,0,0.15)] sm:rounded-[48px] sm:border-8 sm:p-4"
+                    style={{ width: '100%', height: '100%' }}
+                  >
                     <div className="h-full w-full rounded-[28px] bg-gradient-to-br from-[#00cc99]/20 to-[#006c4f]/20 p-4 sm:rounded-[40px] sm:p-6">
                       <div className="mb-3 rounded-lg bg-accent/10 p-3 sm:mb-4 sm:rounded-xl sm:p-4">
                         <div className="flex items-center gap-2 sm:gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent sm:h-12 sm:w-12">
-                            <CheckCircle2 className="h-5 w-5 text-white sm:h-6 sm:w-6" />
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent sm:h-12 sm:w-12" style={{ minWidth: '40px', minHeight: '40px' }}>
+                            <CheckCircle2 className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden="true" />
                           </div>
                           <div>
                             <p className="text-[10px] font-semibold text-on-surface-variant sm:text-xs">
@@ -92,6 +119,7 @@ export default function HomePage() {
                         <button 
                           className="btn btn-primary w-full rounded-lg bg-accent px-4 py-2 text-xs font-semibold text-white sm:rounded-xl sm:px-6 sm:py-3 sm:text-sm"
                           aria-label="รับเงินคืนทันที"
+                          style={{ minHeight: '48px', minWidth: '48px' }}
                         >
                           Get Now
                         </button>
@@ -122,7 +150,7 @@ export default function HomePage() {
                 </AnimateOnScroll>
                 <AnimateOnScroll animation="fadeInUp" delay={200}>
                   <h2 id="problem-heading" className="mx-auto max-w-[768px] text-center text-xl font-bold leading-[28px] text-[#161d1a] sm:text-2xl sm:leading-[32px] lg:text-[48px] lg:leading-[48px]">
-                    เงินที่คุณเสียไปโดยไม่รู้ตัว
+                    เงินที่คุณเสียไปโดยไม่รู้ตัว - <strong>GoGoCash</strong> ช่วยคุณได้
                   </h2>
                 </AnimateOnScroll>
                 <div className="mt-8 flex flex-col gap-4 sm:mt-12 sm:gap-6 lg:mt-16 lg:grid lg:grid-cols-3 lg:gap-8">
@@ -168,7 +196,7 @@ export default function HomePage() {
                     <p className="mt-3 text-sm leading-5 text-[#3c4a43] sm:mt-4 sm:text-base sm:leading-6">
                       {item.description[0]}
                       <br />
-                      {item.description[1]}
+                      {item.description[1]} <strong>GoGoCash - ช้อปฉลาด รับเงินคืนทันที</strong> ช่วยคุณแก้ปัญหานี้ได้
                     </p>
                   </article>
                   </AnimateOnScroll>
@@ -219,9 +247,9 @@ export default function HomePage() {
               <AnimateOnScroll animation="fadeInLeft" delay={200}>
                 <div className="w-full text-center lg:text-left">
                   <h2 id="value-heading" className="text-xl font-bold leading-[28px] text-on-background sm:text-2xl sm:leading-[32px] lg:text-headline">
-                    วินาทีที่เงินคืนเด้ง…
+                    <strong>GoGoCash</strong> - วินาทีที่เงินคืนเด้ง…
                     <br />
-                    คุณจะไม่อยากช้อปแบบเก่าอีกเลย
+                    คุณจะไม่อยากช้อปแบบเก่าอีกเลย - <strong>ช้อปฉลาด รับเงินคืนทันที</strong>
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-on-surface-variant sm:mt-4 sm:text-base lg:mt-6 lg:text-lg">
                     ไม่ใช่แค่การประหยัด แต่มันคือความรู้สึกที่ได้รับชัยชนะทุกครั้งที่ใช้จ่าย
@@ -244,7 +272,7 @@ export default function HomePage() {
                 <h2 id="savings-heading" className="text-xl font-bold leading-[28px] text-[#1a1c1c] sm:text-2xl sm:leading-[32px] lg:text-[48px] lg:leading-[48px]">
                   ถ้าคุณเคยช้อปแบบเดิมตลอดปีที่ผ่านมา...
                   <br />
-                  คุณพลาดอะไรไปบ้าง?
+                  คุณพลาดอะไรไปบ้าง? <strong>GoGoCash - ช้อปฉลาด รับเงินคืนทันที</strong>
                 </h2>
               </div>
             </AnimateOnScroll>
@@ -345,7 +373,7 @@ export default function HomePage() {
               <div className="mt-6 text-center sm:mt-8 lg:mt-12">
                 <p className="text-base font-medium leading-6 text-[#1a1c1c] sm:text-lg sm:leading-7 lg:text-xl lg:leading-[32.5px]">
                   สิ่งเดียวที่คุณต้องทำต่างออกไปวันนี้ คือเริ่มทุกการช้อปจาก{" "}
-                  <span className="font-bold text-[#126d37]">GoGoCash</span> แล้วให้เงิน
+                  <strong className="font-bold text-[#126d37]">GoGoCash - ช้อปฉลาด รับเงินคืนทันที</strong> แล้วให้เงิน
                   <br className="hidden sm:block" />
                   <span className="sm:hidden"> </span>
                   เริ่มไหลกลับมาหาคุณแทนที่จะหายไปเฉย ๆ
@@ -366,7 +394,7 @@ export default function HomePage() {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div className="flex flex-col gap-3 sm:gap-4">
                   <h2 id="stores-heading" className="text-xl font-bold leading-[28px] text-[#1a1c1c] sm:text-2xl sm:leading-[32px] lg:text-[48px] lg:leading-[48px] lg:tracking-[-1.2px]">
-                    ช้อปได้จาก 220+ ร้านค้าชั้นนำ
+                    <strong>GoGoCash</strong> - ช้อปได้จาก <strong>220+ ร้านค้าชั้นนำ</strong>
                   </h2>
                   <p className="text-sm text-[#5f5e5e] sm:text-base lg:text-xl">
                     ครอบคลุมทุกไลฟ์สไตล์ ตั้งแต่ของใช้ในบ้านจนถึงทริปต่างประเทศ
@@ -435,7 +463,7 @@ export default function HomePage() {
             <AnimateOnScroll animation="fadeInUp" delay={0}>
               <div className="text-center">
                 <h2 id="how-it-works-heading" className="text-xl font-bold leading-[28px] text-[#1a1c1c] sm:text-2xl sm:leading-[32px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.2px]">
-                  3 ขั้นตอนสู่ความมั่งคั่งจากการช้อป
+                  <strong>GoGoCash</strong> - 3 ขั้นตอนสู่ความมั่งคั่งจากการช้อป
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-sm text-[#5f5e5e] sm:text-base lg:mt-6 lg:text-lg">
                   ง่าย เร็ว และได้เงินคืนจริง ไม่ต้องรอ ไม่ต้องกังวล
@@ -716,7 +744,7 @@ export default function HomePage() {
             <AnimateOnScroll animation="fadeInUp" delay={0}>
               <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                 <h2 id="faq-heading" className="text-2xl font-bold leading-[32px] text-[#006c4f] sm:text-3xl sm:leading-[40px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.2px]">
-                  คำถามที่พบบ่อย
+                  คำถามที่พบบ่อยเกี่ยวกับ <strong>GoGoCash</strong>
                 </h2>
                 <p className="mt-4 text-base leading-6 text-[#52525b] sm:mt-6 sm:text-lg sm:leading-7 lg:text-xl lg:leading-[32.5px]">
                   ค้นหาคำตอบสำหรับคำถามที่คุณสงสัยเกี่ยวกับ GoGoCash
