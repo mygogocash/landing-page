@@ -13,23 +13,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Lucid Precision: Mint + Minted Neutrals */
-        primary: "#006c4f",
-        "primary-container": "#00cc99",
-        background: "#f3fbf5",
-        surface: "#f3fbf5",
-        "surface-container-low": "#edf6ef",
-        "surface-container": "#e8f0e9",
-        "surface-container-high": "#e2ebe3",
-        "surface-container-highest": "#dce5de",
+        /* Updated Design: Dark Forest Green + Lime Green */
+        primary: "#004d3d",
+        "primary-container": "#00c853",
+        accent: "#00c853",
+        background: "#f5f5f5",
+        surface: "#ffffff",
+        "surface-container-low": "#f5f5f5",
+        "surface-container": "#fafafa",
+        "surface-container-high": "#e8e8e8",
+        "surface-container-highest": "#e0e0e0",
         "surface-container-lowest": "#ffffff",
         "on-background": "#161d1a",
         "on-surface": "#161d1a",
         "on-surface-variant": "#3c4a43",
         "on-primary": "#ffffff",
-        "on-primary-container": "#006c4f",
+        "on-primary-container": "#004d3d",
         "outline-variant": "#bacac1",
-        tertiary: "#964913",
+        tertiary: "#d32f2f",
+        /* Legacy Lucid Precision colors for compatibility */
+        "lucid-primary": "#006c4f",
+        "lucid-primary-container": "#00cc99",
       },
       fontFamily: {
         sans: ["Noto Sans", "Noto Sans Thai", "sans-serif"],
