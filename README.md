@@ -1,34 +1,67 @@
 # GoGoCash Landing Page
 
-**Static marketing site for [GoGoCash](https://gogocash.co/): save cash on every spend. Splash, hero, trust strip, value props, how-it-works, app download, features, insights, community, FAQ, and footer — with UX/UI patterns inspired by [Coins.co.th](https://www.coins.co.th/en-th).**
+A modern, premium landing page built with Next.js 15, TypeScript, and Tailwind CSS, following the **Lucid Precision Framework** design system.
 
-A clone of the official GoGoCash landing page, restructured for a Coins.co.th–style flow (trust strip, 4-card value section, app block, latest insights, community). Built with HTML, CSS, and vanilla JS; design tokens and animations documented.
+## Features
 
-## Structure
+- 🎨 **Lucid Precision Framework** - Premium design system with tonal architecture
+- ⚡ **Next.js 15** - App Router with Server Components
+- 🎯 **TypeScript** - Full type safety
+- 💅 **Tailwind CSS** - Utility-first styling with custom design tokens
+- 📱 **Responsive** - Mobile-first design
+- ♿ **Accessible** - Semantic HTML and ARIA labels
 
-- **index.html** — Single-page layout (Coins.co.th–style flow: hero, trust strip, value cards, how to start, app download, features, insights, community, FAQ, footer)
-- **css/style.css** — Base layout, tokens, components
-- **css/coins-reference.css** — Coins.co.th–inspired sections (trust strip, 4-card value, app block, insights, community, footer CTA + grid)
-- **js/main.js** — Splash, mobile menu, header scroll, smooth scroll, section in-view
-- **gogocash-content.md** — All text content in markdown
-- **CLONE-PLAN.md** — Tools and plan used for the clone
-- **DESIGN-TOKENS.md** — Pixel-perfect spacing and type scale
-- **assets/images/** — Add logo, icons, QR code, illustrations
-- **assets/fonts/** — Optional custom fonts
+## Getting Started
 
-## Run locally
+### Install Dependencies
 
 ```bash
-# From this folder (Landing page)
-npx serve .
-# or
-npx live-server
+npm install
 ```
 
-Then open **http://localhost:3000** (or the port shown).
+### Run Development Server
 
-## Links
+```bash
+npm run dev
+```
 
-- **Launch App** points to: https://app.gogocash.co/
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Replace footer and nav links (Privacy Policy, Terms, etc.) with your real URLs when you have them.
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Design System
+
+This project follows the **Lucid Precision Framework** (see `DESIGN.md`):
+
+- **No 1px borders** - Use background shifts for sectioning
+- **Tonal Architecture** - Create hierarchy through color values
+- **Glassmorphism** - For navigation and overlays
+- **Ambient Shadows** - Subtle, color-matched shadows
+- **Editorial Typography** - Generous spacing and clean fonts
+
+## Project Structure
+
+```
+├── app/
+│   ├── layout.tsx      # Root layout with metadata
+│   ├── page.tsx        # Home page
+│   └── globals.css     # Global styles & design tokens
+├── components/
+│   ├── header.tsx       # Navigation header
+│   └── footer.tsx      # Footer with links
+└── .cursor/
+    └── rules/          # Cursor AI rules
+```
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS 3.4
+- **Icons:** Lucide React
+- **Fonts:** Noto Sans (with Thai support)

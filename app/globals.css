@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Lucid Precision Framework (DESIGN.md) ===== */
+/* No 1px borders for sectioning — use background shifts (surface → surface-container-low). */
+/* Use on-background (#161d1a) for text; avoid pure black. */
+
+body {
+  font-family: "Noto Sans", "Noto Sans Thai", sans-serif;
+  background-color: #f3fbf5;
+  color: #161d1a;
+}
+
+/* Glassmorphism: surface 70% + 24px blur (nav, overlays) */
+.glass {
+  background: rgba(243, 251, 245, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Primary CTA gradient (135deg primary → primary-container) */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #006c4f 0%, #00cc99 100%);
+  color: #ffffff;
+}
+
+/* Ghost border: outline-variant at 15% (when container on same background) */
+.ghost-border {
+  outline: 1px solid rgba(186, 202, 193, 0.15);
+  outline-offset: -1px;
+}
+
+/* Ambient shadow (on-surface 5%, 40px blur, 8px Y) */
+.shadow-ambient {
+  box-shadow: 0 8px 40px rgb(22 29 26 / 0.05);
+}
