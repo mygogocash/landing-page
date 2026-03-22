@@ -11,8 +11,11 @@ import WhyChooseSection from "@/components/landing/why-choose-section";
 import AppDownloadSection from "@/components/landing/app-download-section";
 import CommunitySection from "@/components/landing/community-section";
 import ContentTeaser from "@/components/landing/content-teaser";
+import TestimonialsSection from "@/components/landing/testimonials-section";
 import LaunchAppLink from "@/components/launch-app-link";
 import { LINE_OFFICIAL_ACCOUNT_HREF } from "@/components/social-data";
+import { FAQ_ITEMS } from "@/lib/faq-data";
+import { SITE_FACTS, heroSeoSupportingLine } from "@/lib/site-facts";
 import {
   Sparkles,
   ArrowUpRight,
@@ -22,39 +25,11 @@ import {
   Target,
 } from "@/components/icons";
 
-const FAQ_ITEMS = [
-  {
-    question: "How does GoGoCash cashback work?",
-    answer:
-      "Simply browse our merchant partners, click through GoGoCash to shop, and earn cashback automatically. Your cashback is tracked in real time and deposited to your GoGoCash wallet once confirmed.",
-  },
-  {
-    question: "Which stores are available?",
-    answer:
-      "We partner with 70+ top stores across Southeast Asia including Lazada, Shopee, Agoda, Samsung, Trip.com, and many more. New merchants are added regularly.",
-  },
-  {
-    question: "How long does it take to receive cashback?",
-    answer:
-      "Cashback is tracked instantly after your purchase. It typically takes 1-7 days for the merchant to confirm the transaction, after which your cashback becomes available to withdraw.",
-  },
-  {
-    question: "Is GoGoCash free to use?",
-    answer:
-      "Yes, GoGoCash is completely free! There are no fees or subscriptions. You simply shop at your favorite stores through our platform and earn cashback on every purchase.",
-  },
-  {
-    question: "How do I withdraw my cashback?",
-    answer:
-      "You can withdraw your cashback to your bank account or e-wallet once you reach the minimum threshold. Withdrawals are processed within 1-3 business days.",
-  },
-];
-
 const HOW_IT_WORKS_STEPS = [
   {
     summary: "Browse & choose",
     title: "Browse and pick your store",
-    desc: "Explore 70+ e-commerce and travel partners across Southeast Asia. Compare cashback rates and open the store from GoGoCash so your visit is tracked.",
+    desc: `Explore ${SITE_FACTS.partnerCountLabel} e-commerce and travel partners across ${SITE_FACTS.regionLabel}. Compare cashback rates and open the store from GoGoCash so your visit is tracked.`,
     bullets: [
       "Lazada, Shopee, Agoda, Samsung, Trip.com, and more",
       "Transparent rates before you shop",
@@ -88,8 +63,7 @@ export default function HomePage({ initialPartners }: HomePageProps) {
   return (
     <>
       <Header />
-      <main>
-        {/* ==================== HERO SECTION ==================== */}
+      <main role="main">
         <section
           id="home"
           className="relative min-h-screen scroll-mt-28 overflow-hidden hero-gradient"
@@ -105,9 +79,8 @@ export default function HomePage({ initialPartners }: HomePageProps) {
                   With GoGoCash
                 </p>
                 <p className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-gray-600 md:text-lg">
-                  Shop smarter with GoGoCash — Southeast Asia’s leading
-                  shopping-to-earn platform. Earn up to 30% cashback, complete
-                  personalized quests, and unlock exclusive rewards.
+                  {heroSeoSupportingLine()} Complete personalized quests and
+                  unlock exclusive rewards in the app.
                 </p>
               </div>
 
@@ -134,7 +107,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
 
         <WhyChooseSection />
 
-        {/* ==================== KEY FEATURES ==================== */}
         <section id="features" className="scroll-mt-28 py-16 md:py-24">
           <div className="mx-auto max-w-site px-6 lg:px-8">
             <AnimateOnScroll>
@@ -149,9 +121,7 @@ export default function HomePage({ initialPartners }: HomePageProps) {
               </div>
             </AnimateOnScroll>
 
-            {/* 2x2 Feature Grid */}
             <div className="mt-12 grid gap-4 md:grid-cols-2 lg:gap-6">
-              {/* Instant Cashback */}
               <AnimateOnScroll delay={100}>
                 <div className="relative overflow-hidden rounded-3xl bg-mint p-8 lg:p-10 min-h-[280px]">
                   <Coins className="h-8 w-8 text-primary mb-4" />
@@ -166,7 +136,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
                 </div>
               </AnimateOnScroll>
 
-              {/* 24/7 Support */}
               <AnimateOnScroll delay={200}>
                 <div className="relative overflow-hidden rounded-3xl bg-cream p-8 lg:p-10 min-h-[280px]">
                   <Headphones className="h-8 w-8 text-primary mb-4" />
@@ -180,7 +149,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
                 </div>
               </AnimateOnScroll>
 
-              {/* Personalized Quests */}
               <AnimateOnScroll delay={300}>
                 <div className="relative overflow-hidden rounded-3xl bg-cream p-8 lg:p-10 min-h-[280px]">
                   <Target className="h-8 w-8 text-primary mb-4" />
@@ -194,7 +162,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
                 </div>
               </AnimateOnScroll>
 
-              {/* Get Started CTA */}
               <AnimateOnScroll delay={400}>
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-8 lg:p-10 min-h-[280px] flex flex-col justify-end">
                   <h3 className="text-2xl font-bold text-white">
@@ -213,7 +180,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
           </div>
         </section>
 
-        {/* ==================== HOW IT WORKS (Coins.co.th-style: headline → short steps row → white detail panel) ==================== */}
         <section
           id="how-it-works"
           className="scroll-mt-28 border-t border-gray-200/80 bg-gray-50 py-16 md:py-24"
@@ -231,7 +197,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
               </div>
             </AnimateOnScroll>
 
-            {/** Short horizontal overview — mirrors "Sign Up & Verify | Fund Your Wallet | Buy Bitcoin" */}
             <AnimateOnScroll delay={100}>
               <div className="mx-auto mt-10 flex max-w-2xl flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-0">
                 {HOW_IT_WORKS_STEPS.map((step, i) => (
@@ -251,7 +216,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
               </div>
             </AnimateOnScroll>
 
-            {/** Numbered steps inside elevated panel (MuiBox-style content well) */}
             <AnimateOnScroll delay={160}>
               <div className="mx-auto mt-12 max-w-4xl">
                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-6 py-8 shadow-sm md:px-10 md:py-12 lg:px-14 lg:py-14">
@@ -305,7 +269,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
 
         <CommunitySection />
 
-        {/* ==================== FAQ ==================== */}
         <section id="faq" className="scroll-mt-28 py-16 md:py-24">
           <div className="mx-auto max-w-3xl px-6 lg:px-8">
             <AnimateOnScroll>
@@ -323,7 +286,6 @@ export default function HomePage({ initialPartners }: HomePageProps) {
           </div>
         </section>
 
-        {/* ==================== FINAL CTA ==================== */}
         <section className="py-16 md:py-24">
           <div className="mx-auto max-w-site px-6 lg:px-8">
             <AnimateOnScroll>
@@ -332,7 +294,8 @@ export default function HomePage({ initialPartners }: HomePageProps) {
                   Ready to save on every purchase?
                 </h2>
                 <p className="mt-4 text-base text-gray-500">
-                  Join 6M+ happy shoppers earning cashback the easy way
+                  Join {SITE_FACTS.shopperCommunityLabel} happy shoppers earning
+                  cashback the easy way
                 </p>
                 <LaunchAppLink className="mt-8 min-h-11 items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105">
                   Launch App

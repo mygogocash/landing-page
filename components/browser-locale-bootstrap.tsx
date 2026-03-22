@@ -1,0 +1,62 @@
+"use client";
+
+import { useEffect } from "react";
+import {
+  AUTO_LOCALE_DONE_KEY,
+  hasSavedLocalePreference,
+  isLikelyAutomatedClient,
+  persistLocaleRaw,
+  readPrimaryBrowserLanguage,
+} from "@/lib/locale-storage";
+
+/**
+ * No visible UI: aligns experience with the browser language once.
+ * - From `/` only: redirect to `/th` or `/id` when the primary language matches
+ *   and the user has not chosen a locale in the header dropdown.
+ * - Skips bots to reduce SEO risk.
+ * - Sets `AUTO_LOCALE_DONE_KEY` after the first evaluation so returning to `/`
+ *   (e.g. “English site”) does not loop redirects.
+ * - Syncs the header dropdown + `document.documentElement.lang` from locale routes
+ *   (`/th`, `/id`, `/tw`, `/ja`) when there is no saved preference yet.
+ */
+export function BrowserLocaleBootstrap() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (isLikelyAutomatedClient()) return;
+
+    const path = window.location.pathname;
+    const autoDone = localStorage.getItem(AUTO_LOCALE_DONE_KEY);
+    const userChose = hasSavedLocalePreference();
+
+    if (!autoDone) {
+      if (path === "/") {
+        const primary = readPrimaryBrowserLanguage();
+        if (primary === "th" && !userChose) {
+          localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
+          window.location.replace("/th");
+          return;
+        }
+        if (primary === "id" && !userChose) {
+          localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
+          window.location.replace("/id");
+          return;
+        }
+      }
+      localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
+    }
+
+    if (!userChose) {
+      if (path === "/th" || path.startsWith("/th/")) {
+        persistLocaleRaw("th", "TH");
+      } else if (path === "/id" || path.startsWith("/id/")) {
+        persistLocaleRaw("en", "ID");
+      } else if (path === "/tw" || path.startsWith("/tw/")) {
+        persistLocaleRaw("zh-TW", "TW");
+      } else if (path === "/ja" || path.startsWith("/ja/")) {
+        persistLocaleRaw("ja", "JP");
+      }
+    }
+  }, []);
+
+  return null;
+}

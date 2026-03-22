@@ -39,16 +39,17 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(-10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        "splash-enter": {
-          "0%": { opacity: "0", transform: "translateY(14px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        "locale-panel-in": {
+          "0%": { opacity: "0", transform: "translateY(-8px) scale(0.98)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
         },
       },
       animation: {
         "header-enter": "header-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both",
         "header-mobile-drawer":
           "header-mobile-drawer 0.35s cubic-bezier(0.22, 1, 0.36, 1) both",
-        "splash-enter": "splash-enter 0.75s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "locale-panel-in":
+          "locale-panel-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both",
       },
     },
   },

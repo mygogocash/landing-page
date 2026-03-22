@@ -27,6 +27,12 @@ const FOOTER_LINKS = {
   Resources: [
     { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Terms of Use", href: "/term-of-use" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+    {
+      label: "How GoGoCash Makes Money",
+      href: "/how-gogocash-makes-money",
+    },
+    { label: "Learn", href: "/learn" },
     {
       label: "System Status",
       href: "https://status.gogocash.co/",
@@ -37,7 +43,7 @@ const FOOTER_LINKS = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white pt-20 pb-8">
+    <footer role="contentinfo" className="bg-white pt-20 pb-8">
       <div className="mx-auto max-w-site px-6 lg:px-8">
         {/* Top section */}
         <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
@@ -97,7 +103,30 @@ export default function Footer() {
           results.
         </p>
 
-        {/* Bottom bar */}
+        <nav
+          aria-label="Legal links"
+          className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 border-t border-gray-100 pt-8 text-sm"
+        >
+          <a
+            href="/privacy-policy"
+            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms-of-service"
+            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
+          >
+            Terms of Service
+          </a>
+          <a
+            href="/how-gogocash-makes-money"
+            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
+          >
+            How GoGoCash Makes Money
+          </a>
+        </nav>
+
         <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <p className="text-sm text-[#6b7280]">
             &copy; 2026 Copyright - Made with{" "}

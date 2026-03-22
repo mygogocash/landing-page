@@ -1,6 +1,7 @@
 import SectionBadge from "@/components/section-badge";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import { Sparkles, Shield, Coins, Headphones } from "@/components/icons";
+import { SITE_FACTS } from "@/lib/site-facts";
 
 const CARDS = [
   {
@@ -12,7 +13,7 @@ const CARDS = [
   {
     icon: Shield,
     title: "Trusted merchants",
-    body: "Shop 70+ known brands across SEA with clear rates before you buy.",
+    body: `Shop ${SITE_FACTS.partnerCountLabel} known brands across SEA with clear rates before you buy.`,
     bg: "bg-cream",
   },
   {

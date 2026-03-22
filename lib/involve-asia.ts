@@ -1,7 +1,4 @@
-/**
- * Involve Asia Publisher API — server-only.
- * @see https://api.involve.asia/
- */
+/** Involve Asia Publisher API (server-only). */
 
 export type PartnerBrand = {
   id: string;
@@ -107,10 +104,7 @@ async function fetchOffersPage(
   return { rows: json.data.data, nextPage };
 }
 
-/**
- * Fetches approved, active offers from Involve Asia (paginated).
- * Respects INVOLVE_ASIA_MAX_OFFER_PAGES and INVOLVE_ASIA_MAX_BRANDS_DISPLAY.
- */
+/** Paginated approved/active offers; env caps page and brand counts. */
 export async function fetchPartnerBrands(): Promise<PartnerBrand[]> {
   const key = process.env.INVOLVE_ASIA_API_KEY?.trim();
   const secret = process.env.INVOLVE_ASIA_API_SECRET?.trim();

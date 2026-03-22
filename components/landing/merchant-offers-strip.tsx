@@ -10,9 +10,11 @@ import type { PartnerBrand } from "@/lib/involve-asia";
 function PartnerLogo({
   name,
   logoUrl,
+  altForName,
 }: {
   name: string;
   logoUrl: string | null;
+  altForName: (name: string) => string;
 }) {
   const [failed, setFailed] = useState(!logoUrl);
 
@@ -30,7 +32,7 @@ function PartnerLogo({
   return (
     <Image
       src={logoUrl}
-      alt=""
+      alt={altForName(name)}
       width={44}
       height={44}
       className="h-11 w-11 shrink-0 object-contain"
@@ -42,10 +44,22 @@ function PartnerLogo({
 
 type MerchantOffersStripProps = {
   partners: PartnerBrand[];
+  /** Override badge label (e.g. Thai landing). */
+  sectionBadgeLabel?: string;
+  /** Override section heading. */
+  heading?: string;
+  /** Alt text for partner logos; default English SEO phrase. */
+  partnerLogoAlt?: (name: string) => string;
 };
+
+const defaultPartnerLogoAlt = (name: string) =>
+  `${name} cashback partner GoGoCash`;
 
 export default function MerchantOffersStrip({
   partners,
+  sectionBadgeLabel = "Our Brand Partners",
+  heading = "Earn cashback with the brands you already love",
+  partnerLogoAlt = defaultPartnerLogoAlt,
 }: MerchantOffersStripProps) {
   return (
     <section
@@ -58,13 +72,13 @@ export default function MerchantOffersStrip({
           <div className="mb-6 flex flex-col items-center text-center md:mb-8">
             <SectionBadge
               icon={<Users className="h-4 w-4" />}
-              label="Our Brand Partners"
+              label={sectionBadgeLabel}
             />
             <h2
               id="partners-heading"
               className="mt-6 text-3xl font-bold text-gray-800 md:text-4xl lg:text-5xl"
             >
-              Earn cashback with the brands you already love
+              {heading}
             </h2>
           </div>
         </AnimateOnScroll>
@@ -75,7 +89,11 @@ export default function MerchantOffersStrip({
               delay={Math.min(i, 20) * 40}
             >
               <div className="flex w-[min(85vw,260px)] shrink-0 snap-center items-center gap-3 rounded-2xl border border-gray-100 bg-mint/80 px-4 py-3 shadow-sm md:w-auto md:min-w-[220px] md:shrink-0">
-                <PartnerLogo name={p.name} logoUrl={p.logoUrl} />
+                <PartnerLogo
+                  name={p.name}
+                  logoUrl={p.logoUrl}
+                  altForName={partnerLogoAlt}
+                />
                 <div className="min-w-0 flex-1">
                   <p className="text-base font-bold text-gray-800">{p.name}</p>
                   <p className="text-xs font-medium text-gray-500">

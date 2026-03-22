@@ -6,16 +6,19 @@ import Footer from "@/components/footer";
 export default function LegalDocumentShell({
   title,
   effectiveDate,
+  dateLabel = "Effective Date",
   children,
 }: {
   title: string;
   effectiveDate: string;
+  /** Shown before the date (e.g. "Last updated" for guides). */
+  dateLabel?: string;
   children: ReactNode;
 }) {
   return (
     <>
       <Header />
-      <main className="min-h-[60vh] bg-white">
+      <main role="main" className="min-h-[60vh] bg-white">
         <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link
@@ -30,7 +33,7 @@ export default function LegalDocumentShell({
               {title}
             </h1>
             <p className="mt-2 text-sm font-medium text-gray-500">
-              Effective Date: {effectiveDate}
+              {dateLabel}: {effectiveDate}
             </p>
             <div className="mt-10">{children}</div>
           </article>

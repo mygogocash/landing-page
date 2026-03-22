@@ -82,6 +82,32 @@ export function LegalMarkdown({ content }: { content: string }) {
       );
       continue;
     }
+    if (trimmed.startsWith("### ") && !trimmed.startsWith("####")) {
+      flushBlock();
+      const title = trimmed.replace(/^###\s*/, "").trim();
+      nodes.push(
+        <h3
+          key={nodeKey++}
+          className="scroll-mt-24 text-lg font-semibold text-gray-900"
+        >
+          {formatInline(title)}
+        </h3>,
+      );
+      continue;
+    }
+    if (trimmed.startsWith("## ") && !trimmed.startsWith("###")) {
+      flushBlock();
+      const title = trimmed.replace(/^##\s*/, "").trim();
+      nodes.push(
+        <h2
+          key={nodeKey++}
+          className="scroll-mt-28 text-2xl font-bold tracking-tight text-gray-900"
+        >
+          {formatInline(title)}
+        </h2>,
+      );
+      continue;
+    }
     block.push(trimmed);
   }
   flushBlock();

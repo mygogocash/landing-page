@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SectionBadge from "@/components/section-badge";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
@@ -66,15 +67,33 @@ export default function AppDownloadSection() {
           <AnimateOnScroll delay={150}>
             <div className="mx-auto flex max-w-sm flex-col items-center rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm lg:mx-0 lg:max-w-none">
               <p className="text-sm font-medium text-gray-500">Scan to open</p>
-              <div
-                className="mt-4 flex aspect-square w-48 items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 text-xs text-gray-400 md:w-56"
-                role="img"
-                aria-label="QR code placeholder — replace with production QR linking to app or mini app"
+              <a
+                href={LINE_MINI_APP_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner transition hover:border-[#06C755]/40"
+                aria-label="Open GoGoCash LINE Mini App (QR code)"
               >
-                QR placeholder
-              </div>
-              <p className="mt-4 text-xs text-gray-400">
-                Replace with a QR to your primary download or deep link.
+                <Image
+                  src="/images/qr-gogocash-line-miniapp.webp"
+                  alt="QR code to open GoGoCash LINE Mini App"
+                  width={224}
+                  height={224}
+                  className="h-56 w-56 rounded-xl object-contain md:h-64 md:w-64"
+                  priority={false}
+                />
+              </a>
+              <p className="mt-4 text-xs text-gray-500">
+                Opens the{" "}
+                <a
+                  href={LINE_MINI_APP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[#06C755] underline-offset-2 hover:underline"
+                >
+                  GoGoCash LINE Mini App
+                </a>
+                . You can also use Telegram or the web app on the left.
               </p>
             </div>
           </AnimateOnScroll>

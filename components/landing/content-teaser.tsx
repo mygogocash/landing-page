@@ -6,17 +6,17 @@ const TEASERS = [
   {
     title: "How cashback tracking works",
     desc: "From click to confirmation — what happens behind the scenes.",
-    href: "#faq",
+    href: "/learn/how-cashback-works",
   },
   {
-    title: "Saving Plus in plain language",
-    desc: "Grow idle cashback with low-friction options you control.",
-    href: "#how-it-works",
+    title: "Withdraw cashback to bank or e-wallet",
+    desc: "Minimums, timing, and what “confirmed” balance means.",
+    href: "/learn/withdraw-cashback-gogocash",
   },
   {
-    title: "Staying safe while you shop",
-    desc: "Phishing, fake links, and how we help you avoid them.",
-    href: "#faq",
+    title: "Cashback not tracking?",
+    desc: "A short checklist before you contact support.",
+    href: "/learn/cashback-not-tracking-fixes",
   },
 ];
 

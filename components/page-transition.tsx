@@ -6,10 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-/**
- * Avoid `useReducedMotion()` on the first paint — it can disagree with SSR and
- * cause hydration mismatches on `motion` nodes. We read the media query after mount.
- */
+/** Read `prefers-reduced-motion` after mount to avoid SSR/client motion mismatch. */
 function usePrefersReducedMotionAfterMount(): boolean {
   const [reduced, setReduced] = useState(false);
 

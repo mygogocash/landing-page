@@ -12,7 +12,10 @@
     "build:clean": "npm run clean && npm run build",
     "deploy:firebase": "next build && firebase deploy --only hosting:landing-page-4ae23-514a9",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "learn:strapi-push": "tsx scripts/push-learn-to-strapi.ts",
+    "generate:assets": "node scripts/generate-seo-assets.mjs",
+    "lh:mobile": "npx --yes lighthouse http://127.0.0.1:3000/ --only-categories=performance,accessibility,best-practices,seo --preset=mobile --output=html --output-path=./lighthouse-home-mobile.html --quiet"
   },
   "dependencies": {
     "firebase": "^12.11.0",
@@ -23,13 +26,17 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.27",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.1",
     "postcss": "^8.5.8",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.19.3",
     "typescript": "^5.0.0"
   }
 }

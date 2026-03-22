@@ -17,6 +17,8 @@
 # misc
 .DS_Store
 *.pem
+lighthouse-home-mobile.html
+lighthouse-*.html
 
 # debug
 npm-debug.log*

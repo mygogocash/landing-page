@@ -41,7 +41,7 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
             </button>
             <div
               className={`overflow-hidden transition-all duration-300 ${
-                isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                isOpen ? "max-h-[min(100vh,56rem)] opacity-100" : "max-h-0 opacity-0"
               }`}
             >
               <div className="px-6 pb-5 text-sm leading-relaxed text-[#737373]">

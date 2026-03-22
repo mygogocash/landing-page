@@ -7,17 +7,23 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useRouter } from "next/navigation";
 import { Globe } from "@/components/icons";
+import { LOCALE_STORAGE_KEY } from "@/lib/locale-storage";
 
-const STORAGE_KEY = "gogocash.locale";
+const STORAGE_KEY = LOCALE_STORAGE_KEY;
 
 export const LANGUAGES = [
   { code: "en", label: "English", flag: "🇬🇧" },
   { code: "th", label: "ไทย", flag: "🇹🇭" },
+  { code: "zh-TW", label: "繁體中文", flag: "🇹🇼" },
+  { code: "ja", label: "日本語", flag: "🇯🇵" },
 ] as const;
 
 export const REGIONS = [
   { code: "TH", label: "Thailand", flag: "🇹🇭" },
+  { code: "TW", label: "Taiwan", flag: "🇹🇼" },
+  { code: "JP", label: "Japan", flag: "🇯🇵" },
   { code: "SG", label: "Singapore", flag: "🇸🇬" },
   { code: "MY", label: "Malaysia", flag: "🇲🇾" },
   { code: "ID", label: "Indonesia", flag: "🇮🇩" },
@@ -94,11 +100,6 @@ function useLocalePreference() {
     return () => window.removeEventListener("gogocash:locale", onLocale);
   }, []);
 
-  const setLanguage = useCallback((l: LangCode) => {
-    const { region: r } = readStored();
-    persistLocale(l, r);
-  }, []);
-
   const setRegion = useCallback((r: RegionCode) => {
     const { lang: l } = readStored();
     persistLocale(l, r);
@@ -107,7 +108,6 @@ function useLocalePreference() {
   return {
     lang: locale.lang,
     region: locale.region,
-    setLanguage,
     setRegion,
   };
 }
@@ -137,9 +137,35 @@ function OptionButton({
 }
 
 export function LocaleDropdown() {
-  const { lang, region, setLanguage, setRegion } = useLocalePreference();
+  const router = useRouter();
+  const { lang, region, setRegion } = useLocalePreference();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const chooseLanguage = useCallback(
+    (code: LangCode) => {
+      setOpen(false);
+      const keepRegion = readStored().region;
+      if (code === "en") {
+        persistLocale("en", keepRegion);
+        router.push("/");
+        return;
+      }
+      if (code === "th") {
+        persistLocale("th", "TH");
+        router.push("/th");
+        return;
+      }
+      if (code === "zh-TW") {
+        persistLocale("zh-TW", "TW");
+        router.push("/tw");
+        return;
+      }
+      persistLocale("ja", "JP");
+      router.push("/ja");
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -158,20 +184,31 @@ export function LocaleDropdown() {
   }, [open]);
 
   return (
-    <div className="relative" ref={rootRef}>
+    <div
+      className="relative animate-header-enter motion-reduce:animate-none motion-reduce:opacity-100 [animation-delay:140ms] [animation-fill-mode:both]"
+      ref={rootRef}
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 backdrop-blur-sm transition-colors hover:border-primary/30 hover:bg-surface-green hover:text-primary"
+        className="group flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 shadow-sm backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:border-primary/30 hover:bg-surface-green hover:text-primary hover:shadow-md active:scale-[0.97] motion-reduce:transition-colors motion-reduce:hover:scale-100 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 aria-expanded:border-primary/40 aria-expanded:bg-surface-green aria-expanded:text-primary"
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label="Language and region"
       >
-        <Globe size={22} aria-hidden />
+        <Globe
+          size={22}
+          aria-hidden
+          className={`transition-transform duration-300 ease-out motion-reduce:transition-none ${
+            open
+              ? "scale-110 text-primary"
+              : "group-hover:rotate-12 group-hover:scale-105"
+          } motion-reduce:group-hover:rotate-0 motion-reduce:group-hover:scale-100`}
+        />
       </button>
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+0.5rem)] z-[60] w-[min(calc(100vw-2rem),18rem)] rounded-2xl border border-gray-100 bg-white p-4 shadow-lg"
+          className="absolute right-0 top-[calc(100%+0.5rem)] z-[60] w-[min(calc(100vw-2rem),18rem)] origin-top-right animate-locale-panel-in rounded-2xl border border-gray-100 bg-white p-4 shadow-lg motion-reduce:animate-none"
           role="dialog"
           aria-label="Choose language and region"
         >
@@ -184,9 +221,7 @@ export function LocaleDropdown() {
                 <OptionButton
                   key={l.code}
                   selected={lang === l.code}
-                  onClick={() => {
-                    setLanguage(l.code);
-                  }}
+                  onClick={() => chooseLanguage(l.code)}
                 >
                   <span className="text-lg leading-none" aria-hidden>
                     {l.flag}

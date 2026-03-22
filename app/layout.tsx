@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins, Inter } from "next/font/google";
+import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
 import { FirebaseAnalytics } from "@/components/firebase-analytics";
 import PageTransition from "@/components/page-transition";
-import SplashScreen from "@/components/splash-screen";
+import LoadingScreen from "@/components/loading-screen";
+import SchemaMarkup from "@/components/schema-markup";
+import { siteOrigin } from "@/lib/site";
+import { siteSeoOneLiner } from "@/lib/site-facts";
 import "./globals.css";
 
 function metadataBaseUrl(): URL {
@@ -37,6 +41,8 @@ const inter = Inter({
   display: "swap",
 });
 
+const ogImagePath = "/images/og-cashback-30pct.webp";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -46,44 +52,52 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "GoGoCash - Save Cash on Every Spend",
-  description:
-    "GoGoCash helps you earn cashback effortlessly on the things you already shop for. Up to 30% back from 70+ top stores across Southeast Asia.",
+  title: "GoGoCash — Earn Up to 30% Cashback | Shop Smarter in SEA",
+  description: `${siteSeoOneLiner()} Free to join.`,
   keywords: [
     "GoGoCash",
     "cashback",
-    "shopping",
-    "rewards",
-    "save money",
-    "earn cashback",
-    "online shopping",
-    "SEA",
+    "Shopee",
+    "Lazada",
+    "Agoda",
+    "Southeast Asia",
+    "shopping rewards",
   ],
   authors: [{ name: "GoGoCash" }],
   creator: "GoGoCash",
   metadataBase: metadataBaseUrl(),
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "/",
+      id: "/id",
+      th: "/th",
+      "zh-TW": "/tw",
+      ja: "/ja",
+      "x-default": "/",
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://gogocash.co",
+    url: siteOrigin(),
     siteName: "GoGoCash",
-    title: "GoGoCash - Save Cash on Every Spend",
-    description:
-      "Shop smarter with GoGoCash — leading SEA shopping-to-earn platform offering up to 30% cashback, personalized quests, and exclusive rewards.",
+    title: "GoGoCash — Earn Up to 30% Cashback | Shop Smarter in SEA",
+    description: `${siteSeoOneLiner()} Free to join.`,
     images: [
       {
-        url: "/og-image.png",
+        url: ogImagePath,
         width: 1200,
         height: 630,
-        alt: "GoGoCash - Save Cash on Every Spend",
+        alt: "GoGoCash — earn cashback across Southeast Asia",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoGoCash - Save Cash on Every Spend",
-    description:
-      "Shop smarter with GoGoCash — leading SEA shopping-to-earn platform offering up to 30% cashback.",
+    title: "GoGoCash — Earn Up to 30% Cashback",
+    description: `${siteSeoOneLiner()} Free to join.`,
+    images: [ogImagePath],
   },
   robots: {
     index: true,
@@ -100,32 +114,21 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "GoGoCash",
-              description:
-                "Leading SEA shopping-to-earn platform offering up to 30% cashback, personalized quests, and exclusive rewards.",
-              url: "https://gogocash.co",
-              applicationCategory: "ShoppingApplication",
-              operatingSystem: "Web",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
-            }),
-          }}
+        <link
+          rel="preload"
+          href={`${siteOrigin()}${ogImagePath}`}
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
         />
+        <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
+        <BrowserLocaleBootstrap />
         <FirebaseAnalytics />
-        <SplashScreen>
+        <LoadingScreen>
           <PageTransition>{children}</PageTransition>
-        </SplashScreen>
+        </LoadingScreen>
       </body>
     </html>
   );
