@@ -34,20 +34,6 @@ body {
   border-radius: 3px;
 }
 
-/* Marquee animation */
-@keyframes marquee-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee-scroll 20s linear infinite;
-}
-
 /* Rolling text animation */
 @keyframes rolling-text {
   0% {

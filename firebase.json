@@ -1,0 +1,7 @@
+{
+  "hosting": {
+    "site": "landing-page-4ae23-514a9",
+    "public": "out",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from "@/components/icons";
 
 interface FAQItem {
   question: string;
@@ -25,8 +25,9 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
             className="overflow-hidden rounded-2xl border border-primary/20 bg-white transition-all duration-300"
           >
             <button
+              type="button"
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+              className="flex min-h-11 w-full items-center justify-between gap-4 px-6 py-5 text-left"
               aria-expanded={isOpen}
             >
               <span className="text-[15px] font-medium text-[#171717]">

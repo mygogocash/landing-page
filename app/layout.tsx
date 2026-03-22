@@ -1,6 +1,28 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins, Inter } from "next/font/google";
+import { FirebaseAnalytics } from "@/components/firebase-analytics";
+import PageTransition from "@/components/page-transition";
+import SplashScreen from "@/components/splash-screen";
 import "./globals.css";
+
+function metadataBaseUrl(): URL {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : undefined,
+    "https://gogocash.co",
+  ];
+  for (const raw of candidates) {
+    if (!raw) continue;
+    try {
+      return new URL(raw);
+    } catch {
+      /* try next candidate */
+    }
+  }
+  return new URL("https://gogocash.co");
+}
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -39,7 +61,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "GoGoCash" }],
   creator: "GoGoCash",
-  metadataBase: new URL("https://gogocash.co"),
+  metadataBase: metadataBaseUrl(),
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -100,7 +122,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
-        {children}
+        <FirebaseAnalytics />
+        <SplashScreen>
+          <PageTransition>{children}</PageTransition>
+        </SplashScreen>
       </body>
     </html>
   );
