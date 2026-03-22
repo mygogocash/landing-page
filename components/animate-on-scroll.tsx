@@ -6,14 +6,14 @@ interface AnimateOnScrollProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  animation?: "fadeIn" | "fadeInUp" | "fadeInDown" | "fadeInLeft" | "fadeInRight" | "scaleIn";
+  animation?: "fade-up" | "fade-in-left" | "fade-in-right" | "scale-in";
 }
 
 export default function AnimateOnScroll({
   children,
   className = "",
   delay = 0,
-  animation = "fadeInUp",
+  animation = "fade-up",
 }: AnimateOnScrollProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -23,9 +23,7 @@ export default function AnimateOnScroll({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setTimeout(() => {
-              setIsVisible(true);
-            }, delay);
+            setTimeout(() => setIsVisible(true), delay);
             observer.unobserve(entry.target);
           }
         });
@@ -37,17 +35,16 @@ export default function AnimateOnScroll({
       observer.observe(ref.current);
     }
 
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
+    return () => observer.disconnect();
   }, [delay]);
+
+  const animClass = animation !== "fade-up" ? animation : "";
 
   return (
     <div
       ref={ref}
-      className={`animate-on-scroll ${animation} ${isVisible ? "animate-visible" : ""} ${className}`}
+      className={`animate-on-scroll ${animClass} ${isVisible ? "visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
     </div>

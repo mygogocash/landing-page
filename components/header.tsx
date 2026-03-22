@@ -1,186 +1,122 @@
 "use client";
 
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
-import Logo from "./logo";
-import { WhatsAppIcon } from "./brand-icons";
-import { useScrollSpy } from "@/hooks/use-scroll-spy";
+import GoGoCashLogo from "./gogocash-logo";
 
-const NAVIGATION_SECTIONS = ["home", "stores", "how-it-works", "testimonials", "faq"];
+const NAV_ITEMS = [
+  { label: "Home", href: "#home" },
+  { label: "Features", href: "#features" },
+  { label: "About", href: "#about" },
+];
 
 export default function Header() {
+  const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const activeSection = useScrollSpy(NAVIGATION_SECTIONS, 150);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      const sections = ["home", "features", "about"];
+      for (const section of sections.reverse()) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav
-      className="fixed inset-x-0 top-0 z-50 bg-white/70 backdrop-blur-[12px] shadow-[0px_8px_32px_0px_rgba(26,28,28,0.04)]"
-      role="navigation"
-      aria-label="เมนูหลัก"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.05)]"
+          : "bg-transparent"
+      }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8 xl:px-12">
-        <Logo variant="header" className="h-8 lg:h-10" aria-label="GoGoCash หน้าแรก" />
+      <div className="mx-auto flex max-w-site items-center justify-between px-6 py-4 lg:px-8">
+        {/* Logo */}
+        <a href="#home" className="flex items-center gap-2">
+          <GoGoCashLogo className="h-8" variant="color" />
+        </a>
 
-        {/* Desktop Navigation */}
-        <div className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-6 lg:flex xl:gap-8">
-          <Link
-            href="#home"
-            aria-label="ไปยังส่วนหน้าแรก"
-            className={`nav-link text-sm font-medium uppercase tracking-[0.35px] transition-colors ${
-              activeSection === "home"
-                ? "active border-b-2 border-[#10b981] pb-1.5 text-[#047857]"
-                : "text-[#52525b]"
-            }`}
-          >
-            หน้าแรก
-          </Link>
-          <Link
-            href="#stores"
-            aria-label="ไปยังส่วนร้านค้าพันธมิตร"
-            className={`nav-link text-sm font-medium uppercase tracking-[0.35px] transition-colors ${
-              activeSection === "stores"
-                ? "active border-b-2 border-[#10b981] pb-1.5 text-[#047857]"
-                : "text-[#52525b]"
-            }`}
-          >
-            ร้านค้า
-          </Link>
-          <Link
-            href="#how-it-works"
-            aria-label="ไปยังส่วนวิธีใช้งาน"
-            className={`nav-link text-sm font-medium uppercase tracking-[0.35px] transition-colors ${
-              activeSection === "how-it-works"
-                ? "active border-b-2 border-[#10b981] pb-1.5 text-[#047857]"
-                : "text-[#52525b]"
-            }`}
-          >
-            วิธีใช้งาน
-          </Link>
-          <Link
-            href="#testimonials"
-            aria-label="ไปยังส่วนรีวิวจากผู้ใช้งาน"
-            className={`nav-link text-sm font-medium uppercase tracking-[0.35px] transition-colors ${
-              activeSection === "testimonials"
-                ? "active border-b-2 border-[#10b981] pb-1.5 text-[#047857]"
-                : "text-[#52525b]"
-            }`}
-          >
-            รีวิว
-          </Link>
-          <Link
-            href="#faq"
-            aria-label="ไปยังส่วนคำถามที่พบบ่อย"
-            className={`nav-link text-sm font-medium uppercase tracking-[0.35px] transition-colors ${
-              activeSection === "faq"
-                ? "active border-b-2 border-[#10b981] pb-1.5 text-[#047857]"
-                : "text-[#52525b]"
-            }`}
-          >
-            คำถาม
-          </Link>
-        </div>
+        {/* Desktop Navigation - Pill */}
+        <nav className="hidden md:flex items-center">
+          <div className="flex items-center gap-1 rounded-full border border-gray-200 bg-white/90 px-2 py-1.5 backdrop-blur-sm">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`relative flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                  activeSection === item.href.slice(1)
+                    ? "text-primary"
+                    : "text-[#6b7280] hover:text-[#1f2937]"
+                }`}
+              >
+                {activeSection === item.href.slice(1) && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                )}
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </nav>
 
-        {/* Desktop CTA Button */}
+        {/* Get Started Button */}
         <a
-          href="https://miniapp.line.me/2008237918-mpplkp5Q"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="เปิดใช้งาน GoGoCash ผ่าน Line Mini App"
-          className="btn btn-primary hidden items-center justify-center gap-2 rounded-lg px-5 py-3.5 text-sm font-bold text-white shadow-lg sm:px-6 sm:py-4 sm:text-base lg:inline-flex lg:rounded-full lg:px-8 lg:py-4 lg:text-lg"
-          style={{ minHeight: "48px", minWidth: "48px" }}
+          href="#"
+          className="hidden md:inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-dark hover:shadow-lg"
         >
-          <WhatsAppIcon className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" aria-hidden="true" />
-          <span>เข้าใช้งาน</span>
+          Get Started
         </a>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label={mobileMenuOpen ? "ปิดเมนู" : "เปิดเมนู"}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-menu"
-          className="btn btn-ghost inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4f4f5] text-[#52525b] lg:hidden"
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg"
+          aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div id="mobile-menu" className="absolute inset-x-0 top-full z-50 border-t border-outline-variant/15 bg-white shadow-lg lg:hidden" role="menu">
-          <div className="flex flex-col gap-3 px-6 py-4">
-            <Link
-              href="#home"
-              role="menuitem"
-              aria-label="ไปยังส่วนหน้าแรก"
-              className={`mobile-nav-link text-sm font-medium transition-colors ${
-                activeSection === "home" ? "active text-[#047857]" : "text-[#52525b]"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              หน้าแรก
-            </Link>
-            <Link
-              href="#stores"
-              role="menuitem"
-              aria-label="ไปยังส่วนร้านค้าพันธมิตร"
-              className={`mobile-nav-link text-sm font-medium transition-colors ${
-                activeSection === "stores" ? "active text-[#047857]" : "text-[#52525b]"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              ร้านค้า
-            </Link>
-            <Link
-              href="#how-it-works"
-              role="menuitem"
-              aria-label="ไปยังส่วนวิธีใช้งาน"
-              className={`mobile-nav-link text-sm font-medium transition-colors ${
-                activeSection === "how-it-works" ? "active text-[#047857]" : "text-[#52525b]"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              วิธีใช้งาน
-            </Link>
-            <Link
-              href="#testimonials"
-              role="menuitem"
-              aria-label="ไปยังส่วนรีวิวจากผู้ใช้งาน"
-              className={`mobile-nav-link text-sm font-medium transition-colors ${
-                activeSection === "testimonials" ? "active text-[#047857]" : "text-[#52525b]"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              รีวิว
-            </Link>
-            <Link
-              href="#faq"
-              role="menuitem"
-              aria-label="ไปยังส่วนคำถามที่พบบ่อย"
-              className={`mobile-nav-link text-sm font-medium transition-colors ${
-                activeSection === "faq" ? "active text-[#047857]" : "text-[#52525b]"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              คำถาม
-            </Link>
+        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4">
+          <nav className="flex flex-col gap-2">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                  activeSection === item.href.slice(1)
+                    ? "bg-surface-green text-primary"
+                    : "text-[#6b7280] hover:bg-gray-50"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
             <a
-              href="https://miniapp.line.me/2008237918-mpplkp5Q"
-              target="_blank"
-              rel="noopener noreferrer"
-              role="menuitem"
-              aria-label="เปิดใช้งาน GoGoCash ผ่าน Line Mini App"
-              className="btn btn-primary mt-2 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3.5 text-sm font-bold text-white shadow-lg"
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ minHeight: "48px", minWidth: "48px" }}
+              href="#"
+              className="mt-2 flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white"
             >
-              <WhatsAppIcon className="h-4 w-4" aria-hidden="true" />
-              <span>เข้าใช้งาน</span>
+              Get Started
             </a>
-          </div>
+          </nav>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

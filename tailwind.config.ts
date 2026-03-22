@@ -1,11 +1,6 @@
 import type { Config } from "tailwindcss";
 
-/**
- * Lucid Precision Framework — "The Digital Curator"
- * See DESIGN.md for full specification.
- */
 const config: Config = {
-  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,52 +8,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Updated Design: Dark Forest Green + Lime Green */
-        primary: "#004d3d",
-        "primary-container": "#00c853",
-        accent: "#00c853",
-        background: "#f5f5f5",
-        surface: "#ffffff",
-        "surface-container-low": "#f5f5f5",
-        "surface-container": "#fafafa",
-        "surface-container-high": "#e8e8e8",
-        "surface-container-highest": "#e0e0e0",
-        "surface-container-lowest": "#ffffff",
-        "on-background": "#161d1a",
-        "on-surface": "#161d1a",
-        "on-surface-variant": "#3c4a43",
-        "on-primary": "#ffffff",
-        "on-primary-container": "#004d3d",
-        "outline-variant": "#bacac1",
-        tertiary: "#d32f2f",
-        /* Legacy Lucid Precision colors for compatibility */
-        "lucid-primary": "#006c4f",
-        "lucid-primary-container": "#00cc99",
+        primary: "#10b981",
+        "primary-dark": "#059669",
+        "primary-deep": "#047857",
+        accent: "#f97066",
+        "accent-soft": "#fef2f2",
+        cream: "#FFFBF7",
+        mint: "#F0FDF4",
+        "surface-green": "rgba(16, 185, 129, 0.08)",
+        "surface-green-medium": "rgba(16, 185, 129, 0.15)",
       },
       fontFamily: {
-        sans: ["Noto Sans", "Noto Sans Thai", "sans-serif"],
+        sans: ["Poppins", "Inter", "sans-serif"],
+        display: ["Instrument Sans", "Poppins", "sans-serif"],
       },
-      fontSize: {
-        "display-lg": ["3.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        headline: ["1.75rem", { lineHeight: "1.3" }],
-        body: ["1rem", { lineHeight: "1.7" }],
-        label: ["0.75rem", { letterSpacing: "0.05em" }],
-      },
-      spacing: {
-        "scale-8": "2.75rem",
-        "scale-12": "4rem",
-        "scale-16": "5.5rem",
-        "scale-20": "7rem",
+      maxWidth: {
+        site: "1200px",
       },
       borderRadius: {
-        xl: "0.75rem",
-        full: "9999px",
+        "2xl": "16px",
+        "3xl": "24px",
+        "4xl": "32px",
       },
-      boxShadow: {
-        ambient: "0 8px 40px rgb(22 29 26 / 0.05)",
+      animation: {
+        "marquee": "marquee 20s linear infinite",
+        "marquee-reverse": "marquee-reverse 20s linear infinite",
       },
-      backgroundImage: {
-        "cta-gradient": "linear-gradient(135deg, #006c4f 0%, #00cc99 100%)",
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
     },
   },
