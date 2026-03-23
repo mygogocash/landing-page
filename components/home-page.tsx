@@ -85,18 +85,19 @@ export default function HomePage({ initialPartners }: HomePageProps) {
               </div>
 
               <div className="mt-10 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center sm:gap-4">
-                <LaunchAppLink className="min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px]">
+                <LaunchAppLink className="min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105 motion-reduce:transition-colors motion-reduce:hover:scale-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px] sm:px-6 md:px-8 md:py-3.5">
                   Launch App
-                  <ArrowUpRight className="h-5 w-5 shrink-0" />
+                  <ArrowUpRight className="h-4 w-4 shrink-0" />
                 </LaunchAppLink>
                 <a
                   href={LINE_OFFICIAL_ACCOUNT_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Contact us on LINE"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm transition-colors hover:border-gray-400 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 sm:w-auto sm:min-w-[200px]"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary transition hover:bg-surface-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px]"
                 >
                   Contact us
+                  <ArrowUpRight className="h-4 w-4 shrink-0" />
                 </a>
               </div>
             </div>
