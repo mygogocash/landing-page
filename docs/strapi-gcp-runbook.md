@@ -63,9 +63,30 @@ gcloud builds submit --config=cloudbuild.yaml --project=gogocash-cms
 
 This produces `REGION-docker.pkg.dev/gogocash-cms/strapi/strapi:latest` (and a `BUILD_ID` tag).
 
-## 5. Deploy Cloud Run
+## 5. Deploy Cloud Run (build + deploy in one shot)
 
-Set `SQL_CONN` to your instance connection name, e.g. `gogocash-cms:asia-southeast1:my-db`.
+Recommended: use **`cloudbuild.deploy.yaml`** in the Strapi repo (builds the image and runs `gcloud run deploy`).
+
+```bash
+export SQL_CONN=gogocash-cms:asia-southeast1:YOUR_INSTANCE
+gcloud builds submit --project=gogocash-cms --config=cloudbuild.deploy.yaml \
+  --substitutions=_SQL_INSTANCE=$SQL_CONN
+```
+
+Or run **`scripts/deploy-production.sh`** from `strapi-learn-cms` with `CLOUDSQL_CONNECTION_NAME` set.
+
+The service listens on **port 8080** (Cloud Run default; `PORT` is set automatically on Cloud Run; the Dockerfile defaults `PORT=8080`).
+
+### Cloud Build service account (required for deploy)
+
+The default Cloud Build SA is `PROJECT_NUMBER@cloudbuild.gserviceaccount.com`. Grant it:
+
+- **Cloud Run Admin** (`roles/run.admin`)
+- **Service Account User** on **`PROJECT_NUMBER-compute@developer.gserviceaccount.com`** (the runtime SA Cloud Run uses by default)
+
+Without these, the deploy step in `cloudbuild.deploy.yaml` fails.
+
+### Manual deploy (image already in Artifact Registry)
 
 ```bash
 export REGION=asia-southeast1
@@ -85,12 +106,21 @@ gcloud run deploy strapi \
   --cpu=1 \
   --min-instances=0 \
   --timeout=300 \
-  --port=1337
+  --port=8080
 ```
 
 Adjust `--allow-unauthenticated` if you front the service with IAP or a load balancer.
 
 First boot runs Strapi migrations; open **`/admin`** on the Cloud Run URL and create the admin user.
+
+## 5b. GitHub Actions (optional)
+
+In **`mygogocash/strapi-learn-cms`**, workflow **Deploy to GCP Cloud Run** (`.github/workflows/deploy-gcp.yml`) submits `cloudbuild.deploy.yaml` on push to `main`.
+
+1. Create a GCP **service account** with permission to run **`gcloud builds submit`** (e.g. **Cloud Build Editor** on `gogocash-cms`).  
+2. JSON key → GitHub secret **`GCP_SA_KEY`**.  
+3. GitHub repo variable **`GCP_CLOUDSQL_CONNECTION_NAME`** = `gogocash-cms:REGION:INSTANCE`.  
+4. Ensure the **Cloud Build** SA still has **Cloud Run Admin** + **Service Account User** as above.
 
 ## 6. Permissions & content
 
