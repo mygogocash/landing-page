@@ -8,6 +8,7 @@ This repo loads Learn articles at **build time** from [Strapi](https://github.co
 - [x] Seed / sync markdown → Strapi: `npm run learn:strapi-push` → `scripts/push-learn-to-strapi.ts` (needs `STRAPI_PUSH_TOKEN` or full-access `STRAPI_API_TOKEN`)
 - [x] CI: `.github/workflows/build-landing.yml` (optional secrets `STRAPI_URL`, `STRAPI_API_TOKEN`)
 - [x] Deploy notes: [strapi-deployment.md](./strapi-deployment.md)
+- [x] GCP (project `gogocash-cms`): Strapi app `strapi-learn-cms` — `Dockerfile`, `cloudbuild.yaml`, Postgres + Cloud SQL socket in `config/database.ts`, `learn-articles` schema in code — see [strapi-gcp-runbook.md](./strapi-gcp-runbook.md)
 
 Phases 1–4 (run Strapi, content type, permissions, typing content in admin) remain manual in your Strapi project.
 

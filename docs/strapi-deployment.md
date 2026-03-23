@@ -55,6 +55,7 @@ This repo does not include a webhook receiver; add one when you are ready.
 
 ## Related
 
+- [strapi-gcp-runbook.md](./strapi-gcp-runbook.md) — deploy Strapi on GCP (`gogocash-cms`, Cloud Run + Cloud SQL)
 - [strapi-learn-plan.md](./strapi-learn-plan.md) — full checklist
 - `lib/strapi-learn.ts` — REST field mapping
 - `scripts/push-learn-to-strapi.ts` — seed / sync from repo markdown
