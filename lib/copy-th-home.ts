@@ -19,6 +19,14 @@ export const TH_HOME = {
   partners: {
     badge: "พันธมิตรแบรนด์",
     title: "รับแคชแบ็กกับแบรนด์ที่คุณช้อปอยู่แล้ว",
+    description: `ค้นหาและเลือกร้านจากรายการแคชแบ็กกว่า ${SITE_FACTS.partnerCountLabel} แบรนด์ทั่ว${SITE_FACTS.regionLabel} — เปิดลิงก์จาก GoGoCash ก่อนช้อปเพื่อให้ระบบติดตามและยืนยันยอดได้`,
+    searchLabel: "ค้นหาแบรนด์",
+    searchPlaceholder: "พิมพ์ชื่อร้านหรือหมวดหมู่…",
+    searchClear: "ล้าง",
+    noResults: "ไม่พบแบรนด์ที่ตรงกับคำค้น — ลองคำอื่นดูครับ",
+    brandsCountAll: "ทั้งหมด {count} แบรนด์",
+    brandsCountFiltered: "แสดง {filtered} จาก {total} แบรนด์",
+    loadMore: "โหลดแบรนด์เพิ่ม",
   },
 
   why: {

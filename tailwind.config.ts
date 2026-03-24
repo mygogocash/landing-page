@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
+import defaultTailwindConfig from "tailwindcss/stubs/config.full.js";
 
 const config: Config = {
+  presets: [defaultTailwindConfig],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -30,26 +32,19 @@ const config: Config = {
         "3xl": "24px",
         "4xl": "32px",
       },
-      keyframes: {
-        "header-enter": {
-          "0%": { opacity: "0", transform: "translateY(-14px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "header-mobile-drawer": {
-          "0%": { opacity: "0", transform: "translateY(-10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "locale-panel-in": {
-          "0%": { opacity: "0", transform: "translateY(-8px) scale(0.98)" },
-          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
-        },
-      },
       animation: {
-        "header-enter": "header-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both",
-        "header-mobile-drawer":
-          "header-mobile-drawer 0.35s cubic-bezier(0.22, 1, 0.36, 1) both",
-        "locale-panel-in":
-          "locale-panel-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "marquee": "marquee 20s linear infinite",
+        "marquee-reverse": "marquee-reverse 20s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
     },
   },

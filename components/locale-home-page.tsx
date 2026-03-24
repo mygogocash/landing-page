@@ -129,6 +129,14 @@ export default function LocaleHomePage({
           partners={initialPartners}
           sectionBadgeLabel={copy.partners.badge}
           heading={copy.partners.title}
+          description={copy.partners.description}
+          searchLabel={copy.partners.searchLabel}
+          searchPlaceholder={copy.partners.searchPlaceholder}
+          searchClearLabel={copy.partners.searchClear}
+          noResultsMessage={copy.partners.noResults}
+          brandsCountAll={copy.partners.brandsCountAll}
+          brandsCountFiltered={copy.partners.brandsCountFiltered}
+          loadMoreLabel={copy.partners.loadMore}
           partnerLogoAlt={partnerLogoAlt}
         />
 

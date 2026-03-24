@@ -28,7 +28,24 @@ export type LocaleHomeCopy = {
     ctaLine: string;
     lineAria: string;
   };
-  partners: { badge: string; title: string };
+  partners: {
+    badge: string;
+    title: string;
+    /** Section intro under the title. */
+    description: string;
+    /** Accessible label for the brand search field. */
+    searchLabel: string;
+    searchPlaceholder: string;
+    /** Label for the control that clears the search field. */
+    searchClear: string;
+    noResults: string;
+    /** Replace `{count}` with the total number of brands. */
+    brandsCountAll: string;
+    /** Replace `{filtered}` and `{total}` when a search filter is active. */
+    brandsCountFiltered: string;
+    /** Button to reveal more brand cards after the initial batch. */
+    loadMore: string;
+  };
   why: {
     badge: string;
     title: string;

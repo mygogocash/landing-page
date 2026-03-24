@@ -9,6 +9,7 @@ import {
   fetchStrapiLearnArticleBySlug,
   fetchStrapiLearnIndex,
 } from "@/lib/strapi-learn";
+import { learnArticleMarkdownBySlug } from "@/lib/learn-article-content";
 
 export type LearnArticlePageData = {
   meta: LearnArticleMeta;
@@ -44,7 +45,7 @@ function readLocalMarkdown(slug: string): string | null {
   try {
     return fs.readFileSync(mdPath, "utf8");
   } catch {
-    return null;
+    return learnArticleMarkdownBySlug(slug);
   }
 }
 

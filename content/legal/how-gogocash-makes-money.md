@@ -1,23 +1,17 @@
-## How GoGoCash makes money
+This page explains, in plain language, how GoGoCash is funded and how that relates to the cashback you may earn when you shop through our platform.
 
-GoGoCash is free for shoppers. We earn revenue when you discover offers and complete qualifying purchases through our partner network.
+###### PARTNER COMMISSIONS
 
-## Partner commissions
+GoGoCash partners with merchants and affiliate networks. When you start your shopping session from GoGoCash and complete a qualifying purchase with a partner, that partner (or its network) may pay us a commission or similar marketing fee. We use those amounts to operate our services and, where applicable, to fund cashback or rewards shown in the app or on our website.
 
-When you start a shopping session from GoGoCash and the merchant confirms your order, the store may pay us a **marketing or affiliate commission**. A portion of that commission is returned to you as **cashback**, and we retain the remainder to operate the platform.
+###### NO SHOPPER SUBSCRIPTION REQUIRED
 
-## Why this model helps you
+Using GoGoCash to discover offers and open partner stores does not require a subscription fee from shoppers for basic cashback discovery features. Specific product terms may apply to optional services or promotions we offer from time to time.
 
-Because our incentives align with successful tracked purchases, we focus on accurate tracking, clear rates, and reliable support when something goes wrong. We only earn when partners recognize the sale and our systems show a valid referral.
+###### CASHBACK IS NOT GUARANTEED
 
-## Ads, sponsorships, and promotions
+Cashback amounts, eligibility, and timing depend on each partner’s rules, your purchase qualifying under those rules, and successful tracking and validation. GoGoCash does not control merchant approval of orders. See our Terms of Use and in-app disclosures for details.
 
-From time to time we may highlight campaigns, boosted placements, or partner-sponsored quests. Sponsored placements are labeled where required, and they do not change how your personal purchase tracking works when you start from GoGoCash.
+###### QUESTIONS
 
-## No fees to join or earn
-
-We do not charge a subscription to use GoGoCash. Certain withdrawals or payment rails may be subject to third-party fees from banks or e-wallets — those are outside GoGoCash’s control and will be shown where applicable.
-
-## Questions
-
-For product questions, contact us through the channels listed on the GoGoCash homepage. For legal or privacy matters, see our Privacy Policy and Terms of Use / Terms of Service.
+If you have questions about how a specific offer works, contact us through the channels listed on our website or in the app.

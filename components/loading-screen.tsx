@@ -1,14 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode, type TransitionEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  type ReactNode,
+  type TransitionEvent,
+} from "react";
 import TruckLoader from "@/components/truck-loader";
 
+const SESSION_KEY = "gogocash-landing-splash-seen";
 const MIN_VISIBLE_MS = 550;
 const MAX_VISIBLE_MS = 4000;
 
 type Props = { children: ReactNode };
 
-/** Full-viewport truck loader while the shell hydrates; fades out automatically. */
+/** Full-viewport loader on first visit per tab; skipped when reduced motion or already seen. */
 export default function LoadingScreen({ children }: Props) {
   const [showOverlay, setShowOverlay] = useState(true);
   const [exiting, setExiting] = useState(false);
@@ -16,16 +24,36 @@ export default function LoadingScreen({ children }: Props) {
   const dismiss = useCallback(() => {
     setShowOverlay(false);
     setExiting(false);
+    try {
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    try {
+      if (sessionStorage.getItem(SESSION_KEY)) {
+        queueMicrotask(() => setShowOverlay(false));
+        return;
+      }
+    } catch {
+      /* private mode */
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      queueMicrotask(() => setShowOverlay(false));
+    }
   }, []);
 
   useEffect(() => {
+    if (!showOverlay) return;
     const minId = window.setTimeout(() => setExiting(true), MIN_VISIBLE_MS);
     const maxId = window.setTimeout(() => setExiting(true), MAX_VISIBLE_MS);
     return () => {
       window.clearTimeout(minId);
       window.clearTimeout(maxId);
     };
-  }, []);
+  }, [showOverlay]);
 
   useEffect(() => {
     if (!showOverlay) return;

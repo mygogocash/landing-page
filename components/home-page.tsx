@@ -11,7 +11,6 @@ import WhyChooseSection from "@/components/landing/why-choose-section";
 import AppDownloadSection from "@/components/landing/app-download-section";
 import CommunitySection from "@/components/landing/community-section";
 import ContentTeaser from "@/components/landing/content-teaser";
-import TestimonialsSection from "@/components/landing/testimonials-section";
 import LaunchAppLink from "@/components/launch-app-link";
 import { LINE_OFFICIAL_ACCOUNT_HREF } from "@/components/social-data";
 import { FAQ_ITEMS } from "@/lib/faq-data";
@@ -31,7 +30,7 @@ const HOW_IT_WORKS_STEPS = [
     title: "Browse and pick your store",
     desc: `Explore ${SITE_FACTS.partnerCountLabel} e-commerce and travel partners across ${SITE_FACTS.regionLabel}. Compare cashback rates and open the store from GoGoCash so your visit is tracked.`,
     bullets: [
-      "Lazada, Shopee, Agoda, Samsung, Trip.com, and more",
+      "Lazada, Shopee, Agoda, AliExpress, Trip.com, and more",
       "Transparent rates before you shop",
     ],
   },
@@ -104,7 +103,10 @@ export default function HomePage({ initialPartners }: HomePageProps) {
           </div>
         </section>
 
-        <MerchantOffersStrip partners={initialPartners} />
+        <MerchantOffersStrip
+          partners={initialPartners}
+          loadMoreLabel="Load more brands"
+        />
 
         <WhyChooseSection />
 

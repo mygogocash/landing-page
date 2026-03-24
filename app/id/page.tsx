@@ -4,12 +4,13 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import LaunchAppLink from "@/components/launch-app-link";
 import { ArrowUpRight } from "@/components/icons";
+import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 
 export const metadata: Metadata = {
   title: "GoGoCash — Cashback di Asia Tenggara",
   description:
     "Belanja di Shopee, Lazada, Agoda & 70+ merchant. Dapat cashback nyata — gratis. GoGoCash untuk Indonesia & SEA.",
-  alternates: { canonical: "/id" },
+  alternates: { canonical: "/id", languages: HREFLANG_LANDING_ALTERNATES },
   openGraph: {
     locale: "id_ID",
     title: "GoGoCash — Cashback nyata di Asia Tenggara",

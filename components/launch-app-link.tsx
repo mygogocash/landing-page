@@ -1,9 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { getAnalytics, isSupported, logEvent } from "firebase/analytics";
 import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
-import { getFirebaseApp } from "@/lib/firebase";
 
 type LaunchAppLinkProps = {
   className: string;
@@ -11,19 +9,19 @@ type LaunchAppLinkProps = {
 };
 
 function logLaunchClick(surface: "web_desktop" | "line_mobile") {
-  const app = getFirebaseApp();
-  if (!app) return;
-  void isSupported().then((supported) => {
-    if (!supported) return;
-    try {
-      logEvent(getAnalytics(app), "select_content", {
-        content_type: "cta_launch_app",
-        item_id: surface,
-      });
-    } catch {
-      /* optional analytics */
-    }
-  });
+  if (typeof window === "undefined") return;
+  const gtag = (
+    window as typeof window & { gtag?: (...args: unknown[]) => void }
+  ).gtag;
+  if (typeof gtag !== "function") return;
+  try {
+    gtag("event", "select_content", {
+      content_type: "cta_launch_app",
+      item_id: surface,
+    });
+  } catch {
+    /* optional analytics */
+  }
 }
 
 /**

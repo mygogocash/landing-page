@@ -73,7 +73,7 @@ export default function SearchClient() {
               <p className="mt-2 text-sm text-gray-600">
                 For merchant-specific cashback rates, open the GoGoCash app or
                 browse partners on the{" "}
-                <Link href="/#partners" className="font-medium text-primary hover:underline">
+                <Link href="/#brands" className="font-medium text-primary hover:underline">
                   homepage partner strip
                 </Link>
                 . Guides live under{" "}

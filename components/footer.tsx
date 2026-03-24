@@ -22,7 +22,10 @@ const FOOTER_LINKS = {
       label: "Business Inquiries",
       href: LINE_OFFICIAL_ACCOUNT_HREF,
     },
-    { label: "Careers", href: "#" },
+    {
+      label: "Careers",
+      href: LINE_OFFICIAL_ACCOUNT_HREF,
+    },
   ],
   Resources: [
     { label: "Privacy Policy", href: "/privacy-policy" },
@@ -37,7 +40,7 @@ const FOOTER_LINKS = {
       label: "System Status",
       href: "https://status.gogocash.co/",
     },
-    { label: "Cookie Settings", href: "#" },
+    { label: "Cookie Settings", href: "/privacy-policy" },
   ],
 };
 
@@ -91,21 +94,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="mt-16 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-
-        {/* Risk disclaimer */}
-        <p className="mt-8 text-xs leading-relaxed text-[#9ca3af]">
-          Cashback rates, merchant availability, and product features may
-          change. GoGoCash does not provide financial, investment, or tax
-          advice. Saving Plus and related offerings involve risk; read terms
-          before participating. Past performance is not indicative of future
-          results.
-        </p>
-
         <nav
           aria-label="Legal links"
-          className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 border-t border-gray-100 pt-8 text-sm"
+          className="mt-16 flex flex-wrap justify-center gap-x-6 gap-y-2 border-t border-gray-100 pt-8 text-sm"
         >
           <a
             href="/privacy-policy"
@@ -146,6 +137,15 @@ export default function Footer() {
             ))}
           </div>
         </div>
+
+        {/* Risk disclaimer — below copyright / social */}
+        <p className="mt-8 text-xs leading-relaxed text-[#9ca3af]">
+          Cashback rates, merchant availability, and product features may
+          change. GoGoCash does not provide financial, investment, or tax
+          advice. Saving Plus and related offerings involve risk; read terms
+          before participating. Past performance is not indicative of future
+          results.
+        </p>
       </div>
     </footer>
   );

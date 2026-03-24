@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "@/components/icons";
 import { LINE_MINI_APP_HREF } from "@/components/social-data";
 import GoGoCashLogo from "./gogocash-logo";
@@ -10,7 +11,7 @@ import { LocaleDropdown } from "./locale-menu";
 
 const NAV_HASH_ITEMS = [
   { label: "Home", href: "#home" },
-  { label: "Brands", href: "#partners" },
+  { label: "Brands", href: "#brands" },
   { label: "How it works", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
 ] as const;
@@ -18,13 +19,33 @@ const NAV_HASH_ITEMS = [
 /** Document order (top → bottom) for scroll spy. Must match `id`s on the page. */
 const NAV_SECTION_ORDER = [
   "home",
-  "partners",
+  "brands",
   "how-it-works",
   "faq",
 ] as const;
 
 /** Viewport Y (px) used for “which section is active” — aligns ~`scroll-mt-28`. */
 const SPY_Y = 120;
+
+/** Locale roots that render the same sectioned landing (ids: home, brands, …). */
+/** Sectioned landings with matching `#home` / `#brands` / … ids (`/id` is a slim page — not included). */
+const LOCALE_HOME_ROOTS = ["/en", "/th", "/tw", "/ja"] as const;
+
+function isHomePath(pathname: string): boolean {
+  if (pathname === "/") return true;
+  return (LOCALE_HOME_ROOTS as readonly string[]).includes(pathname);
+}
+
+/** Base path for in-page section links when not already on the landing. */
+function homeBaseForPathname(pathname: string): string {
+  if (pathname === "/" || (LOCALE_HOME_ROOTS as readonly string[]).includes(pathname)) {
+    return pathname;
+  }
+  for (const root of LOCALE_HOME_ROOTS) {
+    if (pathname.startsWith(`${root}/`)) return root;
+  }
+  return "/";
+}
 
 type SectionId = (typeof NAV_SECTION_ORDER)[number];
 
@@ -46,6 +67,10 @@ function computeActiveSectionFromScroll(): SectionId {
 }
 
 export default function Header() {
+  const pathname = usePathname();
+  const onHomePage = useMemo(() => isHomePath(pathname), [pathname]);
+  const homeBase = useMemo(() => homeBaseForPathname(pathname), [pathname]);
+
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -100,13 +125,22 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-site items-center justify-between gap-3 px-6 py-4 lg:px-8">
-        <a
-          href="#home"
-          onClick={() => handleNavClick("home")}
-          className="flex min-h-11 min-w-0 shrink items-center gap-2"
-        >
-          <GoGoCashLogo className="h-8" variant="color" />
-        </a>
+        {onHomePage ? (
+          <a
+            href="#home"
+            onClick={() => handleNavClick("home")}
+            className="flex min-h-11 min-w-0 shrink items-center gap-2"
+          >
+            <GoGoCashLogo className="h-8" variant="color" />
+          </a>
+        ) : (
+          <Link
+            href={`${homeBase}#home`}
+            className="flex min-h-11 min-w-0 shrink items-center gap-2"
+          >
+            <GoGoCashLogo className="h-8" variant="color" />
+          </Link>
+        )}
 
         <nav
           className="hidden items-center md:flex"
@@ -116,23 +150,39 @@ export default function Header() {
             <div className="flex items-center gap-0.5 lg:gap-1">
               {NAV_HASH_ITEMS.map((item) => {
                 const id = item.href.slice(1) as SectionId;
+                const sectionHref = onHomePage
+                  ? item.href
+                  : `${homeBase}${item.href}`;
+                const navItemClass =
+                  "relative flex min-h-10 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 ease-out lg:px-4";
+                if (onHomePage) {
+                  return (
+                    <a
+                      key={item.href}
+                      href={sectionHref}
+                      onClick={() => handleNavClick(id)}
+                      className={`${navItemClass} ${
+                        activeSection === id
+                          ? "text-primary"
+                          : "text-[#6b7280] hover:text-[#1f2937]"
+                      }`}
+                      aria-current={activeSection === id ? "location" : undefined}
+                    >
+                      {activeSection === id && (
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary transition-opacity duration-300 ease-out" />
+                      )}
+                      {item.label}
+                    </a>
+                  );
+                }
                 return (
-                  <a
+                  <Link
                     key={item.href}
-                    href={item.href}
-                    onClick={() => handleNavClick(id)}
-                    className={`relative flex min-h-10 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 ease-out lg:px-4 ${
-                      activeSection === id
-                        ? "text-primary"
-                        : "text-[#6b7280] hover:text-[#1f2937]"
-                    }`}
-                    aria-current={activeSection === id ? "location" : undefined}
+                    href={sectionHref}
+                    className={`${navItemClass} text-[#6b7280] hover:text-[#1f2937]`}
                   >
-                    {activeSection === id && (
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary transition-opacity duration-300 ease-out" />
-                    )}
                     {item.label}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
@@ -168,23 +218,39 @@ export default function Header() {
           <nav className="flex flex-col gap-1">
             {NAV_HASH_ITEMS.map((item) => {
               const id = item.href.slice(1) as SectionId;
+              const sectionHref = onHomePage
+                ? item.href
+                : `${homeBase}${item.href}`;
+              const close = () => setMobileMenuOpen(false);
+              if (onHomePage) {
+                return (
+                  <a
+                    key={item.href}
+                    href={sectionHref}
+                    onClick={() => {
+                      handleNavClick(id);
+                      close();
+                    }}
+                    className={`min-h-11 rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-300 ease-out ${
+                      activeSection === id
+                        ? "bg-surface-green text-primary"
+                        : "text-[#6b7280] hover:bg-gray-50"
+                    }`}
+                    aria-current={activeSection === id ? "location" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                );
+              }
               return (
-                <a
+                <Link
                   key={item.href}
-                  href={item.href}
-                  onClick={() => {
-                    handleNavClick(id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`min-h-11 rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-300 ease-out ${
-                    activeSection === id
-                      ? "bg-surface-green text-primary"
-                      : "text-[#6b7280] hover:bg-gray-50"
-                  }`}
-                  aria-current={activeSection === id ? "location" : undefined}
+                  href={sectionHref}
+                  onClick={close}
+                  className="min-h-11 rounded-lg px-4 py-3 text-sm font-medium text-[#6b7280] transition-colors duration-300 ease-out hover:bg-gray-50"
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
             <Link

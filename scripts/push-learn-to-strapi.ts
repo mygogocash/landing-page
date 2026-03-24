@@ -1,5 +1,5 @@
 /**
- * Upserts Learn articles from `lib/learn-articles.ts` + `content/learn/*.md` into Strapi.
+ * Upserts Learn articles from `lib/learn-articles.ts` plus local/embedded markdown into Strapi.
  *
  * Requires a token with create/update permission (not read-only).
  * Usage: npm run learn:strapi-push
@@ -11,6 +11,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { LEARN_ARTICLES } from "../lib/learn-articles";
+import { learnArticleMarkdownBySlug } from "../lib/learn-article-content";
 
 function baseUrl(): string {
   const raw = process.env.STRAPI_URL?.trim();
@@ -92,7 +93,10 @@ async function main() {
     try {
       markdown = readFileSync(mdPath, "utf8");
     } catch {
-      console.error(`Skip (missing file): ${mdPath}`);
+      markdown = learnArticleMarkdownBySlug(meta.slug) ?? "";
+    }
+    if (!markdown) {
+      console.error(`Skip (missing content): ${meta.slug}`);
       continue;
     }
 

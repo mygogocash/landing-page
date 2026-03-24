@@ -19,6 +19,14 @@ export const JA_HOME = {
   partners: {
     badge: "ブランドパートナー",
     title: "いつも使うブランドでキャッシュバック",
+    description: `${SITE_FACTS.partnerCountLabel}以上のキャッシュバック対象ブランドを検索・一覧できます（${SITE_FACTS.regionLabel}など）。購入前に GoGoCash からストアを開くと、注文の追跡と確定後の還元がスムーズです。`,
+    searchLabel: "ブランドを検索",
+    searchPlaceholder: "ブランド名やカテゴリを入力…",
+    searchClear: "クリア",
+    noResults: "該当するブランドが見つかりません。別のキーワードをお試しください。",
+    brandsCountAll: "{count} ブランド",
+    brandsCountFiltered: "{filtered} / {total} 件を表示",
+    loadMore: "さらにブランドを表示",
   },
 
   why: {

@@ -48,7 +48,7 @@ export default function PartnerLpTemplate({
               <ArrowUpRight className="h-5 w-5 shrink-0" />
             </LaunchAppLink>
             <Link
-              href="/#partners"
+              href="/#brands"
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50"
             >
               Browse all partners

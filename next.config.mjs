@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
+  /** Tree-shake heavy client libs during compile (smaller + often faster). */
+  experimental: {
+    optimizePackageImports: ["framer-motion"],
+  },
   images: {
     unoptimized: true,
     formats: ["image/avif", "image/webp"],

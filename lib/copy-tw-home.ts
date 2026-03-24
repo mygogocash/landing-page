@@ -19,6 +19,14 @@ export const TW_HOME = {
   partners: {
     badge: "品牌夥伴",
     title: "在你熟悉的品牌賺現金回饋",
+    description: `搜尋並瀏覽超過 ${SITE_FACTS.partnerCountLabel} 個現金回饋品牌，涵蓋${SITE_FACTS.regionLabel}。購物前請先從 GoGoCash 開啟連結，以便追蹤並在完成訂單後核實回饋。`,
+    searchLabel: "搜尋品牌",
+    searchPlaceholder: "輸入品牌名稱或類別…",
+    searchClear: "清除",
+    noResults: "找不到符合的品牌，請試試其他關鍵字",
+    brandsCountAll: "共 {count} 個品牌",
+    brandsCountFiltered: "顯示 {filtered} / {total} 個品牌",
+    loadMore: "載入更多品牌",
   },
 
   why: {

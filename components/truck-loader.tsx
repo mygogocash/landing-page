@@ -1,11 +1,10 @@
-import styles from "./truck-loader.module.css";
-
-/** Truck + road animation loader (Uiverse-style), CSS Modules instead of styled-components. */
+/** Truck + road animation loader without CSS Modules. */
 export default function TruckLoader() {
   return (
-    <div className={styles.loader}>
-      <div className={styles.truckWrapper}>
-        <div className={styles.truckBody}>
+    <>
+      <div className="truck-loader">
+        <div className="truck-wrapper">
+          <div className="truck-body">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -72,8 +71,8 @@ export default function TruckLoader() {
               x={1}
             />
           </svg>
-        </div>
-        <div className={styles.truckTires}>
+          </div>
+          <div className="truck-tires">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,13 +91,13 @@ export default function TruckLoader() {
             <circle strokeWidth={3} stroke="#282828" fill="#282828" r="13.5" cy={15} cx={15} />
             <circle fill="#DFDFDF" r={7} cy={15} cx={15} />
           </svg>
-        </div>
-        <div className={styles.road} />
+          </div>
+          <div className="truck-road" />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlSpace="preserve"
           viewBox="0 0 453.459 453.459"
-          className={styles.lampPost}
+          className="truck-lamp-post"
           aria-hidden
         >
           <path d="M252.882,0c-37.781,0-68.686,29.953-70.245,67.358h-6.917v8.954c-26.109,2.163-45.463,10.011-45.463,19.366h9.993
@@ -110,8 +109,124 @@ export default function TruckLoader() {
       V196.641c0-43.174,14.942-54.283,30.762-66.043c14.793-10.997,31.559-23.461,31.559-60.277C323.202,31.545,291.656,0,252.882,0z
       M232.77,111.694c0,23.442-19.071,42.514-42.514,42.514c-23.442,0-42.514-19.072-42.514-42.514c0-5.531,1.078-10.957,3.141-16.017
       h78.747C231.693,100.736,232.77,106.162,232.77,111.694z" />
-        </svg>
+          </svg>
+        </div>
       </div>
-    </div>
+      <style jsx>{`
+        .truck-loader {
+          display: flex;
+          width: fit-content;
+          height: fit-content;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .truck-wrapper {
+          position: relative;
+          display: flex;
+          width: 200px;
+          height: 100px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+          overflow-x: hidden;
+        }
+
+        .truck-body {
+          width: 130px;
+          height: fit-content;
+          margin-bottom: 6px;
+          animation: truckBounce 1s linear infinite;
+        }
+
+        .truck-tires {
+          position: absolute;
+          bottom: 0;
+          display: flex;
+          width: 130px;
+          height: fit-content;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 10px 0 15px;
+        }
+
+        .truck-tires :global(svg) {
+          width: 24px;
+        }
+
+        .truck-road {
+          position: relative;
+          bottom: 0;
+          align-self: flex-end;
+          width: 100%;
+          height: 1.5px;
+          border-radius: 3px;
+          background-color: #282828;
+        }
+
+        .truck-road::before {
+          position: absolute;
+          right: -50%;
+          width: 20px;
+          height: 100%;
+          border-radius: 3px;
+          border-left: 10px solid white;
+          animation: roadScroll 1.4s linear infinite;
+          background-color: #282828;
+          content: "";
+        }
+
+        .truck-road::after {
+          position: absolute;
+          right: -65%;
+          width: 10px;
+          height: 100%;
+          border-radius: 3px;
+          border-left: 4px solid white;
+          animation: roadScroll 1.4s linear infinite;
+          background-color: #282828;
+          content: "";
+        }
+
+        .truck-lamp-post {
+          position: absolute;
+          right: -90%;
+          bottom: 0;
+          height: 90px;
+          animation: roadScroll 1.4s linear infinite;
+          fill: #000000;
+        }
+
+        @keyframes truckBounce {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(3px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes roadScroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-350px);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .truck-body,
+          .truck-road::before,
+          .truck-road::after,
+          .truck-lamp-post {
+            animation: none;
+          }
+        }
+      `}</style>
+    </>
   );
 }

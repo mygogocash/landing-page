@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Poppins, Inter } from "next/font/google";
 import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
-import { FirebaseAnalytics } from "@/components/firebase-analytics";
+import { FirebaseClientInit } from "@/components/firebase-client-init";
 import PageTransition from "@/components/page-transition";
 import LoadingScreen from "@/components/loading-screen";
 import SchemaMarkup from "@/components/schema-markup";
+import { firebaseMeasurementId } from "@/lib/firebase";
+import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import { siteOrigin } from "@/lib/site";
 import { siteSeoOneLiner } from "@/lib/site-facts";
 import "./globals.css";
@@ -68,14 +71,7 @@ export const metadata: Metadata = {
   metadataBase: metadataBaseUrl(),
   alternates: {
     canonical: "/",
-    languages: {
-      en: "/",
-      id: "/id",
-      th: "/th",
-      "zh-TW": "/tw",
-      ja: "/ja",
-      "x-default": "/",
-    },
+    languages: HREFLANG_LANDING_ALTERNATES,
   },
   openGraph: {
     type: "website",
@@ -113,6 +109,24 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
           rel="preload"
@@ -124,8 +138,24 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
+        {firebaseMeasurementId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${firebaseMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="firebase-gtag-config" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${firebaseMeasurementId}');
+              `}
+            </Script>
+          </>
+        ) : null}
         <BrowserLocaleBootstrap />
-        <FirebaseAnalytics />
+        <FirebaseClientInit />
         <LoadingScreen>
           <PageTransition>{children}</PageTransition>
         </LoadingScreen>

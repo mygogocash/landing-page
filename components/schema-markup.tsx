@@ -11,7 +11,7 @@ export default function SchemaMarkup() {
     "@type": "Organization",
     name: SITE_FACTS.brandName,
     url: origin,
-    logo: `${origin}/images/gogocash-logo.png`,
+    logo: `${origin}/images/gogocash-logo-mark.svg`,
     description: siteSeoOneLiner(),
     sameAs: [
       "https://t.me/GoGoCashOfficialChannel",
@@ -26,7 +26,7 @@ export default function SchemaMarkup() {
     "@type": "FinancialService",
     name: SITE_FACTS.brandName,
     url: origin,
-    logo: `${origin}/images/gogocash-logo.png`,
+    logo: `${origin}/images/gogocash-logo-mark.svg`,
     description: siteSeoOneLiner(),
     areaServed: [...SITE_FACTS.countriesIso],
     sameAs: [

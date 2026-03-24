@@ -1,19 +1,25 @@
-# Verifies production build. Pass STRAPI_* secrets so CI matches production Strapi-backed Learn.
-name: Build landing
+# Build Next.js static export and deploy to Firebase Hosting (named target).
+# Repo → Settings → Secrets: add FIREBASE_SERVICE_ACCOUNT (full JSON of a Firebase CI service account).
+
+name: Build and deploy landing
 
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
@@ -21,8 +27,24 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Build
-        env:
-          STRAPI_URL: ${{ secrets.STRAPI_URL }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build static site
         run: npm run build
+        env:
+          # Optional: Involve Asia (server-side at build time for partner data)
+          INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
+          INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: landing-page-4ae23
+          target: landing-page-4ae23-514a9
+          channelId: live

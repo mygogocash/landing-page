@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import ThaiHomePage from "@/components/thai-home-page";
 import { fetchPartnerBrands } from "@/lib/involve-asia";
+import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 
 export const metadata: Metadata = {
   title: "GoGoCash — รับแคชแบ็กสูงสุด 30% ช้อปออนไลน์ SEA",
   description:
     "ช้อป Shopee Lazada Agoda และร้านค้ากว่า 70 แบรนด์ รับแคชแบ็กจริงผ่าน GoGoCash ใช้ฟรี เริ่มจากลิงก์หรือมินิแอปแล้วช้อปตามปกติ",
-  alternates: { canonical: "/th" },
+  alternates: { canonical: "/th", languages: HREFLANG_LANDING_ALTERNATES },
   openGraph: {
     locale: "th_TH",
     title: "GoGoCash — แคชแบ็กจริงทั่วเอเชียตะวันออกเฉียงใต้",
