@@ -1,5 +1,5 @@
-# Build Next.js static export and deploy to Firebase Hosting (named target).
-# Repo → Settings → Secrets: add FIREBASE_SERVICE_ACCOUNT (full JSON of a Firebase CI service account).
+# Build Next.js static export and deploy to Firebase Hosting.
+# Auth is handled through GitHub OIDC + Google Workload Identity Federation.
 
 name: Build and deploy landing
 
@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   deploy:
@@ -48,11 +49,15 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: landing-page-4ae23
-          target: landing-page-4ae23-514a9
-          channelId: live
+          workload_identity_provider: projects/110817639529/locations/global/workloadIdentityPools/github-actions/providers/mygogocash-landing-page
+          service_account: github-action-firebase-deploy@landing-page-4ae23.iam.gserviceaccount.com
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_PROJECT_ID: landing-page-4ae23
+        run: node scripts/deploy-firebase-hosting.mjs

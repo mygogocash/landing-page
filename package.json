@@ -14,7 +14,7 @@
     "build": "next build",
     "build:webpack": "next build --webpack",
     "build:clean": "npm run clean && npm run build",
-    "deploy:firebase": "next build && npx firebase deploy --only hosting:landing-page-4ae23-947ee",
+    "deploy:firebase": "next build && node scripts/deploy-firebase-hosting.mjs",
     "start": "next start",
     "lint": "eslint .",
     "test": "tsx --test lib/encode-public-path.test.ts",
