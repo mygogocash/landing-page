@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const projectId = process.env.FIREBASE_PROJECT_ID ?? "landing-page-4ae23";
@@ -25,6 +25,7 @@ const configDir = mkdtempSync(join(tmpdir(), "firebase-hosting-"));
 
 for (const site of targetSites) {
   const siteConfig = structuredClone(baseConfig);
+  siteConfig.hosting.public = resolve(process.cwd(), siteConfig.hosting.public);
   siteConfig.hosting.site = site;
 
   const siteConfigPath = join(configDir, `${site}.firebase.json`);
