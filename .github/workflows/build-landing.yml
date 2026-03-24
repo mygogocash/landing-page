@@ -40,6 +40,14 @@ jobs:
           INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
 
+      - name: Upload Static Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: landing-page-out
+          path: out
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
