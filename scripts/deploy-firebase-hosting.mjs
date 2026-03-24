@@ -5,12 +5,6 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const projectId = process.env.FIREBASE_PROJECT_ID ?? "landing-page-4ae23";
-const sites = process.argv.slice(2);
-const targetSites =
-  sites.length > 0
-    ? sites
-    : ["landing-page-4ae23-947ee", "landing-page-4ae23-514a9"];
-
 const firebaseJsonPath = fileURLToPath(new URL("../firebase.json", import.meta.url));
 const firebaseCliPath = fileURLToPath(
   new URL("../node_modules/firebase-tools/lib/bin/firebase.js", import.meta.url),
@@ -19,6 +13,27 @@ const baseConfig = JSON.parse(readFileSync(firebaseJsonPath, "utf8"));
 
 if (!baseConfig.hosting || Array.isArray(baseConfig.hosting)) {
   throw new Error("firebase.json must define a single hosting config object");
+}
+
+const cliSites = process.argv.slice(2);
+const envSites = (process.env.FIREBASE_HOSTING_SITES ?? "")
+  .split(",")
+  .map((site) => site.trim())
+  .filter(Boolean);
+const configuredSite = baseConfig.hosting.site;
+const targetSites =
+  cliSites.length > 0
+    ? cliSites
+    : envSites.length > 0
+      ? envSites
+      : configuredSite
+        ? [configuredSite]
+        : [];
+
+if (targetSites.length === 0) {
+  throw new Error(
+    "No Firebase Hosting site was provided. Set hosting.site in firebase.json, FIREBASE_HOSTING_SITES, or pass sites as CLI arguments.",
+  );
 }
 
 const configDir = mkdtempSync(join(tmpdir(), "firebase-hosting-"));

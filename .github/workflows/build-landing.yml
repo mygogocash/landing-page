@@ -60,4 +60,5 @@ jobs:
       - name: Deploy to Firebase Hosting
         env:
           FIREBASE_PROJECT_ID: landing-page-4ae23
+          FIREBASE_HOSTING_SITES: landing-page-4ae23-947ee
         run: node scripts/deploy-firebase-hosting.mjs
