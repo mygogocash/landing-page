@@ -4,15 +4,15 @@ import { fetchPartnerBrands } from "@/lib/involve-asia";
 import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 
 export const metadata: Metadata = {
-  title: "GoGoCash — รับแคชแบ็กสูงสุด 30% ช้อปออนไลน์ SEA",
+  title: "GoGoCash | ช้อปแล้วรับแคชแบ็กสูงสุด 30%",
   description:
-    "ช้อป Shopee Lazada Agoda และร้านค้ากว่า 70 แบรนด์ รับแคชแบ็กจริงผ่าน GoGoCash ใช้ฟรี เริ่มจากลิงก์หรือมินิแอปแล้วช้อปตามปกติ",
+    "เริ่มช้อปผ่าน GoGoCash กับ Shopee, Lazada, Agoda และร้านพาร์ตเนอร์กว่า 70 แบรนด์ทั่วเอเชียตะวันออกเฉียงใต้ รับแคชแบ็กจริง ใช้ฟรี และติดตามยอดได้ง่าย",
   alternates: { canonical: "/th", languages: HREFLANG_LANDING_ALTERNATES },
   openGraph: {
     locale: "th_TH",
-    title: "GoGoCash — แคชแบ็กจริงทั่วเอเชียตะวันออกเฉียงใต้",
+    title: "GoGoCash | แคชแบ็กจริงจากร้านที่ช้อปอยู่แล้ว",
     description:
-      "แพลตฟอร์มช้อปแล้วได้เงินคืน เริ่มจาก GoGoCash แล้วไปชำระเงินที่ร้านค้าพันธมิตร",
+      "เริ่มจาก GoGoCash แล้วช้อปตามปกติ รับแคชแบ็กจากพาร์ตเนอร์กว่า 70 แบรนด์ เช่น Shopee, Lazada และ Agoda",
   },
 };
 

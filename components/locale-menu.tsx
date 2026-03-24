@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Globe } from "@/components/icons";
 import { LOCALE_STORAGE_KEY } from "@/lib/locale-storage";
 
@@ -31,6 +31,55 @@ export const REGIONS = [
   { code: "VN", label: "Vietnam", flag: "🇻🇳" },
   { code: "SEA", label: "Southeast Asia", flag: "🌏" },
 ] as const;
+
+const LOCALE_MENU_COPY = {
+  default: {
+    buttonAriaLabel: "Language and region",
+    dialogAriaLabel: "Choose language and region",
+    languageHeading: "Language",
+    regionHeading: "Region",
+    languages: {
+      en: "English",
+      th: "ไทย",
+      "zh-TW": "繁體中文",
+      ja: "日本語",
+    },
+    regions: {
+      TH: "Thailand",
+      TW: "Taiwan",
+      JP: "Japan",
+      SG: "Singapore",
+      MY: "Malaysia",
+      ID: "Indonesia",
+      PH: "Philippines",
+      VN: "Vietnam",
+      SEA: "Southeast Asia",
+    },
+  },
+  th: {
+    buttonAriaLabel: "ภาษาและภูมิภาค",
+    dialogAriaLabel: "เลือกภาษาและภูมิภาค",
+    languageHeading: "ภาษา",
+    regionHeading: "ภูมิภาค",
+    languages: {
+      en: "อังกฤษ",
+      th: "ไทย",
+      "zh-TW": "繁體中文",
+      ja: "日本語",
+    },
+    regions: {
+      TH: "ไทย",
+      TW: "ไต้หวัน",
+      JP: "ญี่ปุ่น",
+      SG: "สิงคโปร์",
+      MY: "มาเลเซีย",
+      ID: "อินโดนีเซีย",
+      PH: "ฟิลิปปินส์",
+      VN: "เวียดนาม",
+      SEA: "เอเชียตะวันออกเฉียงใต้",
+    },
+  },
+} as const;
 
 export type LangCode = (typeof LANGUAGES)[number]["code"];
 export type RegionCode = (typeof REGIONS)[number]["code"];
@@ -138,9 +187,14 @@ function OptionButton({
 
 export function LocaleDropdown() {
   const router = useRouter();
+  const pathname = usePathname();
   const { lang, region, setRegion } = useLocalePreference();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const uiCopy =
+    pathname === "/th" || pathname.startsWith("/th/")
+      ? LOCALE_MENU_COPY.th
+      : LOCALE_MENU_COPY.default;
 
   const chooseLanguage = useCallback(
     (code: LangCode) => {
@@ -194,7 +248,7 @@ export function LocaleDropdown() {
         className="group flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 shadow-sm backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:border-primary/30 hover:bg-surface-green hover:text-primary hover:shadow-md active:scale-[0.97] motion-reduce:transition-colors motion-reduce:hover:scale-100 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 aria-expanded:border-primary/40 aria-expanded:bg-surface-green aria-expanded:text-primary"
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label="Language and region"
+        aria-label={uiCopy.buttonAriaLabel}
       >
         <Globe
           size={22}
@@ -210,11 +264,11 @@ export function LocaleDropdown() {
         <div
           className="absolute right-0 top-[calc(100%+0.5rem)] z-[60] w-[min(calc(100vw-2rem),18rem)] origin-top-right animate-locale-panel-in rounded-2xl border border-gray-100 bg-white p-4 shadow-lg motion-reduce:animate-none"
           role="dialog"
-          aria-label="Choose language and region"
+          aria-label={uiCopy.dialogAriaLabel}
         >
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Language
+              {uiCopy.languageHeading}
             </p>
             <div className="mt-2 flex flex-col gap-0.5">
               {LANGUAGES.map((l) => (
@@ -226,14 +280,14 @@ export function LocaleDropdown() {
                   <span className="text-lg leading-none" aria-hidden>
                     {l.flag}
                   </span>
-                  <span>{l.label}</span>
+                  <span>{uiCopy.languages[l.code]}</span>
                 </OptionButton>
               ))}
             </div>
           </div>
           <div className="mt-4 border-t border-gray-100 pt-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Region
+              {uiCopy.regionHeading}
             </p>
             <div className="mt-2 flex max-h-48 flex-col gap-0.5 overflow-y-auto">
               {REGIONS.map((r) => (
@@ -247,7 +301,7 @@ export function LocaleDropdown() {
                   <span className="text-lg leading-none" aria-hidden>
                     {r.flag}
                   </span>
-                  <span>{r.label}</span>
+                  <span>{uiCopy.regions[r.code]}</span>
                 </OptionButton>
               ))}
             </div>
