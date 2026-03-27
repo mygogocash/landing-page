@@ -84,7 +84,7 @@ flowchart LR
 - **npm** (lockfile is `package-lock.json`; use `npm ci` in CI and for reproducible installs).
 - For **local Firebase deploy**: Firebase CLI is available as a **devDependency** — prefer `npm exec -- firebase` from the repo root.
 - For **Cloudflare DNS scripts**: `curl`, `jq`, and a Cloudflare API token (see [Cloudflare DNS](#cloudflare-dns-apex--firebase)).
-- For **Playwright locally**: after `npm ci`, run `npm run test:e2e:install` once to download browsers.
+- For **Playwright locally**: after `npm ci`, run `npm run test:e2e:install` once to download browsers. On **Linux**, WebKit also needs system libraries—use `npx playwright install --with-deps chromium webkit` if launches fail with missing `.so` files.
 
 ---
 
@@ -235,7 +235,7 @@ Workflow: **[`.github/workflows/build-landing.yml`](./.github/workflows/build-la
 | Install | `npm ci` |
 | Quality | `npm run lint`, `npm run test` |
 | Build | `npm run build` (optional `INVOLVE_ASIA_*` from secrets) |
-| E2E | `npm run test:e2e:install` then `npm run test:e2e:ci` (serves `out/`) |
+| E2E | `npx playwright install --with-deps chromium webkit` then `npm run test:e2e:ci` (Ubuntu runners need `--with-deps` for WebKit) |
 | Artifact | Uploads `out/` as `landing-page-out` (1-day retention) |
 | Deploy | OIDC → Google Cloud WIF, then `node scripts/deploy-firebase-hosting.mjs` |
 
@@ -296,6 +296,7 @@ Playwright projects: **mobile-chrome** (Pixel 5) and **mobile-safari** (iPhone 1
 | Firebase deploy auth errors in CI | WIF provider, service account permissions, and `google-github-actions/auth` settings must match the Firebase/GCP project. |
 | PostHog proxy 404 | Deploy **Functions** before adding Hosting rewrites to `posthogProxy`; see [`functions/README.md`](./functions/README.md). |
 | Empty partner data in build | Set `INVOLVE_ASIA_*` for build, or accept static fallback documented in `.env.example`. |
+| E2E WebKit: “Host system is missing dependencies” (CI/Linux) | Run `npx playwright install --with-deps chromium webkit` (see workflow); `playwright install` alone is not enough for WebKit on Ubuntu. |
 
 ---
 

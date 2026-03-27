@@ -41,10 +41,11 @@ jobs:
           INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
 
-      - name: Install Playwright browsers
-        run: npm run test:e2e:install
+      # WebKit needs GTK/GStreamer/etc. on Ubuntu; without --with-deps, launch fails with missing .so (CI).
+      - name: Install Playwright (browsers + system dependencies)
+        run: npx playwright install --with-deps chromium webkit
 
-      - name: E2E mobile overflow (served from out/)
+      - name: E2E (served from out/)
         run: npm run test:e2e:ci
 
       - name: Upload Static Artifact
