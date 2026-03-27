@@ -2,6 +2,7 @@
 # Apply Firebase Hosting "Quick setup" apex DNS on Cloudflare:
 # - Remove old A/AAAA (e.g. Framer behind Cloudflare proxy)
 # - Add A @ -> 199.36.158.100 (DNS only / not proxied)
+# - If that A already exists but is orange-cloud proxied, turn proxy off (fixes Firebase ACME / SSL 526)
 #
 # Requires: curl, jq
 # Do NOT commit API tokens. Run locally:
@@ -68,6 +69,15 @@ cf_post() {
   curl -fsS -X POST "${API_BASE}" "${AUTH[@]}" -d "$1" | jq -e '.success == true' >/dev/null
 }
 
+cf_patch_proxied_off() {
+  local id="$1"
+  if [[ -n "${DRY_RUN:-}" ]]; then
+    echo "DRY_RUN: would PATCH dns_records/${id} -> proxied=false"
+    return 0
+  fi
+  curl -fsS -X PATCH "${API_BASE}/${id}" "${AUTH[@]}" -d '{"proxied":false}' | jq -e '.success == true' >/dev/null
+}
+
 echo "Fetching DNS records for zone ${ZONE_ID} (${ROOT_DOMAIN})..."
 
 RESPONSE="$(cf_get)"
@@ -112,6 +122,20 @@ else
     --arg content "$FIREBASE_A" \
     '{type:"A", name:$name, content:$content, ttl:1, proxied:false}')"
   cf_post "$PAYLOAD"
+  RESPONSE="$(cf_get)"
+fi
+
+PROXIED_FIREBASE_IDS="$(echo "$RESPONSE" | jq -r --arg d "$ROOT_DOMAIN" --arg ip "$FIREBASE_A" '
+  .result[]
+  | select(.name == $d and .type == "A" and .content == $ip and .proxied == true)
+  | .id
+')"
+if [[ -n "${PROXIED_FIREBASE_IDS// }" ]]; then
+  while IFS= read -r pid; do
+    [[ -z "$pid" ]] && continue
+    echo "Disabling Cloudflare proxy on Firebase apex A (id=${pid}) so ACME can reach Firebase..."
+    cf_patch_proxied_off "$pid"
+  done <<< "$PROXIED_FIREBASE_IDS"
 fi
 
 echo "Done. In Firebase Hosting, click **Verify**. If SSL step follows, add those records too (same idea: DNS only unless Google says otherwise)."
