@@ -71,20 +71,24 @@ export default function Footer() {
                 <ul className="mt-4 flex flex-col gap-3">
                   {links.map((link) => {
                     const external = link.href.startsWith("http");
+                    const className =
+                      "text-sm text-[#6b7280] transition-colors hover:text-[#1f2937]";
                     return (
                       <li key={link.label}>
-                        <a
-                          href={link.href}
-                          className="text-sm text-[#6b7280] transition-colors hover:text-[#1f2937]"
-                          {...(external
-                            ? {
-                                target: "_blank",
-                                rel: "noopener noreferrer",
-                              }
-                            : {})}
-                        >
-                          {link.label}
-                        </a>
+                        {external ? (
+                          <a
+                            href={link.href}
+                            className={className}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {link.label}
+                          </a>
+                        ) : (
+                          <Link href={link.href} className={className}>
+                            {link.label}
+                          </Link>
+                        )}
                       </li>
                     );
                   })}
@@ -94,31 +98,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav
-          aria-label="Legal links"
-          className="mt-16 flex flex-wrap justify-center gap-x-6 gap-y-2 border-t border-gray-100 pt-8 text-sm"
-        >
-          <a
-            href="/privacy-policy"
-            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
-          >
-            Privacy Policy
-          </a>
-          <a
-            href="/terms-of-service"
-            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
-          >
-            Terms of Service
-          </a>
-          <a
-            href="/how-gogocash-makes-money"
-            className="text-[#6b7280] underline-offset-2 hover:text-[#1f2937] hover:underline"
-          >
-            How GoGoCash Makes Money
-          </a>
-        </nav>
-
-        <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+        <div className="mt-16 flex flex-col items-center gap-6 border-t border-gray-100 pt-8 sm:flex-row sm:justify-between">
           <p className="text-sm text-[#6b7280]">
             &copy; 2026 Copyright - Made with{" "}
             <span className="text-primary">💚</span> by GoGoCash

@@ -5,9 +5,13 @@ import {
   AUTO_LOCALE_DONE_KEY,
   hasSavedLocalePreference,
   isLikelyAutomatedClient,
-  persistLocaleRaw,
+  persistLocale,
   readPrimaryBrowserLanguage,
 } from "@/lib/locale-storage";
+import {
+  resolveAutoRedirectPath,
+  resolveLocaleForPathname,
+} from "@/lib/locale-routing";
 
 /**
  * No visible UI: aligns experience with the browser language once.
@@ -30,15 +34,12 @@ export function BrowserLocaleBootstrap() {
 
     if (!autoDone) {
       if (path === "/") {
-        const primary = readPrimaryBrowserLanguage();
-        if (primary === "th" && !userChose) {
+        const redirectPath = !userChose
+          ? resolveAutoRedirectPath(readPrimaryBrowserLanguage())
+          : null;
+        if (redirectPath) {
           localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
-          window.location.replace("/th");
-          return;
-        }
-        if (primary === "id" && !userChose) {
-          localStorage.setItem(AUTO_LOCALE_DONE_KEY, "1");
-          window.location.replace("/id");
+          window.location.replace(redirectPath);
           return;
         }
       }
@@ -46,14 +47,9 @@ export function BrowserLocaleBootstrap() {
     }
 
     if (!userChose) {
-      if (path === "/th" || path.startsWith("/th/")) {
-        persistLocaleRaw("th", "TH");
-      } else if (path === "/id" || path.startsWith("/id/")) {
-        persistLocaleRaw("en", "ID");
-      } else if (path === "/tw" || path.startsWith("/tw/")) {
-        persistLocaleRaw("zh-TW", "TW");
-      } else if (path === "/ja" || path.startsWith("/ja/")) {
-        persistLocaleRaw("ja", "JP");
+      const routeLocale = resolveLocaleForPathname(path);
+      if (routeLocale) {
+        persistLocale(routeLocale);
       }
     }
   }, []);

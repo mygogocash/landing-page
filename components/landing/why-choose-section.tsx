@@ -6,26 +6,26 @@ import { SITE_FACTS } from "@/lib/site-facts";
 const CARDS = [
   {
     icon: Coins,
-    title: "Real cashback, not points",
-    body: "Money back to your wallet — spend it or grow it with Saving Plus.",
+    title: "Cashback you can feel in your wallet",
+    body: "Balance goes up after the store confirms — spend it or grow it with Saving Plus.",
     bg: "bg-mint",
   },
   {
     icon: Shield,
-    title: "Trusted merchants",
-    body: `Shop ${SITE_FACTS.partnerCountLabel} known brands across SEA with clear rates before you buy.`,
+    title: "Brands you already trust",
+    body: `Earn at ${SITE_FACTS.partnerCountLabel} partners across SEA with rates shown before you checkout.`,
     bg: "bg-cream",
   },
   {
     icon: Sparkles,
-    title: "Quests tailored to you",
-    body: "Challenges and seasonal boosts that match how you actually shop.",
+    title: "Quests that match how you shop",
+    body: "Seasonal challenges and boosts so everyday spends stack faster.",
     bg: "bg-cream",
   },
   {
     icon: Headphones,
-    title: "Support when you need it",
-    body: "Questions about tracking or payouts? We are here day and night.",
+    title: "Humans when something's unclear",
+    body: "Tracking, timing, or withdrawals — chat or email us any time.",
     bg: "bg-mint",
   },
 ];
@@ -41,11 +41,11 @@ export default function WhyChooseSection() {
               label="Why GoGoCash"
             />
             <h2 className="mt-6 text-3xl font-bold text-gray-800 md:text-4xl lg:text-5xl">
-              Built for everyday shoppers in Southeast Asia
+              Why shoppers stick with GoGoCash
             </h2>
             <p className="mt-4 max-w-2xl text-base text-gray-500">
-              Clear value, familiar stores, and rewards that stay useful — on
-              web and in our mini apps.
+              Real money back on familiar stores, clear timing, and rewards you
+              can withdraw — on web and in our mini apps.
             </p>
           </div>
         </AnimateOnScroll>

@@ -8,18 +8,18 @@ export const TW_HOME = {
   breadcrumbNavAria: "語言",
 
   hero: {
-    h1: "每次消費都能省",
-    sub: "就用 GoGoCash",
-    body: `在超過 ${SITE_FACTS.partnerCountLabel} 個品牌最高享 30% 現金回饋 — ${SITE_FACTS.keyMerchantsShort} 等，涵蓋東南亞各地。完成 App 內任務還可解鎖專屬獎勵。`,
-    ctaLaunch: "開啟 App",
-    ctaLine: "聯絡我們（LINE）",
+    h1: "每次消費都能賺回饋",
+    sub: "GoGoCash — 在你熟悉的商家消費",
+    body: `最高 30% 現金回饋，超過 ${SITE_FACTS.partnerCountLabel} 個品牌 — ${SITE_FACTS.keyMerchantsShort} 等，涵蓋東南亞。免費加入，真實回饋進錢包；完成 App 任務再加碼。`,
+    ctaLaunch: "開始賺回饋",
+    ctaLine: "LINE 問問我們",
     lineAria: "透過 LINE 聯絡 GoGoCash",
   },
 
   partners: {
     badge: "品牌夥伴",
     title: "在你熟悉的品牌賺現金回饋",
-    description: `搜尋並瀏覽超過 ${SITE_FACTS.partnerCountLabel} 個現金回饋品牌，涵蓋${SITE_FACTS.regionLabel}。購物前請先從 GoGoCash 開啟連結，以便追蹤並在完成訂單後核實回饋。`,
+    description: `在你本來就會逛的品牌賺回饋 — 超過 ${SITE_FACTS.partnerCountLabel} 個夥伴，涵蓋${SITE_FACTS.regionLabel}。結帳前從 GoGoCash 開啟商家，系統會追蹤並在訂單確認後核實回饋。`,
     searchLabel: "搜尋品牌",
     searchPlaceholder: "輸入品牌名稱或類別…",
     searchClear: "清除",
@@ -33,11 +33,11 @@ export const TW_HOME = {
     badge: "為什麼選 GoGoCash",
     title: "為東南亞日常消費而設計",
     subtitle:
-      "回饋清楚、商店熟悉、獎勵真的用得到 — 網頁與 Mini App 都能用。",
+      "看見回饋進錢包、商家你信賴、獎勵能提領 — 網頁與 Mini App 都能用。",
     cards: [
       {
-        title: "真實現金回饋，不是點數",
-        body: "錢直接進錢包 — 可花用，也可透過 Saving Plus 累積成長。",
+        title: "回饋進錢包，不是模糊點數",
+        body: "商家確認後看見餘額增加 — 可花用，也可透過 Saving Plus 累積成長。",
       },
       {
         title: "值得信賴的商家",
@@ -56,44 +56,47 @@ export const TW_HOME = {
 
   features: {
     badge: "重點功能",
-    title: "GoGoCash 有什麼不同",
+    title: "為什麼更容易賺到回饋",
     cards: [
       {
-        title: "快速入帳的現金回饋",
-        body: "商家核准訂單後即可獲得真實回饋 — 沒有複雜點數，確認後進入錢包。",
+        title: "看見回饋進錢包",
+        body: "商家確認訂單後，真實現金回饋入帳 — 沒有難懂的點數，在 App 裡追蹤餘額。",
       },
       {
         title: "全天候客服",
-        body: "有問題？團隊透過聊天與電子郵件隨時協助。",
+        body: "追蹤或提領有疑問？團隊透過聊天與電子郵件隨時協助。",
       },
       {
         title: "個人化任務",
-        body: "完成趣味購物挑戰，解鎖額外獎勵與專屬優惠。",
+        body: "依你的消費習慣解鎖挑戰，額外獎勵與專屬優惠。",
       },
     ],
     ctaCard: {
-      title: "準備開始省錢了嗎？",
-      bodyLine: "加入數百萬聰明消費者的行列",
-      cta: "免費開始",
+      title: "準備開始賺回饋了嗎？",
+      bodyLine: `超過 ${SITE_FACTS.shopperCommunityLabel} 位用戶正在輕鬆累積現金回饋`,
+      cta: "開始賺回饋",
     },
   },
 
   howItWorks: {
-    title: "開始使用 GoGoCash",
-    intro: "在東南亞現金回饋怎麼運作？三個步驟就夠了。",
+    title: "三步驟，拿到第一筆現金回饋",
+    intro:
+      "從 GoGoCash 開商家、照平常結帳，商家確認後回饋進錢包 — 就這麼簡單。",
+    progressCue: "三步驟 · 第一筆回饋",
+    browseAppCta: "立即逛逛！",
     steps: [
       {
-        summary: "選商家",
-        title: "從 GoGoCash 選擇並開啟商家",
-        desc: `瀏覽超過 ${SITE_FACTS.partnerCountLabel} 個電商與旅遊夥伴，涵蓋 ${SITE_FACTS.regionLabel}。比較回饋後從 GoGoCash 開啟商家，讓系統能追蹤你的造訪。`,
+        summary: "選好要賺回饋的店",
+        title: "從 GoGoCash 開啟商家",
+        desc: `瀏覽超過 ${SITE_FACTS.partnerCountLabel} 個電商與旅遊夥伴，涵蓋 ${SITE_FACTS.regionLabel}。比較回饋後從 GoGoCash 開啟，讓系統能追蹤造訪。`,
         bullets: [
           "Lazada、Shopee、Agoda、Samsung、Trip.com 等",
           "消費前先看透明回饋比例",
         ],
       },
       {
-        summary: "照常購物",
-        title: "用你習慣的方式結帳",
+        summary: "照平常買",
+        title: "在商家結帳 — 流程不變",
         desc: "在商家網站或 App 加入購物車並付款，無需額外輸入優惠碼。",
         bullets: [
           "使用你原本的帳號與付款方式",
@@ -101,9 +104,9 @@ export const TW_HOME = {
         ],
       },
       {
-        summary: "賺回饋",
+        summary: "回饋進錢包",
         title: "商家確認後入帳",
-        desc: "商家確認訂單後，現金回饋會進入 GoGoCash 錢包。在 App 追蹤，達門檻即可提領。",
+        desc: "訂單確認後，現金回饋進入 GoGoCash 錢包。在 App 追蹤餘額，達門檻即可提領 — 真錢，不是點數。",
         bullets: ["通常幾天內確認", "滿額可提領至銀行或電子錢包"],
       },
     ],
@@ -161,9 +164,9 @@ export const TW_HOME = {
   },
 
   finalCta: {
-    title: "準備好每次消費都更聰明了嗎？",
-    sub: `與超過 ${SITE_FACTS.shopperCommunityLabel} 位用戶一起輕鬆賺現金回饋`,
-    cta: "開啟 App",
+    title: "準備好每次消費都賺回饋了嗎？",
+    sub: `與超過 ${SITE_FACTS.shopperCommunityLabel} 位用戶一起輕鬆累積現金回饋`,
+    cta: "開始賺回饋",
   },
 } satisfies LocaleHomeCopy;
 

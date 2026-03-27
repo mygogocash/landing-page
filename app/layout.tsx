@@ -6,6 +6,7 @@ import { FirebaseClientInit } from "@/components/firebase-client-init";
 import PageTransition from "@/components/page-transition";
 import LoadingScreen from "@/components/loading-screen";
 import SchemaMarkup from "@/components/schema-markup";
+import { shouldLoadMarketingAnalyticsScripts } from "@/lib/analytics-enabled";
 import { firebaseMeasurementId } from "@/lib/firebase";
 import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import { siteOrigin } from "@/lib/site";
@@ -55,7 +56,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "GoGoCash — Earn Up to 30% Cashback | Shop Smarter in SEA",
+  title: "GoGoCash — Earn Cashback on Every Spend | Up to 30% in SEA",
   description: `${siteSeoOneLiner()} Free to join.`,
   keywords: [
     "GoGoCash",
@@ -78,7 +79,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteOrigin(),
     siteName: "GoGoCash",
-    title: "GoGoCash — Earn Up to 30% Cashback | Shop Smarter in SEA",
+    title: "GoGoCash — Earn Cashback on Every Spend | Up to 30% in SEA",
     description: `${siteSeoOneLiner()} Free to join.`,
     images: [
       {
@@ -91,7 +92,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoGoCash — Earn Up to 30% Cashback",
+    title: "GoGoCash — Earn Cashback on Every Spend",
     description: `${siteSeoOneLiner()} Free to join.`,
     images: [ogImagePath],
   },
@@ -138,7 +139,7 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
-        {firebaseMeasurementId ? (
+        {firebaseMeasurementId && shouldLoadMarketingAnalyticsScripts() ? (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${firebaseMeasurementId}`}

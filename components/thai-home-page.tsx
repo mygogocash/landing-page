@@ -1,5 +1,3 @@
-"use client";
-
 import LocaleHomePage from "@/components/locale-home-page";
 import type { PartnerBrand } from "@/lib/involve-asia";
 import { TH_HOME } from "@/lib/copy-th-home";
@@ -16,7 +14,7 @@ export default function ThaiHomePage({ initialPartners }: ThaiHomePageProps) {
       copy={TH_HOME}
       faqItems={THAI_FAQ_ITEMS}
       documentLang="th"
-      partnerLogoAlt={(name) => `${name} พันธมิตรแคชแบ็ก GoGoCash`}
+      partnerLogoAltTemplate="{name} พันธมิตรแคชแบ็ก GoGoCash"
     />
   );
 }

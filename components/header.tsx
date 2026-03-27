@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "@/components/icons";
@@ -8,6 +8,11 @@ import { LINE_MINI_APP_HREF } from "@/components/social-data";
 import GoGoCashLogo from "./gogocash-logo";
 import LaunchAppLink from "@/components/launch-app-link";
 import { LocaleDropdown } from "./locale-menu";
+import {
+  getSectionedLandingBasePath,
+  isSectionedLandingPath,
+} from "@/lib/locale-routing";
+import { useScrollSpy } from "@/hooks/use-scroll-spy";
 
 const NAV_HASH_ITEMS = [
   { label: "Home", href: "#home" },
@@ -27,92 +32,29 @@ const NAV_SECTION_ORDER = [
 /** Viewport Y (px) used for “which section is active” — aligns ~`scroll-mt-28`. */
 const SPY_Y = 120;
 
-/** Locale roots that render the same sectioned landing (ids: home, brands, …). */
-/** Sectioned landings with matching `#home` / `#brands` / … ids (`/id` is a slim page — not included). */
-const LOCALE_HOME_ROOTS = ["/en", "/th", "/tw", "/ja"] as const;
-
-function isHomePath(pathname: string): boolean {
-  if (pathname === "/") return true;
-  return (LOCALE_HOME_ROOTS as readonly string[]).includes(pathname);
-}
-
-/** Base path for in-page section links when not already on the landing. */
-function homeBaseForPathname(pathname: string): string {
-  if (pathname === "/" || (LOCALE_HOME_ROOTS as readonly string[]).includes(pathname)) {
-    return pathname;
-  }
-  for (const root of LOCALE_HOME_ROOTS) {
-    if (pathname.startsWith(`${root}/`)) return root;
-  }
-  return "/";
-}
-
 type SectionId = (typeof NAV_SECTION_ORDER)[number];
-
-/** True when the horizontal “reading line” at viewport Y lies inside the section’s vertical span. */
-function activationLineInSection(el: HTMLElement, y: number): boolean {
-  const r = el.getBoundingClientRect();
-  return r.top < y && r.bottom > y;
-}
-
-function computeActiveSectionFromScroll(): SectionId {
-  for (let i = NAV_SECTION_ORDER.length - 1; i >= 0; i--) {
-    const id = NAV_SECTION_ORDER[i];
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top <= SPY_Y) {
-      return id;
-    }
-  }
-  return "home";
-}
 
 export default function Header() {
   const pathname = usePathname();
-  const onHomePage = useMemo(() => isHomePath(pathname), [pathname]);
-  const homeBase = useMemo(() => homeBaseForPathname(pathname), [pathname]);
+  const onHomePage = useMemo(() => isSectionedLandingPath(pathname), [pathname]);
+  const homeBase = useMemo(
+    () => getSectionedLandingBasePath(pathname),
+    [pathname],
+  );
 
-  const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  /** After in-page nav click, keep highlight until the target section reaches the spy band (avoids wrong section flash while smooth-scrolling). */
-  const navLockRef = useRef<SectionId | null>(null);
-
-  const updateFromScroll = useCallback(() => {
-    setScrolled(window.scrollY > 50);
-
-    const locked = navLockRef.current;
-    if (locked) {
-      const target = document.getElementById(locked);
-      if (target && activationLineInSection(target, SPY_Y)) {
-        navLockRef.current = null;
-      } else {
-        setActiveSection(locked);
-        return;
-      }
-    }
-
-    setActiveSection(computeActiveSectionFromScroll());
-  }, []);
-
-  useEffect(() => {
-    const onScrollEnd = () => {
-      navLockRef.current = null;
-      updateFromScroll();
-    };
-
-    window.addEventListener("scroll", updateFromScroll, { passive: true });
-    window.addEventListener("scrollend", onScrollEnd);
-    const raf = requestAnimationFrame(() => updateFromScroll());
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", updateFromScroll);
-      window.removeEventListener("scrollend", onScrollEnd);
-    };
-  }, [updateFromScroll]);
+  const {
+    activeSection,
+    scrolled,
+    lockActiveSection,
+  } = useScrollSpy<SectionId>({
+    enabled: onHomePage,
+    sectionIds: NAV_SECTION_ORDER,
+    spyY: SPY_Y,
+  });
 
   const handleNavClick = (id: SectionId) => {
-    navLockRef.current = id;
-    setActiveSection(id);
+    lockActiveSection(id);
   };
 
   return (
@@ -198,7 +140,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <LocaleDropdown />
           <LaunchAppLink className="min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105 motion-reduce:transition-colors motion-reduce:hover:scale-100 sm:px-6 md:px-8 md:py-3.5">
-            Launch App
+            Start earning
             <ArrowUpRight className="h-4 w-4 shrink-0" />
           </LaunchAppLink>
           <button
@@ -267,7 +209,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
               className="mt-2 flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105 motion-reduce:transition-colors motion-reduce:hover:scale-100"
             >
-              Launch App
+              Start earning
               <ArrowUpRight className="h-4 w-4 shrink-0" />
             </a>
           </nav>

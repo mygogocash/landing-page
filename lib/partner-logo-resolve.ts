@@ -118,6 +118,60 @@ export function resolvePartnerDisplayLogo(
   return remoteLogoUrl?.trim() || null;
 }
 
+/** Lowercase single-spaced form for prefix checks. */
+function collapseInnerSpaces(s: string): string {
+  return s.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/**
+ * True when `longer` is the same merchant as `shorter` with extra suffix
+ * (e.g. "Airpaz Global" vs "Airpaz"). Requires a word boundary after the shorter name.
+ * Short roots (&lt; minRootSlugLen alnum chars) are ignored to avoid false positives.
+ */
+function isExtendedBrandName(
+  shorter: string,
+  longer: string,
+  minRootSlugLen = 4,
+): boolean {
+  const s0 = shorter.trim();
+  const l0 = longer.trim();
+  if (slugAlnum(s0).length < minRootSlugLen) return false;
+  const s = collapseInnerSpaces(s0);
+  const l = collapseInnerSpaces(l0);
+  if (l.length <= s.length) return false;
+  if (!l.startsWith(s)) return false;
+  const rest = l.slice(s.length);
+  return (
+    rest.startsWith(" ") ||
+    rest.startsWith("-") ||
+    rest.startsWith("–") ||
+    rest.startsWith("—")
+  );
+}
+
+/**
+ * Collapse rows like "Airpaz" + "Airpaz Global" to a single "Airpaz" card.
+ * Prefers the shortest display name that still represents the merchant.
+ */
+function dedupeExtendedBrandNames(
+  brands: BundledPartnerBrand[],
+): BundledPartnerBrand[] {
+  const sorted = [...brands].sort(
+    (a, b) =>
+      a.name.length - b.name.length ||
+      a.name.localeCompare(b.name, "en"),
+  );
+  const out: BundledPartnerBrand[] = [];
+  for (const c of sorted) {
+    if (out.some((r) => isExtendedBrandName(r.name, c.name))) continue;
+    const pruned = out.filter((r) => !isExtendedBrandName(c.name, r.name));
+    pruned.push(c);
+    out.length = 0;
+    out.push(...pruned);
+  }
+  return out;
+}
+
 function guessCategory(stem: string, displayName: string): string {
   const hay = `${stem} ${displayName}`.toLowerCase();
   if (
@@ -135,6 +189,22 @@ function guessCategory(stem: string, displayName: string): string {
     return "E-commerce";
   }
   return "Partners";
+}
+
+/** Dropped from the brands grid (ambiguous stems, not real cashback merchants). */
+const BLOCKED_BUNDLED_PARTNER_NAMES = new Set(
+  [
+    "Air",
+    "Domino",
+    "go",
+    "GQ Thailand",
+    "WPS SOFTWARE",
+    "Zen",
+  ].map((n) => n.trim().toLowerCase()),
+);
+
+function isBlockedBundledPartnerDisplayName(name: string): boolean {
+  return BLOCKED_BUNDLED_PARTNER_NAMES.has(name.trim().toLowerCase());
 }
 
 export type BundledPartnerBrand = {
@@ -185,6 +255,7 @@ export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
 
   const brands: BundledPartnerBrand[] = [];
   for (const e of byKey.values()) {
+    if (isBlockedBundledPartnerDisplayName(e.primary)) continue;
     const slug = slugAlnum(e.primary);
     const pinned = FEATURED_FALLBACK_LOGOS[slug];
     const logoUrl = pinned ?? `/images/partner-logos/${e.file}`;
@@ -196,6 +267,7 @@ export function loadBundledPartnerBrands(): BundledPartnerBrand[] {
     });
   }
 
-  brands.sort((a, b) => a.name.localeCompare(b.name, "en"));
-  return brands;
+  const deduped = dedupeExtendedBrandNames(brands);
+  deduped.sort((a, b) => a.name.localeCompare(b.name, "en"));
+  return deduped;
 }

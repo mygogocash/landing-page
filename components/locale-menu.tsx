@@ -9,74 +9,20 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { Globe } from "@/components/icons";
-import { LOCALE_STORAGE_KEY } from "@/lib/locale-storage";
-
-const STORAGE_KEY = LOCALE_STORAGE_KEY;
-
-export const LANGUAGES = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "th", label: "ไทย", flag: "🇹🇭" },
-  { code: "zh-TW", label: "繁體中文", flag: "🇹🇼" },
-  { code: "ja", label: "日本語", flag: "🇯🇵" },
-] as const;
-
-export const REGIONS = [
-  { code: "TH", label: "Thailand", flag: "🇹🇭" },
-  { code: "TW", label: "Taiwan", flag: "🇹🇼" },
-  { code: "JP", label: "Japan", flag: "🇯🇵" },
-  { code: "SG", label: "Singapore", flag: "🇸🇬" },
-  { code: "MY", label: "Malaysia", flag: "🇲🇾" },
-  { code: "ID", label: "Indonesia", flag: "🇮🇩" },
-  { code: "PH", label: "Philippines", flag: "🇵🇭" },
-  { code: "VN", label: "Vietnam", flag: "🇻🇳" },
-  { code: "SEA", label: "Southeast Asia", flag: "🌏" },
-] as const;
-
-export type LangCode = (typeof LANGUAGES)[number]["code"];
-export type RegionCode = (typeof REGIONS)[number]["code"];
-
-type StoredLocale = { lang: LangCode; region: RegionCode };
-
-/** Default locale for first paint (matches server render). */
-const DEFAULT_LOCALE: StoredLocale = Object.freeze({
-  lang: "en",
-  region: "TH",
-});
-
-function isLangCode(v: string): v is LangCode {
-  return LANGUAGES.some((l) => l.code === v);
-}
-
-function isRegionCode(v: string): v is RegionCode {
-  return REGIONS.some((r) => r.code === v);
-}
-
-function readStored(): StoredLocale {
-  if (typeof window === "undefined") {
-    return DEFAULT_LOCALE;
-  }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { lang: "en", region: "TH" };
-    const parsed = JSON.parse(raw) as Partial<StoredLocale>;
-    return {
-      lang: parsed.lang && isLangCode(parsed.lang) ? parsed.lang : "en",
-      region:
-        parsed.region && isRegionCode(parsed.region) ? parsed.region : "TH",
-    };
-  } catch {
-    return { lang: "en", region: "TH" };
-  }
-}
-
-function persistLocale(lang: LangCode, region: RegionCode) {
-  const payload: StoredLocale = { lang, region };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  document.documentElement.lang = lang;
-  window.dispatchEvent(
-    new CustomEvent<StoredLocale>("gogocash:locale", { detail: payload }),
-  );
-}
+import {
+  LOCALE_EVENT_NAME,
+  persistLocale,
+  readStoredLocale,
+} from "@/lib/locale-storage";
+import {
+  DEFAULT_LOCALE,
+  LANGUAGES,
+  REGIONS,
+  resolveLanguageSelection,
+  type LangCode,
+  type RegionCode,
+  type StoredLocale,
+} from "@/lib/locale-routing";
 
 function useLocalePreference() {
   const [locale, setLocale] = useState<StoredLocale>(DEFAULT_LOCALE);
@@ -90,19 +36,19 @@ function useLocalePreference() {
       document.documentElement.lang = next.lang;
     };
 
-    apply(readStored());
+    apply(readStoredLocale());
 
     const onLocale = (e: Event) => {
       const ce = e as CustomEvent<StoredLocale>;
-      apply(ce.detail ?? readStored());
+      apply(ce.detail ?? readStoredLocale());
     };
-    window.addEventListener("gogocash:locale", onLocale);
-    return () => window.removeEventListener("gogocash:locale", onLocale);
+    window.addEventListener(LOCALE_EVENT_NAME, onLocale);
+    return () => window.removeEventListener(LOCALE_EVENT_NAME, onLocale);
   }, []);
 
   const setRegion = useCallback((r: RegionCode) => {
-    const { lang: l } = readStored();
-    persistLocale(l, r);
+    const { lang } = readStoredLocale();
+    persistLocale({ lang, region: r });
   }, []);
 
   return {
@@ -145,24 +91,12 @@ export function LocaleDropdown() {
   const chooseLanguage = useCallback(
     (code: LangCode) => {
       setOpen(false);
-      const keepRegion = readStored().region;
-      if (code === "en") {
-        persistLocale("en", keepRegion);
-        router.push("/");
-        return;
-      }
-      if (code === "th") {
-        persistLocale("th", "TH");
-        router.push("/th");
-        return;
-      }
-      if (code === "zh-TW") {
-        persistLocale("zh-TW", "TW");
-        router.push("/tw");
-        return;
-      }
-      persistLocale("ja", "JP");
-      router.push("/ja");
+      const { path, locale } = resolveLanguageSelection(
+        code,
+        readStoredLocale().region,
+      );
+      persistLocale(locale);
+      router.push(path);
     },
     [router],
   );

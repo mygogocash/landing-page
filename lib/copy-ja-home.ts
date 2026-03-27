@@ -8,18 +8,18 @@ export const JA_HOME = {
   breadcrumbNavAria: "言語",
 
   hero: {
-    h1: "毎回のお支払いでお得に",
-    sub: "GoGoCash で",
-    body: `${SITE_FACTS.partnerCountLabel} 以上のストアで最大 30% のキャッシュバック — ${SITE_FACTS.keyMerchantsShort} など、${SITE_FACTS.regionLabel} 各地で。アプリのクエストをクリアして特典も解放。`,
-    ctaLaunch: "アプリを開く",
-    ctaLine: "LINE で問い合わせ",
+    h1: "毎回のお支払いでキャッシュバック",
+    sub: "GoGoCash — いつものお店で",
+    body: `${SITE_FACTS.partnerCountLabel} 以上のストアで最大 30% のキャッシュバック — ${SITE_FACTS.keyMerchantsShort} など、${SITE_FACTS.regionLabel}。無料で本物の還元がウォレットに。クエストでボーナスも。`,
+    ctaLaunch: "還元を始める",
+    ctaLine: "LINE で相談",
     lineAria: "LINE で GoGoCash に問い合わせる",
   },
 
   partners: {
     badge: "ブランドパートナー",
     title: "いつも使うブランドでキャッシュバック",
-    description: `${SITE_FACTS.partnerCountLabel}以上のキャッシュバック対象ブランドを検索・一覧できます（${SITE_FACTS.regionLabel}など）。購入前に GoGoCash からストアを開くと、注文の追跡と確定後の還元がスムーズです。`,
+    description: `いつものブランドで還元を — ${SITE_FACTS.partnerCountLabel} 以上のパートナー（${SITE_FACTS.regionLabel} など）。購入前に GoGoCash からストアを開き、注文確認後に還元が確定しやすくなります。`,
     searchLabel: "ブランドを検索",
     searchPlaceholder: "ブランド名やカテゴリを入力…",
     searchClear: "クリア",
@@ -33,11 +33,11 @@ export const JA_HOME = {
     badge: "GoGoCash を選ぶ理由",
     title: "東南アジアの日常買い物のために設計",
     subtitle:
-      "還元がわかりやすく、馴染みの店舗で、実用的な特典 — Web とミニアプリの両方で。",
+      "ウォレットに還元がたまる実感、馴染みの店舗、出金できる特典 — Web とミニアプリの両方で。",
     cards: [
       {
-        title: "本物のキャッシュバック（ポイントではない）",
-        body: "ウォレットに現金が戻る — 使うも Saving Plus で育てるもあなた次第。",
+        title: "ポイントではなくウォレットに還元",
+        body: "店舗確認後に残高が増える実感 — 使うも Saving Plus で育てるもあなた次第。",
       },
       {
         title: "信頼できる加盟店",
@@ -56,34 +56,37 @@ export const JA_HOME = {
 
   features: {
     badge: "主な機能",
-    title: "GoGoCash の特長",
+    title: "還元を積み上げやすい理由",
     cards: [
       {
-        title: "スピーディなキャッシュバック",
-        body: "店舗が注文を承認すると実際の還元が付与 — 複雑なポイント制度なし、確認後ウォレットに反映。",
+        title: "還元がウォレットに入る",
+        body: "注文が確認されるとキャッシュバックが反映 — ポイントの複雑な計算なし。アプリで残高を追跡。",
       },
       {
         title: "24時間365日サポート",
-        body: "ご質問は？ チャットとメールでいつでもサポートします。",
+        body: "トラッキングや出金で不明点があれば、チャットとメールでサポートします。",
       },
       {
         title: "パーソナライズされたクエスト",
-        body: "楽しいショッピングチャレンジでボーナスや限定ディールをアンロック。",
+        body: "あなたの買い方に合ったチャレンジでボーナスや限定オファーを解放。",
       },
     ],
     ctaCard: {
-      title: "節約を始めますか？",
-      bodyLine: "何百万人ものユーザーに参加",
-      cta: "無料で始める",
+      title: "キャッシュバックを始めますか？",
+      bodyLine: `${SITE_FACTS.shopperCommunityLabel} 以上のユーザーが簡単に還元を積み立て中`,
+      cta: "還元を始める",
     },
   },
 
   howItWorks: {
-    title: "GoGoCash の始め方",
-    intro: "東南アジアでのキャッシュバックの仕組みは？ 次の 3 ステップで完了です。",
+    title: "はじめてのキャッシュバックまで 3 ステップ",
+    intro:
+      "GoGoCash から店を開き、いつも通り購入。店舗が確認したらウォレットに還元 — シンプルです。",
+    progressCue: "3 ステップで最初の還元へ",
+    browseAppCta: "今すぐ見る",
     steps: [
       {
-        summary: "店を選ぶ",
+        summary: "還元を選ぶ",
         title: "GoGoCash から店舗を開く",
         desc: `${SITE_FACTS.regionLabel} の ${SITE_FACTS.partnerCountLabel} 以上の EC・旅行パートナーを探索。還元率を比較し、GoGoCash から開いて訪問をトラッキング。`,
         bullets: [
@@ -93,7 +96,7 @@ export const JA_HOME = {
       },
       {
         summary: "いつも通り買う",
-        title: "普段どおりショッピング",
+        title: "店舗で決済 — 普段の流れのまま",
         desc: "店舗のサイトまたはアプリでカートに入れて決済。クーポン入力は不要です。",
         bullets: [
           "いつものアカウントと支払い方法を利用",
@@ -101,9 +104,9 @@ export const JA_HOME = {
         ],
       },
       {
-        summary: "還元を受け取る",
-        title: "店舗確認後に付与",
-        desc: "注文が確認されるとキャッシュバックが GoGoCash ウォレットに。アプリで追跡し、条件を満たしたら出金。",
+        summary: "ウォレットが増える",
+        title: "確認後にキャッシュバック付与",
+        desc: "注文が確認されると GoGoCash ウォレットに還元。アプリで残高を追跡し、条件を満たせば出金 — ポイントではなく現金の還元です。",
         bullets: ["通常数日以内に確認", "銀行または e ウォレットへ出金可能"],
       },
     ],
@@ -161,9 +164,9 @@ export const JA_HOME = {
   },
 
   finalCta: {
-    title: "毎回のお買い物をお得にしませんか？",
-    sub: `${SITE_FACTS.shopperCommunityLabel} 以上のユーザーと一緒に、かんたんキャッシュバック`,
-    cta: "アプリを開く",
+    title: "毎回のお支払いで還元を積みませんか？",
+    sub: `${SITE_FACTS.shopperCommunityLabel} 以上のユーザーと一緒に、かんたんにキャッシュバック`,
+    cta: "還元を始める",
   },
 } satisfies LocaleHomeCopy;
 

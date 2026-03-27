@@ -9,6 +9,9 @@ import {
   type TransitionEvent,
 } from "react";
 import TruckLoader from "@/components/truck-loader";
+import {
+  prefersReducedMotion,
+} from "@/hooks/use-prefers-reduced-motion";
 
 const SESSION_KEY = "gogocash-landing-splash-seen";
 const MIN_VISIBLE_MS = 550;
@@ -40,7 +43,7 @@ export default function LoadingScreen({ children }: Props) {
     } catch {
       /* private mode */
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       queueMicrotask(() => setShowOverlay(false));
     }
   }, []);

@@ -6,6 +6,11 @@ import AnimateOnScroll from "@/components/animate-on-scroll";
 import SectionBadge from "@/components/section-badge";
 import { Search, Users } from "@/components/icons";
 import { encodePublicPath } from "@/lib/encode-public-path";
+import {
+  buildPartnerCountLine,
+  fillTemplate,
+  filterPartnerBrands,
+} from "@/lib/partner-search";
 import { SITE_FACTS } from "@/lib/site-facts";
 import type { PartnerBrand } from "@/lib/involve-asia";
 
@@ -14,17 +19,6 @@ const BRANDS_INITIAL_VISIBLE = 48;
 const BRANDS_LOAD_MORE_STEP = 48;
 /** Only the first N cards use scroll-in animation (IntersectionObserver per item). */
 const BRANDS_ANIMATED_CAP = 24;
-
-function fillTemplate(
-  template: string,
-  vars: Record<string, string | number>,
-): string {
-  let out = template;
-  for (const [key, value] of Object.entries(vars)) {
-    out = out.split(`{${key}}`).join(String(value));
-  }
-  return out;
-}
 
 function PartnerLogo({
   name,
@@ -73,6 +67,7 @@ const DEFAULT_NO_RESULTS =
 const DEFAULT_COUNT_ALL = "{count} brands";
 const DEFAULT_COUNT_FILTERED = "{filtered} of {total} brands";
 const DEFAULT_LOAD_MORE = "Load more brands";
+const DEFAULT_PARTNER_LOGO_ALT_TEMPLATE = "{name} cashback partner GoGoCash";
 
 type MerchantOffersStripProps = {
   partners: PartnerBrand[];
@@ -91,12 +86,9 @@ type MerchantOffersStripProps = {
   /** Replace `{filtered}` and `{total}` when filtering. */
   brandsCountFiltered?: string;
   loadMoreLabel?: string;
-  /** Alt text for partner logos; default English SEO phrase. */
-  partnerLogoAlt?: (name: string) => string;
+  /** Alt text template for partner logos; replace `{name}` with the merchant name. */
+  partnerLogoAltTemplate?: string;
 };
-
-const defaultPartnerLogoAlt = (name: string) =>
-  `${name} cashback partner GoGoCash`;
 
 type MerchantBrandsGridProps = {
   filtered: PartnerBrand[];
@@ -205,7 +197,7 @@ export default function MerchantOffersStrip({
   brandsCountAll = DEFAULT_COUNT_ALL,
   brandsCountFiltered = DEFAULT_COUNT_FILTERED,
   loadMoreLabel = DEFAULT_LOAD_MORE,
-  partnerLogoAlt = defaultPartnerLogoAlt,
+  partnerLogoAltTemplate = DEFAULT_PARTNER_LOGO_ALT_TEMPLATE,
 }: MerchantOffersStripProps) {
   const sectionDescId = useId();
   const searchId = useId();
@@ -213,26 +205,22 @@ export default function MerchantOffersStrip({
   const loadMoreId = useId();
   const [query, setQuery] = useState("");
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return partners;
-    return partners.filter((p) => {
-      const name = p.name.toLowerCase();
-      const cat = p.category.toLowerCase();
-      return name.includes(q) || cat.includes(q);
-    });
-  }, [partners, query]);
+  const filtered = useMemo(
+    () => filterPartnerBrands(partners, query),
+    [partners, query],
+  );
 
   const total = partners.length;
   const filteredCount = filtered.length;
-  const isFiltered = query.trim().length > 0;
-
-  const countLine = fillTemplate(
-    isFiltered ? brandsCountFiltered : brandsCountAll,
-    isFiltered
-      ? { filtered: filteredCount, total }
-      : { count: total },
-  );
+  const countLine = buildPartnerCountLine({
+    query,
+    total,
+    filteredCount,
+    brandsCountAll,
+    brandsCountFiltered,
+  });
+  const partnerLogoAlt = (name: string) =>
+    fillTemplate(partnerLogoAltTemplate, { name });
 
   return (
     <section

@@ -1,3 +1,4 @@
+import { involveAsiaConfig } from "@/lib/app-config";
 import { loadBundledPartnerBrands } from "@/lib/partner-logo-resolve";
 
 /** Involve Asia Publisher API (server-only). */
@@ -194,24 +195,18 @@ async function fetchOffersPage(
  * are taken from `/offers/all` (paginated) and matched by normalized offer name.
  */
 export async function fetchPartnerBrands(): Promise<PartnerBrand[]> {
-  const key = process.env.INVOLVE_ASIA_API_KEY?.trim();
-  const secret = process.env.INVOLVE_ASIA_API_SECRET?.trim();
+  const { key, secret, maxOfferPages } = involveAsiaConfig();
   const base = bundledFallbackPartners();
 
   if (!key || !secret) {
     return base;
   }
 
-  const maxPages = Math.min(
-    50,
-    Math.max(1, Number(process.env.INVOLVE_ASIA_MAX_OFFER_PAGES) || 5),
-  );
-
   try {
     const token = await authenticate(key, secret);
     if (!token) return base;
 
-    const lookup = await fetchInvolveCategoryLookup(token, maxPages);
+    const lookup = await fetchInvolveCategoryLookup(token, maxOfferPages);
     if (lookup.size === 0) return base;
 
     return base.map((b) => {

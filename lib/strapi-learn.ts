@@ -17,24 +17,15 @@
  */
 
 import type { LearnArticleMeta } from "@/lib/learn-articles";
+import {
+  strapiBaseUrl as resolveStrapiBaseUrl,
+  strapiHeaders as resolveStrapiHeaders,
+} from "@/lib/app-config";
 
 export type StrapiLearnArticlePayload = {
   meta: LearnArticleMeta;
   markdown: string;
 };
-
-function strapiBaseUrl(): string | null {
-  const raw = process.env.STRAPI_URL?.trim();
-  if (!raw) return null;
-  return raw.replace(/\/$/, "");
-}
-
-function strapiHeaders(): HeadersInit {
-  const token = process.env.STRAPI_API_TOKEN?.trim();
-  const h: Record<string, string> = { Accept: "application/json" };
-  if (token) h.Authorization = `Bearer ${token}`;
-  return h;
-}
 
 function unwrapStrapiRow(row: unknown): Record<string, unknown> | null {
   if (!row || typeof row !== "object") return null;
@@ -96,7 +87,7 @@ function rowToPayload(row: unknown): StrapiLearnArticlePayload | null {
 
 /** List published learn articles (metadata only). */
 export async function fetchStrapiLearnIndex(): Promise<LearnArticleMeta[]> {
-  const base = strapiBaseUrl();
+  const base = resolveStrapiBaseUrl();
   if (!base) return [];
 
   const params = new URLSearchParams({
@@ -113,7 +104,10 @@ export async function fetchStrapiLearnIndex(): Promise<LearnArticleMeta[]> {
     "fields[6]": "publishedAt",
   });
   const url = `${base}/api/learn-articles?${params.toString()}`;
-  const res = await fetch(url, { headers: strapiHeaders(), cache: "no-store" });
+  const res = await fetch(url, {
+    headers: resolveStrapiHeaders(),
+    cache: "no-store",
+  });
   if (!res.ok) {
     throw new Error(`Strapi learn-articles list failed: ${res.status}`);
   }
@@ -129,7 +123,7 @@ export async function fetchStrapiLearnIndex(): Promise<LearnArticleMeta[]> {
 export async function fetchStrapiLearnArticleBySlug(
   slug: string,
 ): Promise<StrapiLearnArticlePayload | null> {
-  const base = strapiBaseUrl();
+  const base = resolveStrapiBaseUrl();
   if (!base) return null;
 
   const params = new URLSearchParams({
@@ -139,7 +133,10 @@ export async function fetchStrapiLearnArticleBySlug(
     "pagination[pageSize]": "1",
   });
   const url = `${base}/api/learn-articles?${params.toString()}`;
-  const res = await fetch(url, { headers: strapiHeaders(), cache: "no-store" });
+  const res = await fetch(url, {
+    headers: resolveStrapiHeaders(),
+    cache: "no-store",
+  });
   if (!res.ok) {
     throw new Error(`Strapi learn-articles find failed: ${res.status}`);
   }

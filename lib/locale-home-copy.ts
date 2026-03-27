@@ -65,6 +65,10 @@ export type LocaleHomeCopy = {
   howItWorks: {
     title: string;
     intro: string;
+    /** Short progress cue under intro (e.g. “Three steps to your first cashback”). */
+    progressCue: string;
+    /** Primary CTA label for step 1 (browse partners → web app). */
+    browseAppCta: string;
     steps: readonly [
       LocaleHomeHowStep,
       LocaleHomeHowStep,
