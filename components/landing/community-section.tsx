@@ -6,7 +6,7 @@ import SocialIcon from "@/components/social-icon";
 export default function CommunitySection() {
   return (
     <section id="community" className="scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge label="Community" />

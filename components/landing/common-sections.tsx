@@ -7,6 +7,7 @@ import { ArrowUpRight } from "@/components/icons";
 import HowItWorksInteractive, {
   type HowItWorksStep,
 } from "@/components/landing/how-it-works-interactive";
+import { twCtaPrimaryMotion } from "@/lib/motion-styles";
 
 type FaqItem = {
   question: string;
@@ -29,7 +30,7 @@ export function HowItWorksSection({
       id="how-it-works"
       className="scroll-mt-28 border-t border-gray-200/80 bg-gray-50 py-16 md:py-24"
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-[2.75rem] lg:leading-tight">
@@ -116,16 +117,18 @@ export function FinalCtaSection({
 }) {
   return (
     <section className="py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="rounded-3xl bg-gradient-to-br from-mint via-white to-cream p-12 text-center md:p-16">
             <h2 className="text-3xl font-bold text-gray-800 md:text-4xl">
               {title}
             </h2>
             <p className="mt-4 text-base text-gray-500">{subtitle}</p>
-            <LaunchAppLink className="mt-8 min-h-11 items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105 motion-reduce:transition-colors motion-reduce:hover:scale-100">
+            <LaunchAppLink
+              className={`group mt-8 min-h-11 items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-primary-dark hover:shadow-xl ${twCtaPrimaryMotion}`}
+            >
               {ctaLabel}
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </LaunchAppLink>
           </div>
         </AnimateOnScroll>

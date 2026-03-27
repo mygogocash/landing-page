@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Poppins, Inter } from "next/font/google";
 import { BrowserLocaleBootstrap } from "@/components/browser-locale-bootstrap";
 import { FirebaseClientInit } from "@/components/firebase-client-init";
+import { AnalyticsRouteListener } from "@/components/analytics-route-listener";
+import { LineTagScripts } from "@/components/line-tag-scripts";
+import { PostHogClientProvider } from "@/components/posthog-provider";
 import PageTransition from "@/components/page-transition";
 import LoadingScreen from "@/components/loading-screen";
 import SchemaMarkup from "@/components/schema-markup";
-import { shouldLoadMarketingAnalyticsScripts } from "@/lib/analytics-enabled";
-import { firebaseMeasurementId } from "@/lib/firebase";
 import { HREFLANG_LANDING_ALTERNATES } from "@/lib/seo-constants";
 import { siteOrigin } from "@/lib/site";
 import { siteSeoOneLiner } from "@/lib/site-facts";
@@ -53,6 +53,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
   themeColor: "#10b981",
   colorScheme: "light",
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -139,27 +140,15 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className="font-sans antialiased bg-white text-gray-800">
-        {firebaseMeasurementId && shouldLoadMarketingAnalyticsScripts() ? (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${firebaseMeasurementId}`}
-              strategy="afterInteractive"
-            />
-            <Script id="firebase-gtag-config" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${firebaseMeasurementId}');
-              `}
-            </Script>
-          </>
-        ) : null}
-        <BrowserLocaleBootstrap />
-        <FirebaseClientInit />
-        <LoadingScreen>
-          <PageTransition>{children}</PageTransition>
-        </LoadingScreen>
+        <LineTagScripts />
+        <PostHogClientProvider>
+          <BrowserLocaleBootstrap />
+          <FirebaseClientInit />
+          <AnalyticsRouteListener />
+          <LoadingScreen>
+            <PageTransition>{children}</PageTransition>
+          </LoadingScreen>
+        </PostHogClientProvider>
       </body>
     </html>
   );

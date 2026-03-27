@@ -33,7 +33,7 @@ export default function TestimonialsSection() {
       className="scroll-mt-28 border-t border-gray-100 bg-gray-50/80 py-16 md:py-24"
       aria-labelledby="testimonials-heading"
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="mx-auto max-w-2xl text-center">
             <SectionBadge label="Community" />

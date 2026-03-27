@@ -81,7 +81,7 @@ export default function HomePage({ initialPartners }: HomePageProps) {
         <MerchantOffersStrip
           partners={initialPartners}
           description={partnersStripEarnDescription()}
-          loadMoreLabel="Load more brands"
+          loadMoreLabel="See more Brands"
         />
 
         <WhyChooseSection />

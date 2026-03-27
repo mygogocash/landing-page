@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { logSiteSearch } from "@/lib/analytics-client";
+import { phSiteSearchSubmit } from "@/lib/posthog-analytics";
 import Link from "next/link";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -13,11 +15,20 @@ export default function SearchClient() {
     [searchParams],
   );
 
+  const lastLoggedQuery = useRef<string | null>(null);
+  useEffect(() => {
+    if (!q) return;
+    if (lastLoggedQuery.current === q) return;
+    lastLoggedQuery.current = q;
+    logSiteSearch(q);
+    phSiteSearchSubmit(q);
+  }, [q]);
+
   return (
     <>
       <Header />
-      <main role="main" className="min-h-[60vh] bg-white">
-        <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
+      <main role="main" className="min-h-[60vh] min-w-0 bg-white">
+        <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link
               href="/"
@@ -51,7 +62,7 @@ export default function SearchClient() {
               type="search"
               defaultValue={q}
               placeholder="Try “Shopee cashback” or “Lazada”"
-              className="min-h-11 w-full flex-1 rounded-xl border border-gray-200 px-4 py-2 text-gray-900 shadow-sm outline-none ring-primary/30 focus:border-primary focus:ring-2"
+              className="min-h-11 w-full min-w-0 flex-1 rounded-xl border border-gray-200 px-4 py-2 text-base text-gray-900 shadow-sm outline-none ring-primary/30 focus:border-primary focus:ring-2"
               autoComplete="off"
             />
             <button

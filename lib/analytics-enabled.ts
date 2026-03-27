@@ -1,7 +1,7 @@
 import { isMarketingAnalyticsEnabled } from "@/lib/app-config";
 
 /**
- * Whether to inject gtag / third-party marketing analytics scripts.
+ * Whether to initialize Firebase Analytics (`getAnalytics`) and log marketing events.
  *
  * - Default: **off** in `next dev` (`NODE_ENV === "development"`), **on** in production builds.
  * - `NEXT_PUBLIC_ANALYTICS_ENABLED=true` — force on (e.g. test GA from dev).

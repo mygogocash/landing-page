@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+.node_modules.stalled/
 
 # Next.js
 .next/
@@ -9,6 +10,9 @@ out/
 .env
 .env.local
 .env.*.local
+
+# Cloudflare API (DNS automation — never commit)
+.env.cloudflare
 
 # Debug / OS
 .DS_Store
@@ -28,6 +32,9 @@ npm-debug.log*
 
 # Test / coverage
 coverage/
+playwright-report/
+test-results/
+playwright/.cache/
 
 # TypeScript / Next generated files
 *.tsbuildinfo

@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import { ChevronDown } from "@/components/icons";
+import {
+  twDurSection,
+  twEaseStandard,
+  twFocusRingPrimary,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
 interface FAQItem {
   question: string;
@@ -22,25 +29,25 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
         return (
           <div
             key={index}
-            className="overflow-hidden rounded-2xl border border-primary/20 bg-white transition-all duration-300"
+            className={`overflow-hidden rounded-2xl border border-primary/20 bg-white ${twDurSection} ${twEaseStandard} transition-[box-shadow] motion-reduce:duration-micro`}
           >
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className="flex min-h-11 w-full items-center justify-between gap-4 px-6 py-5 text-left"
+              className={`flex min-h-11 w-full items-center justify-between gap-4 px-6 py-5 text-left ${twTransitionButton} ${twPressSm} rounded-2xl ${twFocusRingPrimary}`}
               aria-expanded={isOpen}
             >
-              <span className="text-[15px] font-medium text-[#171717]">
+              <span className="min-w-0 flex-1 text-[15px] font-medium text-[#171717]">
                 {item.question}
               </span>
               <ChevronDown
-                className={`h-5 w-5 flex-shrink-0 text-[#a3a3a3] transition-transform duration-300 ${
+                className={`h-5 w-5 shrink-0 text-[#a3a3a3] transition-transform duration-section ease-standard motion-reduce:duration-micro ${
                   isOpen ? "rotate-180" : ""
                 }`}
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 ${
+              className={`overflow-hidden transition-[max-height,opacity] duration-section ease-standard motion-reduce:duration-micro ${
                 isOpen ? "max-h-[min(100vh,56rem)] opacity-100" : "max-h-0 opacity-0"
               }`}
             >

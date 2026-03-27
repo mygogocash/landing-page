@@ -9,7 +9,7 @@ function normalizeLegalMarkdown(content: string): string {
 
 export function LegalMarkdown({ content }: { content: string }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 break-words [overflow-wrap:anywhere]">
       <ReactMarkdown
         allowedElements={[
           "a",

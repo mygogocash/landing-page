@@ -1,6 +1,9 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
-    "site": "landing-page-4ae23-947ee",
+    "site": "landing-page-4ae23",
     "public": "out",
     "ignore": [
       "firebase.json",

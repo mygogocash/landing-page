@@ -5,8 +5,14 @@ import {
   isMarketingAnalyticsEnabled,
   marketingSiteOrigin,
   marketingSiteUrl,
+  postHogApiHost,
+  postHogNeedsUiHost,
+  postHogUiHost,
   publicFirebaseConfig,
   publicFirebaseMeasurementId,
+  publicLineTagId,
+  publicPostHogKey,
+  shouldLoadPostHog,
   strapiBaseUrl,
 } from "./app-config";
 
@@ -51,6 +57,15 @@ describe("app-config", () => {
     assert.equal(isMarketingAnalyticsEnabled(), false);
   });
 
+  it("exposes LINE Tag id by default and allows disabling with empty env", () => {
+    delete process.env.NEXT_PUBLIC_LINE_TAG_ID;
+    assert.match(publicLineTagId() ?? "", /^[0-9a-f-]{36}$/i);
+
+    process.env.NEXT_PUBLIC_LINE_TAG_ID = "";
+    assert.equal(publicLineTagId(), null);
+    delete process.env.NEXT_PUBLIC_LINE_TAG_ID;
+  });
+
   it("returns the default public firebase config with overrides applied", () => {
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = "custom-project";
     process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID = "G-CUSTOM";
@@ -59,6 +74,47 @@ describe("app-config", () => {
     assert.ok(config);
     assert.equal(config?.projectId, "custom-project");
     assert.equal(publicFirebaseMeasurementId(), "G-CUSTOM");
+  });
+
+  it("loads PostHog only when a key is set and rules allow", () => {
+    delete process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    delete process.env.NEXT_PUBLIC_POSTHOG_ENABLED;
+    assert.equal(publicPostHogKey(), null);
+    assert.equal(shouldLoadPostHog(), false);
+
+    process.env.NEXT_PUBLIC_POSTHOG_KEY = "phc_test";
+    process.env = { ...process.env, NODE_ENV: "development" };
+    delete process.env.NEXT_PUBLIC_ANALYTICS_ENABLED;
+    assert.equal(shouldLoadPostHog(), false);
+
+    process.env.NEXT_PUBLIC_POSTHOG_ENABLED = "true";
+    assert.equal(shouldLoadPostHog(), true);
+
+    process.env.NEXT_PUBLIC_POSTHOG_ENABLED = "false";
+    process.env = { ...process.env, NODE_ENV: "production" };
+    assert.equal(shouldLoadPostHog(), false);
+  });
+
+  it("normalizes PostHog API host and falls back to US cloud", () => {
+    delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    assert.match(postHogApiHost(), /^https:\/\/us\.i\.posthog\.com$/);
+
+    process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://eu.i.posthog.com/";
+    assert.equal(postHogApiHost(), "https://eu.i.posthog.com");
+  });
+
+  it("sets ui_host when using a proxy ingest URL", () => {
+    delete process.env.NEXT_PUBLIC_POSTHOG_UI_HOST;
+    delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
+    assert.equal(postHogNeedsUiHost(), false);
+    assert.equal(postHogUiHost(), "https://us.posthog.com");
+
+    process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://gogocash.co/w";
+    assert.equal(postHogNeedsUiHost(), true);
+    assert.equal(postHogUiHost(), "https://us.posthog.com");
+
+    process.env.NEXT_PUBLIC_POSTHOG_UI_HOST = "https://eu.posthog.com";
+    assert.equal(postHogUiHost(), "https://eu.posthog.com");
   });
 
   it("normalizes strapi base url and involve asia pagination bounds", () => {

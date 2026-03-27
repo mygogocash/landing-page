@@ -9,7 +9,7 @@ import {
   publicFirebaseMeasurementId,
 } from "@/lib/app-config";
 
-/** GA4 measurement ID for `next/script` gtag snippets and custom events. */
+/** GA4 measurement ID (from Firebase config); used if you wire gtag or GA outside the SDK. */
 export const firebaseMeasurementId = publicFirebaseMeasurementId();
 
 function clientConfig(): FirebaseOptions | null {

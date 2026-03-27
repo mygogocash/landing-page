@@ -1,6 +1,13 @@
 import Link from "next/link";
 import GoGoCashLogo from "./gogocash-logo";
 import {
+  twFocusRingPrimary,
+  twNavTextMotion,
+  twOpacityHoverMotion,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
+import {
   LINE_MINI_APP_HREF,
   LINE_OFFICIAL_ACCOUNT_HREF,
   SOCIAL_ICONS,
@@ -47,14 +54,14 @@ const FOOTER_LINKS = {
 export default function Footer() {
   return (
     <footer role="contentinfo" className="bg-white pt-20 pb-8">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         {/* Top section */}
         <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
           {/* Left: Logo */}
           <div className="max-w-sm">
             <Link
               href="/#home"
-              className="inline-flex min-w-0 shrink-0 rounded-lg outline-none ring-primary/40 transition-opacity hover:opacity-90 focus-visible:ring-2"
+              className={`inline-flex min-w-0 shrink-0 rounded-lg hover:opacity-90 ${twOpacityHoverMotion} ${twFocusRingPrimary}`}
               aria-label="GoGoCash — back to home"
             >
               <GoGoCashLogo className="h-8" variant="color" />
@@ -62,7 +69,7 @@ export default function Footer() {
           </div>
 
           {/* Right: Link columns */}
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:gap-16">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:gap-16">
             {Object.entries(FOOTER_LINKS).map(([title, links]) => (
               <div key={title}>
                 <h4 className="text-sm font-semibold text-[#1f2937]">
@@ -71,8 +78,7 @@ export default function Footer() {
                 <ul className="mt-4 flex flex-col gap-3">
                   {links.map((link) => {
                     const external = link.href.startsWith("http");
-                    const className =
-                      "text-sm text-[#6b7280] transition-colors hover:text-[#1f2937]";
+                    const className = `text-sm text-[#6b7280] hover:text-[#1f2937] ${twNavTextMotion}`;
                     return (
                       <li key={link.label}>
                         {external ? (
@@ -110,7 +116,7 @@ export default function Footer() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="flex min-h-11 min-w-11 items-center justify-center rounded-full text-[#6b7280] transition-colors hover:bg-gray-50 hover:text-[#1f2937]"
+                className={`flex min-h-11 min-w-11 items-center justify-center rounded-full text-[#6b7280] hover:bg-gray-50 hover:text-[#1f2937] ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
               >
                 <SocialIcon name={social.icon} />
               </a>

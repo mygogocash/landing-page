@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm install",
     "local": "npm install && npm run dev",
-    "postinstall": "patch-package",
+    "postinstall": "npm exec -- patch-package",
     "clean": "rm -rf .next",
     "dev:local": "bash scripts/dev-local.sh",
     "dev": "npm exec -- next dev --hostname 0.0.0.0 --port 3000",
@@ -16,9 +16,17 @@
     "build:webpack": "npm exec -- next build --webpack",
     "build:clean": "npm run clean && npm run build",
     "deploy:firebase": "npm run build && node scripts/deploy-firebase-hosting.mjs",
+    "deploy:firebase:full": "npm run build && npm exec -- firebase deploy --only hosting,functions --non-interactive",
+    "dns:cloudflare-firebase-apex": "bash scripts/run-cloudflare-firebase-dns.sh",
     "start": "npm exec -- next start",
     "lint": "npm exec -- eslint . --ignore-pattern node_modules --ignore-pattern .next --ignore-pattern .node_modules.stalled",
     "test": "npm exec -- tsx --test lib/*.test.ts",
+    "test:e2e": "npm exec -- playwright test",
+    "test:e2e:smoke": "npm exec -- playwright test smoke.spec.ts sitemap.spec.ts navigation.spec.ts --project=mobile-chrome",
+    "test:e2e:ci": "npm exec -- playwright test",
+    "test:e2e:static": "npm run build && npm run test:e2e:static-only",
+    "test:e2e:static-only": "npm exec -- cross-env PLAYWRIGHT_SERVE_STATIC=1 playwright test --project=mobile-chrome",
+    "test:e2e:install": "npm exec -- playwright install chromium webkit",
     "typecheck": "npm exec -- tsc --noEmit",
     "verify": "npm run lint && npm run test && npm run typecheck && npm run build",
     "learn:strapi-push": "npm exec -- tsx scripts/push-learn-to-strapi.ts",
@@ -30,6 +38,7 @@
     "firebase": "^12.11.0",
     "framer-motion": "^12.38.0",
     "next": "^16.2.1",
+    "posthog-js": "^1.363.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0"
@@ -37,20 +46,25 @@
   "engines": {
     "node": ">=20"
   },
+  "overrides": {
+    "brace-expansion": "^5.0.5"
+  },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/node": "^20.0.0",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.27",
+    "cross-env": "^7.0.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.1",
-    "firebase-tools": "^14.0.0",
+    "firebase-tools": "^15.11.0",
     "patch-package": "^8.0.1",
     "postcss": "^8.5.8",
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
-    "tailwindcss": "^3.4.18",
+    "tailwindcss": "3.4.18",
     "tsx": "^4.19.3",
     "typescript": "^5.0.0"
   }

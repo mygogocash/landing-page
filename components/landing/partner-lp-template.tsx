@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import LaunchAppLink from "@/components/launch-app-link";
 import { ArrowUpRight } from "@/components/icons";
+import { twCtaMutedOutlineMotion, twCtaPrimaryMotion } from "@/lib/motion-styles";
 
 export type PartnerLpTemplateProps = {
   partnerName: string;
@@ -22,9 +23,9 @@ export default function PartnerLpTemplate({
       <Header />
       <main
         role="main"
-        className="min-h-[60vh] bg-gradient-to-b from-mint/40 via-white to-cream/30"
+        className="min-h-[60vh] min-w-0 bg-gradient-to-b from-mint/40 via-white to-cream/30"
       >
-        <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
+        <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wide text-primary">
             Partner landing
           </p>
@@ -43,13 +44,15 @@ export default function PartnerLpTemplate({
             ))}
           </ul>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <LaunchAppLink className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-md transition hover:bg-primary-dark">
+            <LaunchAppLink
+              className={`group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-md hover:bg-primary-dark ${twCtaPrimaryMotion}`}
+            >
               Open GoGoCash for {partnerName}
-              <ArrowUpRight className="h-5 w-5 shrink-0" />
+              <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </LaunchAppLink>
             <Link
               href="/#brands"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50"
+              className={`inline-flex min-h-12 items-center justify-center rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm hover:bg-gray-50 ${twCtaMutedOutlineMotion}`}
             >
               Browse all partners
             </Link>

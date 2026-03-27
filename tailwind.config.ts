@@ -32,6 +32,15 @@ const config: Config = {
         "3xl": "24px",
         "4xl": "32px",
       },
+      transitionDuration: {
+        micro: "150ms",
+        button: "220ms",
+        section: "380ms",
+      },
+      transitionTimingFunction: {
+        standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+        emphasized: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
       animation: {
         "marquee": "marquee 20s linear infinite",
         "marquee-reverse": "marquee-reverse 20s linear infinite",

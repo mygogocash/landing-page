@@ -23,8 +23,8 @@ export default function IndonesianLandingPage() {
   return (
     <>
       <Header />
-      <main role="main" lang="id" className="min-h-[60vh] bg-white">
-        <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
+      <main role="main" lang="id" className="min-h-[60vh] min-w-0 bg-white">
+        <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap gap-4 text-sm">
             <Link
               href="/"
@@ -38,7 +38,7 @@ export default function IndonesianLandingPage() {
             </span>
             <span className="font-medium text-gray-700">Bahasa Indonesia</span>
           </nav>
-          <article className="mx-auto max-w-3xl text-center md:text-left">
+          <article className="mx-auto min-w-0 max-w-3xl break-words text-center md:text-left">
             <h1 className="text-balance text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-5xl">
               Hemat setiap belanja dengan GoGoCash
             </h1>

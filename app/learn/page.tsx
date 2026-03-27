@@ -17,8 +17,8 @@ export default async function LearnHubPage() {
   return (
     <>
       <Header />
-      <main role="main" className="min-h-[60vh] bg-white">
-        <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
+      <main role="main" className="min-h-[60vh] min-w-0 bg-white">
+        <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link
               href="/"
@@ -39,7 +39,7 @@ export default async function LearnHubPage() {
               <li key={a.slug}>
                 <Link
                   href={`/learn/${a.slug}`}
-                  className="flex h-full flex-col rounded-2xl border border-gray-100 bg-cream/40 p-6 transition hover:border-primary/25 hover:shadow-sm"
+                  className="flex h-full min-w-0 flex-col rounded-2xl border border-gray-100 bg-cream/40 p-6 transition hover:border-primary/25 hover:shadow-sm"
                 >
                   <span className="text-lg font-semibold text-gray-900">
                     {a.title}

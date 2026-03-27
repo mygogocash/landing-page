@@ -23,6 +23,21 @@ import {
   type RegionCode,
   type StoredLocale,
 } from "@/lib/locale-routing";
+import {
+  logLocaleLanguageSelect,
+  logLocaleRegionSelect,
+} from "@/lib/analytics-client";
+import {
+  phLocaleLanguageSelect,
+  phLocaleRegionSelect,
+} from "@/lib/posthog-analytics";
+import {
+  twDurButton,
+  twEaseStandard,
+  twFocusRingPrimary,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
 function useLocalePreference() {
   const [locale, setLocale] = useState<StoredLocale>(DEFAULT_LOCALE);
@@ -71,7 +86,7 @@ function OptionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
+      className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary} ${
         selected
           ? "bg-surface-green text-primary"
           : "text-gray-700 hover:bg-gray-50"
@@ -96,6 +111,8 @@ export function LocaleDropdown() {
         readStoredLocale().region,
       );
       persistLocale(locale);
+      logLocaleLanguageSelect(code);
+      phLocaleLanguageSelect(code);
       router.push(path);
     },
     [router],
@@ -125,7 +142,7 @@ export function LocaleDropdown() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="group flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 shadow-sm backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:border-primary/30 hover:bg-surface-green hover:text-primary hover:shadow-md active:scale-[0.97] motion-reduce:transition-colors motion-reduce:hover:scale-100 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 aria-expanded:border-primary/40 aria-expanded:bg-surface-green aria-expanded:text-primary"
+        className={`group flex min-h-11 min-w-11 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 shadow-sm backdrop-blur-sm hover:scale-105 hover:border-primary/30 hover:bg-surface-green hover:text-primary hover:shadow-md motion-reduce:hover:scale-100 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 aria-expanded:border-primary/40 aria-expanded:bg-surface-green aria-expanded:text-primary ${twTransitionButton} ${twPressSm}`}
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label="Language and region"
@@ -133,7 +150,7 @@ export function LocaleDropdown() {
         <Globe
           size={22}
           aria-hidden
-          className={`transition-transform duration-300 ease-out motion-reduce:transition-none ${
+          className={`transition-transform ${twDurButton} ${twEaseStandard} motion-reduce:transition-none ${
             open
               ? "scale-110 text-primary"
               : "group-hover:rotate-12 group-hover:scale-105"
@@ -175,6 +192,8 @@ export function LocaleDropdown() {
                   key={r.code}
                   selected={region === r.code}
                   onClick={() => {
+                    logLocaleRegionSelect(r.code);
+                    phLocaleRegionSelect(r.code);
                     setRegion(r.code);
                   }}
                 >

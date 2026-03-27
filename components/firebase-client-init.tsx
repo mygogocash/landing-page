@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { initFirebaseAnalytics } from "@/lib/analytics-client";
 import { getFirebaseApp } from "@/lib/firebase";
 
 /**
- * Initializes the Firebase web app once via the npm SDK (`initializeApp`).
- * GA4 page views use the gtag `<Script>` tags in the root layout to match
- * Firebase’s script-tag setup and avoid double-reporting with `getAnalytics`.
+ * Browser-only: `initializeApp` + GA4 via `initFirebaseAnalytics()` (modular SDK).
  */
 export function FirebaseClientInit() {
   useEffect(() => {
     getFirebaseApp();
+    initFirebaseAnalytics();
   }, []);
 
   return null;

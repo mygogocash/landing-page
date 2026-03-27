@@ -41,6 +41,12 @@ jobs:
           INVOLVE_ASIA_API_KEY: ${{ secrets.INVOLVE_ASIA_API_KEY }}
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
 
+      - name: Install Playwright browsers
+        run: npm run test:e2e:install
+
+      - name: E2E mobile overflow (served from out/)
+        run: npm run test:e2e:ci
+
       - name: Upload Static Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -60,5 +66,5 @@ jobs:
       - name: Deploy to Firebase Hosting
         env:
           FIREBASE_PROJECT_ID: landing-page-4ae23
-          FIREBASE_HOSTING_SITES: landing-page-4ae23-947ee
+          FIREBASE_HOSTING_SITES: landing-page-4ae23
         run: node scripts/deploy-firebase-hosting.mjs

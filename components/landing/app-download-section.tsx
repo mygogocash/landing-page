@@ -3,6 +3,15 @@ import SectionBadge from "@/components/section-badge";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
 import { ArrowUpRight } from "@/components/icons";
+import {
+  twCtaOutlineMotion,
+  twDurButton,
+  twEaseStandard,
+  twFocusRingPrimary,
+  twOpacityHoverMotion,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
 export default function AppDownloadSection() {
   return (
@@ -10,7 +19,7 @@ export default function AppDownloadSection() {
       id="download-app"
       className="scroll-mt-28 bg-cream py-16 md:py-24"
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
           <AnimateOnScroll>
             <div>
@@ -37,28 +46,28 @@ export default function AppDownloadSection() {
                   href="https://t.me/GoGoCashAppBot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#229ED9] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#229ED9] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   Telegram Mini App
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
                 <a
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 ${twOpacityHoverMotion} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   LINE Mini App
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
                 <a
                   href={WEB_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary transition hover:bg-surface-green"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary hover:bg-surface-green ${twCtaOutlineMotion}`}
                 >
                   Open web app
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
               </div>
             </div>
@@ -71,7 +80,7 @@ export default function AppDownloadSection() {
                 href={LINE_MINI_APP_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner transition hover:border-[#06C755]/40"
+                className={`mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner hover:border-[#06C755]/40 ${twTransitionButton} ${twFocusRingPrimary}`}
                 aria-label="Open GoGoCash LINE Mini App (QR code)"
               >
                 <Image
@@ -89,7 +98,7 @@ export default function AppDownloadSection() {
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-[#06C755] underline-offset-2 hover:underline"
+                  className={`font-medium text-[#06C755] underline-offset-2 hover:underline ${twDurButton} ${twEaseStandard} transition-colors motion-reduce:duration-micro`}
                 >
                   GoGoCash LINE Mini App
                 </a>

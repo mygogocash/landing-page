@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import AnimateOnScroll from "@/components/animate-on-scroll";
 import SectionBadge from "@/components/section-badge";
@@ -13,10 +13,22 @@ import {
 } from "@/lib/partner-search";
 import { SITE_FACTS } from "@/lib/site-facts";
 import type { PartnerBrand } from "@/lib/involve-asia";
+import { logBrandsLoadMore } from "@/lib/analytics-client";
+import { phBrandsLoadMoreClick } from "@/lib/posthog-analytics";
+import {
+  twCtaOutlineMotion,
+  twFocusRingPrimary,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
-/** Initial visible cards; more load on demand to limit scroll animations / layout work. */
-const BRANDS_INITIAL_VISIBLE = 48;
-const BRANDS_LOAD_MORE_STEP = 48;
+/** Desktop (md+): show this many rows before "Load more"; chunk size = cols × rows. */
+const BRANDS_ROWS_PER_CHUNK = 5;
+/** Mobile horizontal strip: cards before "Load more" (no row layout). */
+const BRANDS_MOBILE_INITIAL = 20;
+/** Card min width (px) must match `md:min-w-[220px]` + `gap-3` (12px). */
+const BRANDS_CARD_MIN_PX = 220;
+const BRANDS_GAP_PX = 12;
+const TAILWIND_MD_PX = 768;
 /** Only the first N cards use scroll-in animation (IntersectionObserver per item). */
 const BRANDS_ANIMATED_CAP = 24;
 
@@ -66,7 +78,7 @@ const DEFAULT_NO_RESULTS =
   "No brands match your search. Try a different keyword.";
 const DEFAULT_COUNT_ALL = "{count} brands";
 const DEFAULT_COUNT_FILTERED = "{filtered} of {total} brands";
-const DEFAULT_LOAD_MORE = "Load more brands";
+const DEFAULT_LOAD_MORE = "See more Brands";
 const DEFAULT_PARTNER_LOGO_ALT_TEMPLATE = "{name} cashback partner GoGoCash";
 
 type MerchantOffersStripProps = {
@@ -106,7 +118,45 @@ function MerchantBrandsGrid({
   loadMoreId,
   partnerLogoAlt,
 }: MerchantBrandsGridProps) {
-  const [visibleCap, setVisibleCap] = useState(BRANDS_INITIAL_VISIBLE);
+  const gridRef = useRef<HTMLDivElement>(null);
+  /** Items to add per "Load more" (updates on resize for desktop col count). */
+  const [loadStep, setLoadStep] = useState(BRANDS_MOBILE_INITIAL);
+  const [visibleCap, setVisibleCap] = useState(BRANDS_MOBILE_INITIAL);
+
+  useLayoutEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+
+    const colsForWidth = (w: number) =>
+      Math.max(
+        1,
+        Math.floor((w + BRANDS_GAP_PX) / (BRANDS_CARD_MIN_PX + BRANDS_GAP_PX)),
+      );
+
+    const syncFromLayout = (w: number, resetVisible: boolean) => {
+      if (w < TAILWIND_MD_PX) {
+        setLoadStep(BRANDS_MOBILE_INITIAL);
+        if (resetVisible) {
+          setVisibleCap(Math.min(BRANDS_MOBILE_INITIAL, filtered.length));
+        }
+        return;
+      }
+      const cols = colsForWidth(w);
+      const chunk = cols * BRANDS_ROWS_PER_CHUNK;
+      setLoadStep(chunk);
+      if (resetVisible) {
+        setVisibleCap(Math.min(chunk, filtered.length));
+      }
+    };
+
+    syncFromLayout(el.clientWidth, true);
+
+    const ro = new ResizeObserver(() => {
+      syncFromLayout(el.clientWidth, false);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [filtered]);
 
   const visibleSlice = useMemo(
     () => filtered.slice(0, visibleCap),
@@ -118,8 +168,9 @@ function MerchantBrandsGrid({
   return (
     <>
       <div
+        ref={gridRef}
         id="brands-grid"
-        className="-mx-2 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pt-1 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:pb-0"
+        className="-mx-2 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] pt-1 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:pb-0"
         role="list"
       >
         {filtered.length === 0 ? (
@@ -170,11 +221,16 @@ function MerchantBrandsGrid({
           <button
             type="button"
             id={loadMoreId}
-            className="rounded-full border border-primary/30 bg-white px-6 py-2.5 text-sm font-semibold text-primary shadow-sm transition hover:bg-surface-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className={`rounded-full border border-primary/30 bg-white px-6 py-2.5 text-sm font-semibold text-primary shadow-sm hover:bg-surface-green ${twCtaOutlineMotion}`}
             onClick={() =>
-              setVisibleCap((c) =>
-                Math.min(c + BRANDS_LOAD_MORE_STEP, filtered.length),
-              )
+              setVisibleCap((c) => {
+                const next = Math.min(c + loadStep, filtered.length);
+                if (next > c) {
+                  logBrandsLoadMore(next, filtered.length);
+                  phBrandsLoadMoreClick(next, filtered.length);
+                }
+                return next;
+              })
             }
           >
             {loadMoreLabel}
@@ -229,7 +285,7 @@ export default function MerchantOffersStrip({
       aria-labelledby="brands-heading"
       aria-describedby={description ? sectionDescId : undefined}
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="mb-6 flex flex-col items-center text-center md:mb-8">
             <SectionBadge
@@ -271,7 +327,7 @@ export default function MerchantOffersStrip({
               placeholder={searchPlaceholder}
               autoComplete="off"
               spellCheck={false}
-              className={`w-full rounded-full border border-gray-200 bg-white py-3 pl-11 text-sm text-gray-900 shadow-sm outline-none ring-primary/20 transition placeholder:text-gray-400 focus:border-primary focus:ring-2 md:text-base ${query ? "pr-[4.25rem]" : "pr-4"}`}
+              className={`w-full min-w-0 rounded-full border border-gray-200 bg-white py-3 pl-11 text-base text-gray-900 shadow-sm outline-none ring-primary/20 duration-button ease-standard transition-[border-color,box-shadow] placeholder:text-gray-400 focus:border-primary focus:ring-2 motion-reduce:duration-micro ${query ? "pr-[4.25rem]" : "pr-4"}`}
               aria-controls="brands-grid"
               aria-describedby={resultsStatusId}
             />
@@ -280,7 +336,7 @@ export default function MerchantOffersStrip({
                 type="button"
                 onClick={() => setQuery("")}
                 aria-label={searchClearLabel}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 ${twTransitionButton} ${twFocusRingPrimary}`}
               >
                 {searchClearLabel}
               </button>

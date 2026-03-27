@@ -11,6 +11,13 @@ import {
   Target,
 } from "@/components/icons";
 import { LINE_OFFICIAL_ACCOUNT_HREF } from "@/components/social-data";
+import {
+  twCtaOutlineMotion,
+  twCtaPrimaryMotion,
+  twFocusRingPrimary,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
 export function EnglishHomeHeroSection() {
   return (
@@ -18,8 +25,8 @@ export function EnglishHomeHeroSection() {
       id="home"
       className="relative flex min-h-[100dvh] flex-col scroll-mt-28 overflow-hidden hero-gradient"
     >
-      <div className="relative z-10 mx-auto flex min-h-0 w-full min-w-0 max-w-site flex-1 flex-col px-6 pb-16 pt-28 md:pb-24 md:pt-32 lg:px-8">
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col items-center justify-center text-center">
+      <div className="relative z-10 mx-auto flex min-h-0 w-full min-w-0 max-w-site flex-1 flex-col px-4 pb-0 pt-28 sm:px-6 md:pt-32 lg:px-8">
+        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col items-center justify-center text-center">
           <div className="flex w-full max-w-xl flex-col items-center xl:max-w-3xl">
             <div className="mx-auto w-full max-w-3xl">
               <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl lg:leading-[1.08]">
@@ -34,31 +41,33 @@ export function EnglishHomeHeroSection() {
             </div>
 
             <div className="mt-10 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center sm:gap-4">
-              <LaunchAppLink className="min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-dark hover:shadow-xl hover:scale-105 motion-reduce:transition-colors motion-reduce:hover:scale-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px] sm:px-6 md:px-8 md:py-3.5">
+              <LaunchAppLink
+                className={`group min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white shadow-lg hover:bg-primary-dark hover:shadow-xl sm:w-auto sm:min-w-[200px] sm:px-6 md:px-8 md:py-3.5 ${twCtaPrimaryMotion}`}
+              >
                 Start earning
-                <ArrowUpRight className="h-4 w-4 shrink-0" />
+                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </LaunchAppLink>
               <a
                 href={LINE_OFFICIAL_ACCOUNT_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Contact us on LINE"
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary transition hover:bg-surface-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px]"
+                className={`group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary hover:bg-surface-green sm:w-auto sm:min-w-[200px] ${twCtaOutlineMotion}`}
               >
                 Contact us
-                <ArrowUpRight className="h-4 w-4 shrink-0" />
+                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 w-full min-w-0 shrink-0 md:mt-12">
+        <div className="w-full min-w-0 shrink-0 leading-none">
           <Image
             src="/images/hero-dashboard-phones.svg"
             alt="GoGoCash app preview on two phones"
             width={800}
             height={600}
-            className="mx-auto h-auto w-full max-h-[min(52vh,34rem)] max-w-full object-contain drop-shadow-[0_24px_48px_-12px_rgba(16,185,129,0.15)] sm:max-h-[min(56vh,36rem)] lg:max-h-[min(60vh,38rem)]"
+            className="mx-auto block h-auto w-full max-h-[min(52vh,34rem)] max-w-full object-contain object-bottom drop-shadow-[0_24px_48px_-12px_rgba(16,185,129,0.15)] sm:max-h-[min(56vh,36rem)] lg:max-h-[min(60vh,38rem)]"
             sizes="(max-width: 1200px) calc(100vw - 3rem), 1120px"
           />
         </div>
@@ -70,7 +79,7 @@ export function EnglishHomeHeroSection() {
 export function EnglishFeatureHighlightsSection() {
   return (
     <section id="features" className="scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge
@@ -133,9 +142,11 @@ export function EnglishFeatureHighlightsSection() {
                 Join {SITE_FACTS.shopperCommunityLabel} shoppers stacking real
                 cashback
               </p>
-              <LaunchAppLink className="mt-4 w-fit min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary transition-all hover:shadow-lg">
+              <LaunchAppLink
+                className={`group mt-4 w-fit min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary shadow-sm hover:shadow-lg ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
+              >
                 Start earning free
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </LaunchAppLink>
             </div>
           </AnimateOnScroll>

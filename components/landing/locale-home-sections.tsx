@@ -18,6 +18,17 @@ import {
   Sparkles,
   Target,
 } from "@/components/icons";
+import {
+  twCtaMutedOutlineMotion,
+  twCtaOutlineMotion,
+  twCtaPrimaryMotion,
+  twDurButton,
+  twEaseStandard,
+  twFocusRingPrimary,
+  twNavTextMotion,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
 
 const WHY_ICONS = [Coins, Shield, Sparkles, Headphones] as const;
 const WHY_BG = ["bg-mint", "bg-cream", "bg-cream", "bg-mint"] as const;
@@ -32,15 +43,15 @@ export function LocaleHomeHeroSection({
       id="home"
       className="relative flex min-h-[100dvh] flex-col scroll-mt-28 overflow-hidden hero-gradient"
     >
-      <div className="relative z-10 mx-auto flex min-h-0 max-w-site flex-1 flex-col px-6 pb-16 pt-28 md:pb-24 md:pt-32 lg:px-8">
+      <div className="relative z-10 mx-auto flex min-h-0 w-full min-w-0 max-w-site flex-1 flex-col px-4 pb-0 pt-28 sm:px-6 md:pt-32 lg:px-8">
         <nav
           aria-label={copy.breadcrumbNavAria}
-          className="mb-8 flex flex-wrap justify-center gap-4 text-sm md:justify-start"
+          className="mb-8 flex shrink-0 flex-wrap justify-center gap-4 text-sm md:justify-start"
         >
           <Link
             href="/"
             lang="en"
-            className="font-medium text-primary hover:text-primary-dark"
+            className={`font-medium text-primary hover:text-primary-dark ${twNavTextMotion}`}
           >
             {copy.langNavEnglish}
           </Link>
@@ -50,7 +61,7 @@ export function LocaleHomeHeroSection({
           <span className="font-medium text-gray-700">{copy.langNavLocal}</span>
         </nav>
 
-        <div className="flex flex-1 flex-col items-center justify-center text-center">
+        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col items-center justify-center text-center">
           <div className="mx-auto w-full max-w-3xl">
             <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl lg:leading-[1.08]">
               {copy.hero.h1}
@@ -64,20 +75,34 @@ export function LocaleHomeHeroSection({
           </div>
 
           <div className="mt-10 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center sm:gap-4">
-            <LaunchAppLink className="min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto sm:min-w-[200px]">
+            <LaunchAppLink
+              className={`group min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-md hover:bg-primary-dark sm:w-auto sm:min-w-[200px] ${twCtaPrimaryMotion}`}
+            >
               {copy.hero.ctaLaunch}
-              <ArrowUpRight className="h-5 w-5 shrink-0" />
+              <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </LaunchAppLink>
             <a
               href="https://line.me/R/ti/p/@gogocash"
               target="_blank"
               rel="noopener noreferrer"
               aria-label={copy.hero.lineAria}
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm transition-colors hover:border-gray-400 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 sm:w-auto sm:min-w-[200px]"
+              className={`group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-8 py-3.5 text-base font-semibold text-gray-900 shadow-sm hover:border-gray-400 hover:bg-gray-50 sm:w-auto sm:min-w-[200px] ${twCtaMutedOutlineMotion}`}
             >
               {copy.hero.ctaLine}
+              <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
             </a>
           </div>
+        </div>
+
+        <div className="w-full min-w-0 shrink-0 leading-none">
+          <Image
+            src="/images/hero-dashboard-phones.svg"
+            alt="GoGoCash app preview on two phones"
+            width={800}
+            height={600}
+            className="mx-auto block h-auto w-full max-h-[min(52vh,34rem)] max-w-full object-contain object-bottom drop-shadow-[0_24px_48px_-12px_rgba(16,185,129,0.15)] sm:max-h-[min(56vh,36rem)] lg:max-h-[min(60vh,38rem)]"
+            sizes="(max-width: 1200px) calc(100vw - 3rem), 1120px"
+          />
         </div>
       </div>
     </section>
@@ -91,7 +116,7 @@ export function LocaleWhySection({
 }) {
   return (
     <section id="why-gogocash" className="scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge
@@ -139,7 +164,7 @@ export function LocaleFeatureGridSection({
 }) {
   return (
     <section id="features" className="scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge
@@ -197,9 +222,11 @@ export function LocaleFeatureGridSection({
               <p className="mt-2 text-sm text-white/80">
                 {copy.features.ctaCard.bodyLine}
               </p>
-              <LaunchAppLink className="mt-4 w-fit min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary transition-all hover:shadow-lg">
+              <LaunchAppLink
+                className={`group mt-4 w-fit min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary shadow-sm hover:shadow-lg ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
+              >
                 {copy.features.ctaCard.cta}
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </LaunchAppLink>
             </div>
           </AnimateOnScroll>
@@ -219,7 +246,7 @@ export function LocaleDownloadSection({
       id="download-app"
       className="scroll-mt-28 bg-cream py-16 md:py-24"
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
           <AnimateOnScroll>
             <div>
@@ -243,28 +270,28 @@ export function LocaleDownloadSection({
                   href="https://t.me/GoGoCashAppBot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#229ED9] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#229ED9] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   {copy.download.telegram}
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
                 <a
                   href={LINE_MINI_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#06C755] px-6 py-3 text-sm font-semibold text-white hover:opacity-95 ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
                 >
                   {copy.download.line}
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
                 <a
                   href={WEB_APP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary transition hover:bg-surface-green"
+                  className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3 text-sm font-semibold text-primary hover:bg-surface-green ${twCtaOutlineMotion}`}
                 >
                   {copy.download.web}
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </a>
               </div>
             </div>
@@ -279,7 +306,7 @@ export function LocaleDownloadSection({
                 href={LINE_MINI_APP_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner transition hover:border-[#06C755]/40"
+                className={`mt-4 block rounded-2xl border border-gray-200 bg-white p-2 shadow-inner hover:border-[#06C755]/40 ${twDurButton} ${twEaseStandard} transition-[border-color,box-shadow] motion-reduce:duration-micro`}
                 aria-label={copy.download.qrAria}
               >
                 <Image
@@ -322,7 +349,7 @@ export function LocaleLearnSection({
       id="learn"
       className="scroll-mt-28 border-t border-gray-100 bg-white py-16 md:py-20"
     >
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge label={copy.learn.badge} />
@@ -338,7 +365,7 @@ export function LocaleLearnSection({
               <a
                 href={item.href}
                 lang={learnArticleLang}
-                className="group flex h-full flex-col rounded-2xl border border-gray-100 bg-cream/50 p-6 transition hover:border-primary/20 hover:shadow-md"
+                className={`group flex h-full flex-col rounded-2xl border border-gray-100 bg-cream/50 p-6 hover:border-primary/20 hover:shadow-md ${twTransitionButton} ${twPressSm}`}
               >
                 <h3 className="text-lg font-semibold text-gray-800">
                   {item.title}
@@ -348,7 +375,7 @@ export function LocaleLearnSection({
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
                   {copy.learn.readMore}
-                  <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard motion-reduce:transition-none group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
               </a>
             </AnimateOnScroll>
@@ -366,7 +393,7 @@ export function LocaleCommunitySection({
 }) {
   return (
     <section id="community" className="scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-site px-6 lg:px-8">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll>
           <div className="flex flex-col items-center text-center">
             <SectionBadge label={copy.community.badge} />
@@ -387,7 +414,7 @@ export function LocaleCommunitySection({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-primary/30 hover:text-primary"
+                className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:border-primary/30 hover:text-primary ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
               >
                 <SocialIcon name={social.icon} />
                 <span className="hidden sm:inline">{social.label}</span>

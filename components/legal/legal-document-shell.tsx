@@ -18,8 +18,8 @@ export default function LegalDocumentShell({
   return (
     <>
       <Header />
-      <main role="main" className="min-h-[60vh] bg-white">
-        <div className="mx-auto max-w-site px-6 pb-24 pt-28 lg:px-8">
+      <main role="main" className="min-h-[60vh] min-w-0 bg-white">
+        <div className="mx-auto min-w-0 max-w-site px-4 pb-24 pt-28 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="mb-8">
             <Link
               href="/"
@@ -28,7 +28,7 @@ export default function LegalDocumentShell({
               ← Back to home
             </Link>
           </nav>
-          <article className="mx-auto max-w-3xl">
+          <article className="mx-auto min-w-0 max-w-3xl break-words">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
               {title}
             </h1>
