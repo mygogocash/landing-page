@@ -1,0 +1,83 @@
+import type { ComponentType, ReactNode } from "react";
+import AnimateOnScroll from "@/components/animate-on-scroll";
+import LaunchAppLink from "@/components/launch-app-link";
+import { ArrowUpRight } from "@/components/icons";
+import {
+  twFocusRingPrimary,
+  twPressSm,
+  twTransitionButton,
+} from "@/lib/motion-styles";
+import { uiCtaInvertedOnGradient, uiSectionTitleLg } from "@/lib/ui-classes";
+
+export type FeatureHighlightCard = { title: string; body: string };
+
+type IconComp = ComponentType<{ className?: string }>;
+
+const FEATURE_CARD_BGS = ["bg-mint", "bg-cream", "bg-cream"] as const;
+
+/**
+ * Four-tile feature grid (three light cards + gradient CTA) shared by English
+ * and locale home pages; copy comes from props.
+ */
+export function FeatureHighlightsGrid({
+  badge,
+  sectionTitle,
+  cards,
+  icons,
+  ctaCard,
+}: {
+  badge: ReactNode;
+  sectionTitle: string;
+  cards: readonly [
+    FeatureHighlightCard,
+    FeatureHighlightCard,
+    FeatureHighlightCard,
+  ];
+  icons: readonly [IconComp, IconComp, IconComp];
+  ctaCard: { title: string; bodyLine: string; ctaLabel: string };
+}) {
+  return (
+    <section id="features" className="scroll-mt-28 py-16 md:py-24">
+      <div className="mx-auto min-w-0 max-w-site px-4 sm:px-6 lg:px-8">
+        <AnimateOnScroll>
+          <div className="flex flex-col items-center text-center">
+            {badge}
+            <h2 className={`mt-6 ${uiSectionTitleLg}`}>{sectionTitle}</h2>
+          </div>
+        </AnimateOnScroll>
+
+        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:gap-6">
+          {cards.map((card, index) => {
+            const Icon = icons[index];
+            return (
+              <AnimateOnScroll key={card.title} delay={(index + 1) * 100}>
+                <div
+                  className={`relative min-h-[280px] overflow-hidden rounded-3xl p-8 lg:p-10 ${FEATURE_CARD_BGS[index]}`}
+                >
+                  <Icon className="mb-4 h-8 w-8 text-primary" />
+                  <h3 className="text-xl font-bold text-gray-800">{card.title}</h3>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-500">
+                    {card.body}
+                  </p>
+                </div>
+              </AnimateOnScroll>
+            );
+          })}
+
+          <AnimateOnScroll delay={400}>
+            <div className="relative flex min-h-[280px] flex-col justify-end rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-8 lg:p-10">
+              <h3 className="text-2xl font-bold text-white">{ctaCard.title}</h3>
+              <p className="mt-2 text-sm text-white/80">{ctaCard.bodyLine}</p>
+              <LaunchAppLink
+                className={`group mt-4 w-fit min-h-11 items-center gap-2 px-6 py-3 text-sm ${uiCtaInvertedOnGradient} ${twTransitionButton} ${twPressSm} ${twFocusRingPrimary}`}
+              >
+                {ctaCard.ctaLabel}
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-button ease-standard group-hover:translate-x-0.5 motion-reduce:transition-none" />
+              </LaunchAppLink>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </div>
+    </section>
+  );
+}

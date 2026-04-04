@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.node_modules.stalled/
+
+# Next.js
+.next/
+out/
+
+# Env (keep .env.example in repo)
+.env
+.env.local
+.env.*.local
+
+# Cloudflare API (DNS automation — never commit)
+.env.cloudflare
+
+# Debug / OS
+.DS_Store
+*.log
+npm-debug.log*
+
+# Firebase local cache
+.firebase/
+
+# IDE
+.idea/
+.vscode/
+.claude/
+.cursor/
+*.swp
+*.swo
+
+# Test / coverage
+coverage/
+playwright-report/
+test-results/
+playwright/.cache/
+
+# TypeScript / Next generated files
+*.tsbuildinfo
+next-env.d.ts
