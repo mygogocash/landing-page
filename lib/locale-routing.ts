@@ -88,22 +88,25 @@ export function resolveLanguageSelection(
   language: LangCode,
   currentRegion: RegionCode,
 ): { path: string; locale: StoredLocale } {
-  if (language === "en") {
-    return {
-      path: "/",
-      locale: { lang: "en", region: currentRegion },
-    };
+  switch (language) {
+    case "en":
+      return {
+        path: "/",
+        locale: { lang: "en", region: currentRegion },
+      };
+    case "th":
+      return { path: "/th", locale: { lang: "th", region: "TH" } };
+    case "zh-TW":
+      return { path: "/tw", locale: { lang: "zh-TW", region: "TW" } };
+    case "zh-CN":
+      return { path: "/cn", locale: { lang: "zh-CN", region: "CN" } };
+    case "ja":
+      return { path: "/ja", locale: { lang: "ja", region: "JP" } };
+    default: {
+      const _exhaustive: never = language;
+      return _exhaustive;
+    }
   }
-  if (language === "th") {
-    return { path: "/th", locale: { lang: "th", region: "TH" } };
-  }
-  if (language === "zh-TW") {
-    return { path: "/tw", locale: { lang: "zh-TW", region: "TW" } };
-  }
-  if (language === "zh-CN") {
-    return { path: "/cn", locale: { lang: "zh-CN", region: "CN" } };
-  }
-  return { path: "/ja", locale: { lang: "ja", region: "JP" } };
 }
 
 export function resolveAutoRedirectPath(primaryLanguage: string): string | null {

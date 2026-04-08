@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { faqItemsForLocale, faqLocaleFromLandingPath } from "./locale-faq";
 import { FAQ_ITEMS } from "./faq-data";
+import { LOCALE_HOME_IDS } from "./locale-home-registry";
 
 describe("locale-faq", () => {
   it("maps landing paths to FAQ locales", () => {
@@ -23,6 +24,12 @@ describe("locale-faq", () => {
 
   it("returns non-empty FAQ for each locale", () => {
     for (const id of ["en", "th", "tw", "ja", "cn"] as const) {
+      assert.ok(faqItemsForLocale(id).length > 0, id);
+    }
+  });
+
+  it("every LocaleHomePage locale has FAQ copy", () => {
+    for (const id of LOCALE_HOME_IDS) {
       assert.ok(faqItemsForLocale(id).length > 0, id);
     }
   });

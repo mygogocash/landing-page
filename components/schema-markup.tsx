@@ -43,6 +43,7 @@ export default function SchemaMarkup() {
         "Thai",
         "Indonesian",
         "Chinese (Traditional)",
+        "Chinese (Simplified)",
         "Japanese",
       ],
     },

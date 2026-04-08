@@ -93,7 +93,7 @@ Confirm **`out/`** exists after build and is not empty.
 | Goal | Command |
 |------|---------|
 | **Hosting only** | `npm run deploy:firebase` — runs `next build` then `scripts/deploy-firebase-hosting.mjs` (supports `FIREBASE_HOSTING_SITES` / CLI args for multiple sites). |
-| **Hosting + PostHog proxy** | `npm run deploy:firebase:full` — `next build` + `firebase deploy --only hosting,functions --non-interactive`. |
+| **Hosting + PostHog proxy** | `npm run deploy:firebase:full` — `next build` + `npm run functions:install` (`npm ci` under `functions/`, so `firebase-functions` is present) + `firebase deploy --only hosting,functions --non-interactive`. |
 
 **PostHog `/w` proxy and Hosting:** Firebase **refuses to release** Hosting if `firebase.json` contains a rewrite to a function that **does not exist** in the project (e.g. `posthogProxy` never deployed). Default `firebase.json` in this repo ships **without** that rewrite so static Hosting can go live; after **`posthogProxy` deploys successfully**, add this block back inside `hosting` (sibling of `headers`), then redeploy hosting:
 
@@ -106,7 +106,7 @@ Confirm **`out/`** exists after build and is not empty.
     ],
 ```
 
-**First Functions deploy:** run `cd functions && npm ci` once from repo root.
+**Functions `node_modules`:** `functions/` is gitignored for `node_modules/`. **`npm run deploy:firebase:full` installs dependencies first.** If you run `firebase deploy --only functions` by hand, run `npm run functions:install` (or `cd functions && npm ci`) beforehand or the CLI will error (“Couldn't find firebase-functions package”).
 
 **Custom project id** (e.g. CI):
 

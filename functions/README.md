@@ -7,7 +7,7 @@ Forwards `https://<your-hosting-domain>/w/*` to PostHog US ingest (`us.i.posthog
 ## Prerequisites
 
 - Firebase **Blaze** plan (Cloud Functions).
-- Node **20** (matches `engines` in `package.json`).
+- Node **22** (matches `engines` in `package.json`; required for current Cloud Functions runtime support).
 - **Hosting rewrite:** do not add the `/w/**` → `posthogProxy` entry in `firebase.json` until this function has deployed at least once; otherwise Hosting **finalize** fails with a missing Cloud Run service error (see [`docs/firebase-deploy.md`](../docs/firebase-deploy.md) §4).
 
 ## One-time setup

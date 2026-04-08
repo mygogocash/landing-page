@@ -14,6 +14,8 @@ export type FaqLocaleId = "en" | "th" | "tw" | "ja" | "cn";
  */
 export function faqItemsForLocale(id: FaqLocaleId): FaqEntry[] {
   switch (id) {
+    case "en":
+      return FAQ_ITEMS;
     case "th":
       return THAI_FAQ_ITEMS;
     case "tw":
@@ -22,8 +24,10 @@ export function faqItemsForLocale(id: FaqLocaleId): FaqEntry[] {
       return JAPAN_FAQ_ITEMS;
     case "cn":
       return CHINA_FAQ_ITEMS;
-    case "en":
-      return FAQ_ITEMS;
+    default: {
+      const _exhaustive: never = id;
+      return _exhaustive;
+    }
   }
 }
 
