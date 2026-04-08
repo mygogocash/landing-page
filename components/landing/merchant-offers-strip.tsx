@@ -14,7 +14,6 @@ import {
 import { SITE_FACTS } from "@/lib/site-facts";
 import type { PartnerBrand } from "@/lib/involve-asia";
 import { logBrandsLoadMore } from "@/lib/analytics-client";
-import { phBrandsLoadMoreClick } from "@/lib/posthog-analytics";
 import {
   twCtaOutlineMotion,
   twFocusRingPrimary,
@@ -241,7 +240,6 @@ function MerchantBrandsGrid({
                 const next = Math.min(c + loadStep, filtered.length);
                 if (next > c) {
                   logBrandsLoadMore(next, filtered.length);
-                  phBrandsLoadMoreClick(next, filtered.length);
                 }
                 return next;
               })

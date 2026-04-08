@@ -14,7 +14,7 @@ Production target: **`https://gogocash.co`** (DNS on **Cloudflare**, hosting on 
 | **Forms** | Note submit endpoints (Framer form, Zapier, etc.). Reimplement with your API route **only if** you add a server (this export has **no** API on Firebase Hosting alone—use external form services or a separate backend). |
 | **Embeds** | Lottie, Cal.com, Typeform, etc.—recreate in React components or `next/script` as needed. |
 | **SEO** | Title, description, OG image per page—mirror in `metadata` / `layout.tsx` / page exports. |
-| **Analytics** | List Framer snippets (GA, Meta Pixel, PostHog, etc.). Wire via **env** in this repo (see `.env.example`, `docs/posthog-events.md`). |
+| **Analytics** | List Framer snippets (GA, Meta Pixel, etc.). Wire via **env** in this repo (see `.env.example`; Firebase Analytics and LINE Tag are supported in code). |
 
 **Routes already in this repo (reference):** `/`, `/about`, `/search`, `/learn`, `/learn/[slug]`, `/how-gogocash-makes-money`, `/privacy-policy`, `/term-of-use`, `/terms-of-service`, locale roots `/en`, `/th`, `/id`, `/ja`, `/tw`, `/sitemap.xml`.
 
@@ -25,7 +25,7 @@ Production target: **`https://gogocash.co`** (DNS on **Cloudflare**, hosting on 
 1. Implement any **missing pages** or sections compared to Framer.
 2. Set production env before **`npm run build`**:
    - `NEXT_PUBLIC_SITE_URL=https://gogocash.co`
-   - PostHog / Firebase analytics keys as needed (see `.env.example`).
+   - Firebase / LINE Tag analytics keys as needed (see `.env.example`).
 3. Run **`npm run verify`** locally; fix lint/tests/build.
 4. Optional: **`npm run test:e2e`** for critical flows.
 
@@ -82,7 +82,6 @@ Static export does **not** run a Node server; do redirects at **Firebase** or **
 | **Google Search Console** | Add property for `https://gogocash.co`, verify, submit `sitemap.xml`. |
 | **Update links** | App deep links, emails, ads, social bios → `https://gogocash.co`. |
 | **Framer** | Cancel or downgrade after TTL flush; keep a **PDF/export** of old copy for reference. |
-| **PostHog proxy** | Optional: deploy **`posthogProxy`** and restore `/w/**` rewrite in `firebase.json` after Cloud Build IAM is fixed ([`firebase-deploy.md`](./firebase-deploy.md) §4). |
 
 ---
 
@@ -92,13 +91,11 @@ Static export does **not** run a Node server; do redirects at **Firebase** or **
 |------|------------|
 | **URL changes** | Cloudflare **bulk redirects** from old Framer paths to new Next paths. |
 | **Forms on Framer** | Plan external handler or small API elsewhere before removing Framer. |
-| **Analytics gaps** | Compare event names in PostHog/GA before and after; document renames. |
+| **Analytics gaps** | Compare event names in GA / your analytics tools before and after; document renames. |
 | **Double proxy** | Cloudflare orange cloud + Firebase SSL can conflict—follow Firebase’s DNS instructions. |
 
 ---
 
 ## Related docs
 
-- [`docs/firebase-deploy.md`](./firebase-deploy.md) — build, deploy, Hosting + Functions caveats  
-- [`docs/posthog-events.md`](./posthog-events.md) — PostHog env and proxy options  
-- [`functions/README.md`](../functions/README.md) — PostHog Cloud Function
+- [`docs/firebase-deploy.md`](./firebase-deploy.md) — build and deploy to Firebase Hosting

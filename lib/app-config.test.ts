@@ -5,14 +5,9 @@ import {
   isMarketingAnalyticsEnabled,
   marketingSiteOrigin,
   marketingSiteUrl,
-  postHogApiHost,
-  postHogNeedsUiHost,
-  postHogUiHost,
   publicFirebaseConfig,
   publicFirebaseMeasurementId,
   publicLineTagId,
-  publicPostHogKey,
-  shouldLoadPostHog,
   strapiBaseUrl,
 } from "./app-config";
 
@@ -74,47 +69,6 @@ describe("app-config", () => {
     assert.ok(config);
     assert.equal(config?.projectId, "custom-project");
     assert.equal(publicFirebaseMeasurementId(), "G-CUSTOM");
-  });
-
-  it("loads PostHog only when a key is set and rules allow", () => {
-    delete process.env.NEXT_PUBLIC_POSTHOG_KEY;
-    delete process.env.NEXT_PUBLIC_POSTHOG_ENABLED;
-    assert.equal(publicPostHogKey(), null);
-    assert.equal(shouldLoadPostHog(), false);
-
-    process.env.NEXT_PUBLIC_POSTHOG_KEY = "phc_test";
-    process.env = { ...process.env, NODE_ENV: "development" };
-    delete process.env.NEXT_PUBLIC_ANALYTICS_ENABLED;
-    assert.equal(shouldLoadPostHog(), false);
-
-    process.env.NEXT_PUBLIC_POSTHOG_ENABLED = "true";
-    assert.equal(shouldLoadPostHog(), true);
-
-    process.env.NEXT_PUBLIC_POSTHOG_ENABLED = "false";
-    process.env = { ...process.env, NODE_ENV: "production" };
-    assert.equal(shouldLoadPostHog(), false);
-  });
-
-  it("normalizes PostHog API host and falls back to US cloud", () => {
-    delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
-    assert.match(postHogApiHost(), /^https:\/\/us\.i\.posthog\.com$/);
-
-    process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://eu.i.posthog.com/";
-    assert.equal(postHogApiHost(), "https://eu.i.posthog.com");
-  });
-
-  it("sets ui_host when using a proxy ingest URL", () => {
-    delete process.env.NEXT_PUBLIC_POSTHOG_UI_HOST;
-    delete process.env.NEXT_PUBLIC_POSTHOG_HOST;
-    assert.equal(postHogNeedsUiHost(), false);
-    assert.equal(postHogUiHost(), "https://us.posthog.com");
-
-    process.env.NEXT_PUBLIC_POSTHOG_HOST = "https://gogocash.co/w";
-    assert.equal(postHogNeedsUiHost(), true);
-    assert.equal(postHogUiHost(), "https://us.posthog.com");
-
-    process.env.NEXT_PUBLIC_POSTHOG_UI_HOST = "https://eu.posthog.com";
-    assert.equal(postHogUiHost(), "https://eu.posthog.com");
   });
 
   it("normalizes strapi base url and involve asia pagination bounds", () => {

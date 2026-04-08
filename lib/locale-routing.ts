@@ -109,8 +109,49 @@ export function resolveLanguageSelection(
   }
 }
 
-export function resolveAutoRedirectPath(primaryLanguage: string): string | null {
-  if (primaryLanguage === "th") return "/th";
-  if (primaryLanguage === "id") return "/id";
+/** Subtags that imply Traditional Chinese marketing locale (`/tw`). */
+const ZH_TRADITIONAL_HINTS = new Set(["hant", "tw", "hk", "mo"]);
+
+/** Subtags that imply Simplified Chinese marketing locale (`/cn`). */
+const ZH_SIMPLIFIED_HINTS = new Set(["hans", "cn", "sg"]);
+
+/**
+ * Map one BCP-47-style locale tag (case-insensitive) to a marketing path, or null if no auto-redirect.
+ * Bare `zh` without script/region is ambiguous and returns null.
+ */
+export function matchBrowserLocaleTagForRedirect(tag: string): string | null {
+  const normalized = tag.trim().replace(/_/g, "-");
+  if (!normalized) return null;
+
+  const parts = normalized.toLowerCase().split("-").filter(Boolean);
+  const lang = parts[0];
+  if (!lang) return null;
+
+  if (lang === "th") return "/th";
+  if (lang === "ja") return "/ja";
+  if (lang === "id") return "/id";
+  if (lang === "en") return "/";
+
+  if (lang === "zh") {
+    if (parts.length === 1) return null;
+
+    for (const p of parts.slice(1)) {
+      if (ZH_TRADITIONAL_HINTS.has(p)) return "/tw";
+    }
+    for (const p of parts.slice(1)) {
+      if (ZH_SIMPLIFIED_HINTS.has(p)) return "/cn";
+    }
+    return null;
+  }
+
+  return null;
+}
+
+/** Pick the first matching path from the browser's ordered locale preference list. */
+export function resolveAutoRedirectFromBrowserLocales(tags: string[]): string | null {
+  for (const raw of tags) {
+    const path = matchBrowserLocaleTagForRedirect(raw);
+    if (path) return path;
+  }
   return null;
 }

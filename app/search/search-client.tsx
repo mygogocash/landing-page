@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { logSiteSearch } from "@/lib/analytics-client";
-import { phSiteSearchSubmit } from "@/lib/posthog-analytics";
 import Link from "next/link";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -23,7 +22,6 @@ export default function SearchClient() {
     if (lastLoggedQuery.current === q) return;
     lastLoggedQuery.current = q;
     logSiteSearch(q);
-    phSiteSearchSubmit(q);
   }, [q]);
 
   return (

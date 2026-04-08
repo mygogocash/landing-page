@@ -4,7 +4,8 @@ import {
   DEFAULT_LOCALE,
   getSectionedLandingBasePath,
   isSectionedLandingPath,
-  resolveAutoRedirectPath,
+  matchBrowserLocaleTagForRedirect,
+  resolveAutoRedirectFromBrowserLocales,
   resolveLanguageSelection,
   resolveLocaleForPathname,
 } from "./locale-routing";
@@ -60,9 +61,31 @@ describe("locale-routing", () => {
     });
   });
 
-  it("maps browser languages to auto-redirect paths", () => {
-    assert.equal(resolveAutoRedirectPath("th"), "/th");
-    assert.equal(resolveAutoRedirectPath("id"), "/id");
-    assert.equal(resolveAutoRedirectPath("ja"), null);
+  it("maps a single BCP-47 tag to auto-redirect paths", () => {
+    assert.equal(matchBrowserLocaleTagForRedirect("th-TH"), "/th");
+    assert.equal(matchBrowserLocaleTagForRedirect("id-ID"), "/id");
+    assert.equal(matchBrowserLocaleTagForRedirect("ja-JP"), "/ja");
+    assert.equal(matchBrowserLocaleTagForRedirect("en-SG"), "/");
+    assert.equal(matchBrowserLocaleTagForRedirect("EN_us"), "/");
+
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-TW"), "/tw");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-HK"), "/tw");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-MO"), "/tw");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-Hant"), "/tw");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-CN"), "/cn");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-SG"), "/cn");
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-Hans"), "/cn");
+
+    assert.equal(matchBrowserLocaleTagForRedirect("zh"), null);
+    assert.equal(matchBrowserLocaleTagForRedirect("zh-yue"), null);
+    assert.equal(matchBrowserLocaleTagForRedirect("fr-FR"), null);
+  });
+
+  it("walks ordered browser locales and picks the first match", () => {
+    assert.equal(resolveAutoRedirectFromBrowserLocales(["fr-FR", "th-TH"]), "/th");
+    assert.equal(resolveAutoRedirectFromBrowserLocales(["zh", "en-GB"]), "/");
+    assert.equal(resolveAutoRedirectFromBrowserLocales(["zh", "ja"]), "/ja");
+    assert.equal(resolveAutoRedirectFromBrowserLocales(["zh-CN", "zh-TW"]), "/cn");
+    assert.equal(resolveAutoRedirectFromBrowserLocales([]), null);
   });
 });

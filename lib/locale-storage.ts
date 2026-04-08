@@ -60,15 +60,41 @@ export function persistLocaleRaw(lang: LangCode, region: RegionCode): void {
   persistLocale({ lang, region });
 }
 
+/**
+ * Browser locale tags in preference order (`navigator.languages`, then `navigator.language`).
+ * Deduplicates case-insensitively while preserving first-seen order.
+ */
+export function readBrowserLocaleTags(): string[] {
+  if (typeof navigator === "undefined") return ["en"];
+
+  const seen = new Set<string>();
+  const out: string[] = [];
+
+  const push = (raw: string | undefined | null) => {
+    const t = raw?.trim().replace(/_/g, "-");
+    if (!t) return;
+    const key = t.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(t);
+  };
+
+  for (const l of navigator.languages ?? []) push(l);
+  push(navigator.language);
+
+  return out.length > 0 ? out : ["en"];
+}
+
+/** Primary language subtag of the top browser locale — legacy helper for simple checks. */
 export function readPrimaryBrowserLanguage(): string {
-  if (typeof navigator === "undefined") return "en";
-  const raw = navigator.languages?.[0] ?? navigator.language ?? "en";
-  return raw.split("-")[0]?.toLowerCase() ?? "en";
+  const tags = readBrowserLocaleTags();
+  const first = tags[0] ?? "en";
+  return first.split("-")[0]?.toLowerCase() ?? "en";
 }
 
 export function isLikelyAutomatedClient(): boolean {
   if (typeof navigator === "undefined") return true;
-  const ua = navigator.userAgent.toLowerCase();
+  const ua = (navigator.userAgent ?? "").toLowerCase();
   return /bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot|facebookexternalhit|preview/i.test(
     ua,
   );

@@ -1,12 +1,5 @@
 const DEFAULT_SITE_URL = "https://gogocash.co";
 
-/** PostHog ingestion (US). EU: `https://eu.i.posthog.com`. Self-host: your instance origin. */
-const DEFAULT_POSTHOG_API_HOST = "https://us.i.posthog.com";
-const DEFAULT_POSTHOG_EU_INGEST = "https://eu.i.posthog.com";
-/** App UI / toolbar (not ingest). Required when `api_host` is a proxy or custom domain. */
-const DEFAULT_POSTHOG_UI_HOST_US = "https://us.posthog.com";
-const DEFAULT_POSTHOG_UI_HOST_EU = "https://eu.posthog.com";
-
 /** LINE Tag (LAP) — public id; override with NEXT_PUBLIC_LINE_TAG_ID or disable with empty string. */
 const DEFAULT_LINE_TAG_ID = "d27ab1a2-5e67-48d0-af8d-ca6b30b67452";
 
@@ -94,58 +87,6 @@ export function shouldLoadLineTag(): boolean {
   const lineOverride = readTrimmedEnv("NEXT_PUBLIC_LINE_TAG_ENABLED");
   if (lineOverride === "false") return false;
   if (lineOverride === "true") return true;
-  return isMarketingAnalyticsEnabled();
-}
-
-/** Public project API key from PostHog (safe to expose in the browser). */
-export function publicPostHogKey(): string | null {
-  return readTrimmedEnv("NEXT_PUBLIC_POSTHOG_KEY");
-}
-
-export function postHogApiHost(): string {
-  const raw = readTrimmedEnv("NEXT_PUBLIC_POSTHOG_HOST");
-  if (!raw) return DEFAULT_POSTHOG_API_HOST;
-  try {
-    return new URL(raw).href.replace(/\/$/, "");
-  } catch {
-    return DEFAULT_POSTHOG_API_HOST;
-  }
-}
-
-/**
- * PostHog “app” origin (toolbar, feature flag UI). Set explicitly when using a
- * managed or self-hosted proxy. See https://posthog.com/docs/advanced/proxy
- */
-export function postHogUiHost(): string {
-  const explicit = readTrimmedEnv("NEXT_PUBLIC_POSTHOG_UI_HOST");
-  if (explicit) {
-    try {
-      return new URL(explicit).origin;
-    } catch {
-      return DEFAULT_POSTHOG_UI_HOST_US;
-    }
-  }
-  const api = postHogApiHost();
-  if (api.includes("eu.i.posthog.com")) return DEFAULT_POSTHOG_UI_HOST_EU;
-  return DEFAULT_POSTHOG_UI_HOST_US;
-}
-
-/** True when ingest is not the public PostHog cloud API (proxy / managed subdomain / self-host). */
-export function postHogNeedsUiHost(): boolean {
-  const api = postHogApiHost();
-  return api !== DEFAULT_POSTHOG_API_HOST && api !== DEFAULT_POSTHOG_EU_INGEST;
-}
-
-/**
- * Load PostHog when a key is set and not explicitly disabled.
- * Mirrors LINE Tag: `NEXT_PUBLIC_POSTHOG_ENABLED=true|false` overrides;
- * otherwise follows `isMarketingAnalyticsEnabled()`.
- */
-export function shouldLoadPostHog(): boolean {
-  if (!publicPostHogKey()) return false;
-  const override = readTrimmedEnv("NEXT_PUBLIC_POSTHOG_ENABLED");
-  if (override === "false") return false;
-  if (override === "true") return true;
   return isMarketingAnalyticsEnabled();
 }
 

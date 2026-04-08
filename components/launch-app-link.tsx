@@ -3,7 +3,6 @@
 import { useCallback } from "react";
 import { LINE_MINI_APP_HREF, WEB_APP_HREF } from "@/components/social-data";
 import { logLaunchAppClick } from "@/lib/analytics-client";
-import { phLaunchAppCtaClick } from "@/lib/posthog-analytics";
 import { sendLineTagConversion } from "@/lib/line-tag";
 
 type LaunchAppLinkProps = {
@@ -26,11 +25,9 @@ export default function LaunchAppLink({
 
   const onWeb = useCallback(() => {
     logLaunchAppClick("web_desktop");
-    phLaunchAppCtaClick("web_desktop");
   }, []);
   const onLine = useCallback(() => {
     logLaunchAppClick("line_mobile");
-    phLaunchAppCtaClick("line_mobile");
     sendLineTagConversion();
   }, []);
 

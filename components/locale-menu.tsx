@@ -28,10 +28,6 @@ import {
   logLocaleRegionSelect,
 } from "@/lib/analytics-client";
 import {
-  phLocaleLanguageSelect,
-  phLocaleRegionSelect,
-} from "@/lib/posthog-analytics";
-import {
   twDurButton,
   twEaseStandard,
   twFocusRingPrimary,
@@ -112,7 +108,6 @@ export function LocaleDropdown() {
       );
       persistLocale(locale);
       logLocaleLanguageSelect(code);
-      phLocaleLanguageSelect(code);
       router.push(path);
     },
     [router],
@@ -193,7 +188,6 @@ export function LocaleDropdown() {
                   selected={region === r.code}
                   onClick={() => {
                     logLocaleRegionSelect(r.code);
-                    phLocaleRegionSelect(r.code);
                     setRegion(r.code);
                   }}
                 >
