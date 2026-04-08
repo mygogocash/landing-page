@@ -21,7 +21,7 @@ import {
  * - Sets `AUTO_LOCALE_DONE_KEY` after the first evaluation so returning to `/`
  *   (e.g. “English site”) does not loop redirects.
  * - Syncs the header dropdown + `document.documentElement.lang` from locale routes
- *   (`/th`, `/id`, `/tw`, `/ja`) when there is no saved preference yet.
+ *   (`/th`, `/id`, `/tw`, `/cn`, `/ja`) when there is no saved preference yet.
  */
 export function BrowserLocaleBootstrap() {
   useEffect(() => {

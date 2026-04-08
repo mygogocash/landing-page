@@ -2,12 +2,14 @@ export const LANGUAGES = [
   { code: "en", label: "English", flag: "🇬🇧" },
   { code: "th", label: "ไทย", flag: "🇹🇭" },
   { code: "zh-TW", label: "繁體中文", flag: "🇹🇼" },
+  { code: "zh-CN", label: "简体中文", flag: "🇨🇳" },
   { code: "ja", label: "日本語", flag: "🇯🇵" },
 ] as const;
 
 export const REGIONS = [
   { code: "TH", label: "Thailand", flag: "🇹🇭" },
   { code: "TW", label: "Taiwan", flag: "🇹🇼" },
+  { code: "CN", label: "China", flag: "🇨🇳" },
   { code: "JP", label: "Japan", flag: "🇯🇵" },
   { code: "SG", label: "Singapore", flag: "🇸🇬" },
   { code: "MY", label: "Malaysia", flag: "🇲🇾" },
@@ -30,7 +32,7 @@ export const DEFAULT_LOCALE: StoredLocale = {
   region: "TH",
 };
 
-const SECTIONED_LANDING_ROOTS = ["/", "/en", "/th", "/tw", "/ja"] as const;
+const SECTIONED_LANDING_ROOTS = ["/", "/en", "/th", "/tw", "/cn", "/ja"] as const;
 
 const SECTIONED_LANDING_PREFIXES = SECTIONED_LANDING_ROOTS.filter(
   (root) => root !== "/",
@@ -39,6 +41,7 @@ const SECTIONED_LANDING_PREFIXES = SECTIONED_LANDING_ROOTS.filter(
 const PATH_LOCALE_MAP = [
   { root: "/th", locale: { lang: "th", region: "TH" } as StoredLocale },
   { root: "/tw", locale: { lang: "zh-TW", region: "TW" } as StoredLocale },
+  { root: "/cn", locale: { lang: "zh-CN", region: "CN" } as StoredLocale },
   { root: "/ja", locale: { lang: "ja", region: "JP" } as StoredLocale },
   { root: "/id", locale: { lang: "en", region: "ID" } as StoredLocale },
   { root: "/en", locale: DEFAULT_LOCALE },
@@ -96,6 +99,9 @@ export function resolveLanguageSelection(
   }
   if (language === "zh-TW") {
     return { path: "/tw", locale: { lang: "zh-TW", region: "TW" } };
+  }
+  if (language === "zh-CN") {
+    return { path: "/cn", locale: { lang: "zh-CN", region: "CN" } };
   }
   return { path: "/ja", locale: { lang: "ja", region: "JP" } };
 }

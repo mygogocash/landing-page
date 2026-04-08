@@ -11,6 +11,7 @@ export const PRODUCTION_PAGE_PATHS = [
   "/id",
   "/ja",
   "/tw",
+  "/cn",
   "/learn",
   "/learn/how-cashback-works",
   "/about",

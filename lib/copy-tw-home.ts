@@ -169,9 +169,3 @@ export const TW_HOME = {
     cta: "開始賺回饋",
   },
 } satisfies LocaleHomeCopy;
-
-export const TW_ALPHA = {
-  badge: "Alpha",
-  message:
-    "此頁面為搶先體驗版：介面與 FAQ 為繁體中文，部分連結內容仍為英文。",
-} as const;

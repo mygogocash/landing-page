@@ -169,9 +169,3 @@ export const JA_HOME = {
     cta: "還元を始める",
   },
 } satisfies LocaleHomeCopy;
-
-export const JA_ALPHA = {
-  badge: "Alpha",
-  message:
-    "このページはアルファ版です。UI と FAQ は日本語ですが、一部のリンク先は英語のままです。",
-} as const;

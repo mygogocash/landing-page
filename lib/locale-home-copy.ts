@@ -1,5 +1,5 @@
 /**
- * Shared shape for localized marketing homepages (`/th`, `/tw`, `/ja`).
+ * Shared shape for localized marketing homepages (`/th`, `/tw`, `/ja`, `/cn`).
  * Implementations live in `lib/copy-*-home.ts`; the active map is
  * `LOCALE_HOME_COPY` in `locale-home-registry.ts`.
  */

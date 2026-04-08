@@ -14,7 +14,7 @@ export type HeaderNavLabels = {
   toggleMenuAria: string;
 };
 
-const LABELS: Record<"en" | "th" | "tw" | "ja" | "id", HeaderNavLabels> = {
+const LABELS: Record<"en" | "th" | "tw" | "cn" | "ja" | "id", HeaderNavLabels> = {
   en: {
     home: "Home",
     brands: "Brands",
@@ -45,6 +45,16 @@ const LABELS: Record<"en" | "th" | "tw" | "ja" | "id", HeaderNavLabels> = {
     mainNavAria: "主要導覽",
     toggleMenuAria: "開啟或關閉選單",
   },
+  cn: {
+    home: "首页",
+    brands: "品牌",
+    howItWorks: "运作方式",
+    faq: "常见问题",
+    learn: "学习中心",
+    startEarning: "开始赚回馈",
+    mainNavAria: "主导航",
+    toggleMenuAria: "打开或关闭菜单",
+  },
   ja: {
     home: "ホーム",
     brands: "ブランド",
@@ -73,6 +83,7 @@ export type HeaderNavLocaleKey = keyof typeof LABELS;
 export function headerNavLocaleFromPathname(pathname: string): HeaderNavLocaleKey {
   if (pathname === "/th" || pathname.startsWith("/th/")) return "th";
   if (pathname === "/tw" || pathname.startsWith("/tw/")) return "tw";
+  if (pathname === "/cn" || pathname.startsWith("/cn/")) return "cn";
   if (pathname === "/ja" || pathname.startsWith("/ja/")) return "ja";
   if (pathname === "/id" || pathname.startsWith("/id/")) return "id";
   return "en";

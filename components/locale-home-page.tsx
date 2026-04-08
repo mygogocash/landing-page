@@ -6,7 +6,6 @@ import { HOW_IT_WORKS_ILLUSTRATION_PATHS } from "@/lib/how-it-works-illustration
 import { type HowItWorksStep } from "@/components/landing/how-it-works-interactive";
 import MerchantOffersStrip from "@/components/landing/merchant-offers-strip";
 import type { PartnerBrand } from "@/lib/involve-asia";
-import AlphaLocaleBanner from "@/components/alpha-locale-banner";
 import type { LocaleHomeCopy } from "@/lib/locale-home-copy";
 import {
   FinalCtaSection,
@@ -31,8 +30,6 @@ export type LocaleHomePageProps = {
   documentLang: string;
   partnerLogoAltTemplate: string;
   learnArticleLang?: string;
-  /** When set, shows a high-visibility Alpha strip under the header. */
-  alpha?: { badge: string; message: string };
 };
 
 export default function LocaleHomePage({
@@ -42,7 +39,6 @@ export default function LocaleHomePage({
   documentLang,
   partnerLogoAltTemplate,
   learnArticleLang = "en",
-  alpha,
 }: LocaleHomePageProps) {
   const howItWorksSteps: HowItWorksStep[] = copy.howItWorks.steps.map(
     (step, index) => ({
@@ -62,9 +58,6 @@ export default function LocaleHomePage({
     <>
       <DocumentLangSync lang={documentLang} />
       <Header />
-      {alpha ? (
-        <AlphaLocaleBanner badge={alpha.badge} message={alpha.message} />
-      ) : null}
       <main role="main" lang={documentLang}>
         <LocaleHomeHeroSection copy={copy} />
 
