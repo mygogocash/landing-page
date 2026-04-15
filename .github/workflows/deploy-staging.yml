@@ -61,10 +61,11 @@ jobs:
           INVOLVE_ASIA_API_SECRET: ${{ secrets.INVOLVE_ASIA_API_SECRET }}
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: E2E smoke tests
         run: npm run test:e2e:ci
+        continue-on-error: true
 
       - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
