@@ -3,14 +3,16 @@
 #
 # ─── Prerequisites ───
 #   1. Create a Firebase Hosting site named `gogocash-landing-staging` in the
-#      landing-page-4ae23 project (Firebase Console → Hosting → Add another site).
+#      landing-page-4ae23 project (Firebase Console → Hosting → Add another site).  ✅ DONE
 #   2. Add custom domain staging.gogocash.co to that site.
 #   3. Add a DNS CNAME  staging  →  gogocash-landing-staging.web.app  in your registrar.
 #
-# ─── Required secrets ───
-#   FIREBASE_SERVICE_ACCOUNT_LANDING_STAGING   JSON key for a GCP service account with
-#                                               Firebase Hosting Admin on landing-page-4ae23.
-#   (Optional) INVOLVE_ASIA_API_KEY / INVOLVE_ASIA_API_SECRET  — partner data at build time.
+# ─── Required GitHub variables (Settings → Secrets and variables → Actions → Variables) ───
+#   FIREBASE_WIF_PROVIDER   projects/110817639529/locations/global/workloadIdentityPools/github-actions/providers/github
+#   FIREBASE_SA_EMAIL       github-actions-landing@landing-page-4ae23.iam.gserviceaccount.com
+#
+# ─── Optional secrets ───
+#   INVOLVE_ASIA_API_KEY / INVOLVE_ASIA_API_SECRET  — partner data at build time.
 
 name: Deploy Landing Page (staging)
 
@@ -64,10 +66,11 @@ jobs:
       - name: E2E smoke tests
         run: npm run test:e2e:ci
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LANDING_STAGING }}
+          workload_identity_provider: ${{ vars.FIREBASE_WIF_PROVIDER }}
+          service_account: ${{ vars.FIREBASE_SA_EMAIL }}
 
       - name: Deploy to Firebase Hosting (staging site)
         run: |
